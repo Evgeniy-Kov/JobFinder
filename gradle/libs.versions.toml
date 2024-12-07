@@ -12,7 +12,7 @@ roomVersion = "2.6.1"
 
 # Build constants
 minSdk = "26"
-compileSdk = "34"
+compileSdk = "35"
 targetSdk = "33"
 
 # Detekt
@@ -31,7 +31,7 @@ staticAnalysis-detektLibraries = { module = "io.gitlab.arturbosch.detekt:detekt-
 staticAnalysis-detektTwitterComposeRules = { module = "com.twitter.compose.rules:detekt", version.ref = "detektTwitterComposeRules" }
 
 # AndroidX
-androidX-core = "androidx.core:core-ktx:1.13.1"
+androidX-core = "androidx.core:core-ktx:1.15.0"
 androidX-appCompat = "androidx.appcompat:appcompat:1.7.0"
 
 # UI layer libraries
