@@ -2,6 +2,9 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("ru.practicum.android.diploma.plugins.developproperties")
+    id("org.jetbrains.kotlin.plugin.parcelize")
+    id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -43,9 +46,22 @@ dependencies {
     implementation(libs.androidX.core)
     implementation(libs.androidX.appCompat)
 
+    implementation(libs.github.glide)
+    implementation(libs.gson)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.koin.android)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.kapt)
+
     // UI layer libraries
     implementation(libs.ui.material)
     implementation(libs.ui.constraintLayout)
+    implementation(libs.androidx.activity)
 
     // region Unit tests
     testImplementation(libs.unitTests.junit)

@@ -1,6 +1,14 @@
 [versions]
 
 java = "VERSION_1_8"
+activityVersion = "1.9.3"
+glideVersion = "4.16.0"
+gsonVersion = "2.11.0"
+retrofitVersion = "2.11.0"
+activityKtxVersion = "1.9.3"
+koinVersion = "4.0.0"
+navVersion = "2.8.4"
+roomVersion = "2.6.1"
 
 # Build constants
 minSdk = "26"
@@ -9,7 +17,7 @@ targetSdk = "33"
 
 # Detekt
 detekt = "1.23.3"
-detektTwitterComposeRules ="0.0.26"
+detektTwitterComposeRules = "0.0.26"
 
 [libraries]
 
@@ -23,12 +31,26 @@ staticAnalysis-detektLibraries = { module = "io.gitlab.arturbosch.detekt:detekt-
 staticAnalysis-detektTwitterComposeRules = { module = "com.twitter.compose.rules:detekt", version.ref = "detektTwitterComposeRules" }
 
 # AndroidX
-androidX-core = "androidx.core:core-ktx:1.12.0"
-androidX-appCompat = "androidx.appcompat:appcompat:1.6.1"
+androidX-core = "androidx.core:core-ktx:1.13.1"
+androidX-appCompat = "androidx.appcompat:appcompat:1.7.0"
 
 # UI layer libraries
-ui-material = "com.google.android.material:material:1.10.0"
-ui-constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
+ui-material = "com.google.android.material:material:1.12.0"
+ui-constraintLayout = "androidx.constraintlayout:constraintlayout:2.2.0"
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activityVersion" }
+github-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
+androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navVersion" }
+androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navVersion" }
+
+# Data layer libraries
+gson = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofitVersion" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinVersion" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
+androidx-room-kapt = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
 
 # Unit tests
 unitTests-junit = "junit:junit:4.13.2"
