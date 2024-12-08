@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="FontYSDisplayBoldSize32Weight700">
-        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="fontFamily">@font/ys_display_bold</item>
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontWeight">700</item>
     </style>
+
     <style name="FontYSDisplayMediumSize22Weight500">
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">22sp</item>
         <item name="android:fontWeight">500</item>
     </style>
+
     <style name="FontYSDisplayMediumSize16Weight500">
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontWeight">500</item>
     </style>
+
     <style name="FontYSDisplayRegularSize16Weight400">
         <item name="fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">16sp</item>

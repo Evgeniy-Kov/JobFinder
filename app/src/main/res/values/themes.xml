@@ -2,7 +2,7 @@
     <style name="Theme.Main" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/white</item>
         <item name="colorOnPrimary">@color/black</item>
-        <item name="colorSecondary">@color/lite_gray</item>
+        <item name="colorSecondary">@color/light_gray</item>
         <item name="colorOnSecondary">@color/gray</item>
     </style>
 </resources>
