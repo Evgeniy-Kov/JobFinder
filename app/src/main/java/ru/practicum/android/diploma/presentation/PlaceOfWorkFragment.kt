@@ -10,7 +10,8 @@ import ru.practicum.android.diploma.R
 class PlaceOfWorkFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_place_of_work, container, false)
