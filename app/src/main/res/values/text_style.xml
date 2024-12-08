@@ -4,7 +4,6 @@
     <style name="FontYSDisplayBoldSize32Weight700">
         <item name="fontFamily">@font/ys_display_bold</item>
         <item name="android:textSize">32sp</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:fontWeight">700</item>
     </style>
 
