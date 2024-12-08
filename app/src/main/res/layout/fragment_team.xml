@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context=".presentation.TeamFragment">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
         app:contentInsetStartWithNavigation="0dp"
         app:tint="?attr/colorOnPrimary"
         app:title="@string/team"
-        app:titleTextAppearance="@style/TeamFragmentTitleStyle"
+        style="@style/TeamFragmentTitleStyle"
         app:titleTextColor="?attr/colorOnPrimary" />
 
     <FrameLayout
@@ -34,66 +33,42 @@
             android:text="@string/team_title"
             android:textAllCaps="false"
             android:textColor="?attr/colorOnPrimary" />
-
     </FrameLayout>
 
     <LinearLayout
-        style="@style/TeamFragmentDevelopersPositionStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_16">
 
         <TextView
             style="@style/TeamFragmentDevelopersTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="@string/dev_1" />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/TeamFragmentDevelopersPositionStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <TextView
             style="@style/TeamFragmentDevelopersTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="@string/dev_2" />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/TeamFragmentDevelopersPositionStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <TextView
             style="@style/TeamFragmentDevelopersTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="@string/dev_3" />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/TeamFragmentDevelopersPositionStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <TextView
             style="@style/TeamFragmentDevelopersTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="@string/dev_4" />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/TeamFragmentDevelopersPositionStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <TextView
             style="@style/TeamFragmentDevelopersTextStyle"
