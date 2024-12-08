@@ -7,6 +7,7 @@
     <string name="choosing_place_of_work">Выбор места работы</string>
     <string name="choosing_country">Выбор страны</string>
     <string name="choosing_region">Выбор региона</string>
+    <string name="main">Главная</string>
     <string name="favourites">Избранное</string>
     <string name="team">Команда</string>
 </resources>
