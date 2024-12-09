@@ -25,24 +25,13 @@ class RootActivity : AppCompatActivity() {
 
         binding.bottomNavigationView.setupWithNavController(navController)
 
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.settingFilterFragment -> {
-                    changeBottomNavigationViewVisibility(false)
-                }
-
-                R.id.placeOfWorkFragment -> {
-                    changeBottomNavigationViewVisibility(false)
-                }
-
-                R.id.countryFragment -> {
-                    changeBottomNavigationViewVisibility(false)
-                }
-
-                R.id.regionFragment -> {
-                    changeBottomNavigationViewVisibility(false)
-                }
-
+                R.id.settingFilterFragment,
+                R.id.placeOfWorkFragment,
+                R.id.countryFragment,
+                R.id.regionFragment,
                 R.id.vacancyFragment -> {
                     changeBottomNavigationViewVisibility(false)
                 }
