@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/colorPrimary"
     android:orientation="vertical"
     tools:context=".presentation.TeamFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
+        style="@style/TeamFragmentTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_64"
         app:contentInsetStartWithNavigation="0dp"
         app:tint="?attr/colorOnPrimary"
         app:title="@string/team"
-        style="@style/TeamFragmentTitleStyle"
         app:titleTextColor="?attr/colorOnPrimary" />
 
     <FrameLayout
@@ -37,6 +37,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_24"
         android:orientation="vertical"
         android:paddingStart="@dimen/dp_16"
         android:paddingEnd="@dimen/dp_16">
