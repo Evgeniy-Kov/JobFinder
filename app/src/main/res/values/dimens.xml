@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <dimen name="dp_8">8dp</dimen>
     <dimen name="dp_16">16dp</dimen>
-
-
+    <dimen name="dp_18">18dp</dimen>
+    <dimen name="dp_64">64dp</dimen>
+    <dimen name="dp_110">110dp</dimen>
 </resources>

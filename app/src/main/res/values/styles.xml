@@ -15,12 +15,12 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
-
     <style name="TeamFragmentDevelopersTextStyle">
         <item name="android:gravity">center_vertical</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textAppearance">@style/FontYSDisplayMediumSize16Weight500</item>
         <item name="android:layout_marginEnd">@dimen/dp_8</item>
+        <item name="android:layout_marginBottom">@dimen/dp_16</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
