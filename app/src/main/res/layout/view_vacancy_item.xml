@@ -7,21 +7,17 @@
     android:layout_marginHorizontal="@dimen/dp_16"
     android:layout_marginVertical="@dimen/dp_9">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iconImageView"
         android:layout_width="@dimen/dp_48"
         android:layout_height="@dimen/dp_48"
-        app:cardCornerRadius="@dimen/dp_12"
+        android:layout_gravity="center_vertical|top"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:scaleType="center"
+        app:shapeAppearanceOverlay="@style/circleImageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/iv_vacancy_cover"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/vacancy_cover_placeholder" />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/vacancy_cover_placeholder"></com.google.android.material.imageview.ShapeableImageView>
 
     <TextView
         android:id="@+id/tv_vacancy_name"
@@ -31,9 +27,9 @@
         android:textAppearance="@style/FontYSDisplayMediumSize22Weight500"
         android:textColor="?attr/colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@id/tv_place_of_work"
-        app:layout_constraintStart_toEndOf="@id/card_view"
+        app:layout_constraintStart_toEndOf="@id/iconImageView"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/vacancy_name" />
+        tools:text="Android-разработчик, Москва" />
 
     <TextView
         android:id="@+id/tv_place_of_work"
@@ -44,7 +40,7 @@
         app:layout_constraintBottom_toTopOf="@id/tv_salary"
         app:layout_constraintStart_toStartOf="@id/tv_vacancy_name"
         app:layout_constraintTop_toBottomOf="@id/tv_vacancy_name"
-        tools:text="@string/place_of_work" />
+        tools:text="Еда" />
 
     <TextView
         android:id="@+id/tv_salary"
@@ -55,6 +51,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_vacancy_name"
         app:layout_constraintTop_toBottomOf="@id/tv_place_of_work"
-        tools:text="@string/salary" />
+        tools:text="от 100 000 Р" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

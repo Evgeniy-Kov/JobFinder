@@ -10,7 +10,4 @@
     <string name="main">Главная</string>
     <string name="favourites">Избранное</string>
     <string name="team">Команда</string>
-    <string name="vacancy_name">Android-разработчик, Москва</string>
-    <string name="place_of_work">Еда</string>
-    <string name="salary">от 100 000 Р</string>
 </resources>
