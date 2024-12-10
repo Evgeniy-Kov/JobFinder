@@ -23,18 +23,17 @@
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#00000000"
-        android:foreground="?attr/selectableItemBackground"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/parameters"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
-        tools:src="@drawable/parameters" />
+        app:tint="?attr/colorOnPrimary" />
 
     <EditText
         android:id="@+id/search_edit_text"
         style="@style/SearchEditTextStyle"
         android:imeOptions="actionDone"
-        android:paddingEnd="@dimen/dp_16"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,8 +41,10 @@
 
     <ImageView
         android:id="@+id/start_iv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
         android:src="@drawable/start_search_image"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,8 +69,10 @@
 
     <ImageView
         android:id="@+id/no_internet_iv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
         android:src="@drawable/no_internet"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -91,8 +94,10 @@
 
     <ImageView
         android:id="@+id/no_result_search_iv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
         android:src="@drawable/no_jobs"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -146,13 +151,13 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginBottom="@dimen/dp_24"
         android:indeterminate="true"
         android:paddingTop="130dp"
         android:progress="45"
         android:visibility="gone"
         app:indicatorColor="@color/blue"
-        android:layout_marginBottom="@dimen/dp_24"
-        android:layout_marginTop="@dimen/dp_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
