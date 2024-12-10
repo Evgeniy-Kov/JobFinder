@@ -10,4 +10,6 @@
     <string name="main">Главная</string>
     <string name="favourites">Избранное</string>
     <string name="team">Команда</string>
+    <string name="empty_favorites">Список пуст</string>
+    <string name="unable_to_retrieve_job_listing">Не удалось получить\nсписок вакансий</string>
 </resources>
