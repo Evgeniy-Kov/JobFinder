@@ -45,7 +45,7 @@
         <item name="android:drawablePadding">6dp</item>
         <item name="android:drawableTint">?attr/colorOnPrimary</item>
         <item name="android:inputType">textNoSuggestions</item>
-        <item name="android:drawableRight">@drawable/search</item>
+        <item name="android:drawableRight">@drawable/ic_search</item>
         <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
     </style>
 
