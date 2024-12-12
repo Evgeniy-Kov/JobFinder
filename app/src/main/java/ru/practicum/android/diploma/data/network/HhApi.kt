@@ -14,7 +14,7 @@ import ru.practicum.android.diploma.data.dto.VacancyDetailsDto
 interface HhApi {
     @Headers(
         "Authorization: Bearer $TOKEN",
-        "HH-User-Agent: $APPLICATION_NAME"
+        "HH-User-Agent: $APPLICATION_NAME ($EMAIL)"
     )
     @GET("/vacancies?per_page=20")
     suspend fun getVacancies(
@@ -25,7 +25,7 @@ interface HhApi {
 
     @Headers(
         "Authorization: Bearer $TOKEN",
-        "HH-User-Agent: $APPLICATION_NAME"
+        "HH-User-Agent: $APPLICATION_NAME ($EMAIL)"
     )
     @GET("/vacancies/{vacancy_id}")
     suspend fun getVacancyDetails(@Path("vacancy_id") vacancyId: String): VacancyDetailsDto
@@ -41,6 +41,7 @@ interface HhApi {
 
     private companion object {
         const val APPLICATION_NAME = "JobFinder"
+        const val EMAIL = "twenty6@duck.com"
         const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
     }
 }
