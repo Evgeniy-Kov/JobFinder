@@ -14,4 +14,5 @@
     <string name="no_internet">Нет интернета</string>
     <string name="unable_to_retrieve_job_listing">Не удалось получить\nсписок вакансий</string>
     <string name="no_such_jobs">Таких вакансий нет</string>
+    <string name="server_error">Ошибка сервера</string>
 </resources>
