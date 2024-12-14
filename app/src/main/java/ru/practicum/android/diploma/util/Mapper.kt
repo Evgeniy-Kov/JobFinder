@@ -32,12 +32,12 @@ fun VacancyDetailsDto.toVacancyDetails(context: Context): VacancyDetails {
         contactsEmail = contacts?.email,
         contactsPhone = contacts?.phones?.first()?.formatted,
         description = description,
-        professionalRoles = professionalRoles.joinToString("\n"){it.name},
-        keySkills = keySkills.joinToString("\n"){it.name},
+        professionalRoles = professionalRoles.joinToString("\n") { it.name },
+        keySkills = keySkills.joinToString("\n") { it.name },
         schedule = schedule?.name,
-        workingDays = workingDays?.joinToString("\n"){it.name},
-        workingTimeIntervals = workingTimeIntervals?.joinToString("\n"){it.name},
-        workingTimeModes = workingTimeModes?.joinToString("\n"){it.name}
+        workingDays = workingDays?.joinToString("\n") { it.name },
+        workingTimeIntervals = workingTimeIntervals?.joinToString("\n") { it.name },
+        workingTimeModes = workingTimeModes?.joinToString("\n") { it.name }
     )
 }
 
