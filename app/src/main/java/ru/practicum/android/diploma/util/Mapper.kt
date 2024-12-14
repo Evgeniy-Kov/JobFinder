@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.util
 
 import android.content.Context
+import ru.practicum.android.diploma.data.db.entity.FavouriteVacancyEntity
 import ru.practicum.android.diploma.data.dto.VacancyDetailsDto
 import ru.practicum.android.diploma.data.dto.VacancyDto
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -37,5 +38,29 @@ fun VacancyDetailsDto.toVacancyDetails(context: Context): VacancyDetails {
         workingDays = workingDays?.joinToString("\n"){it.name},
         workingTimeIntervals = workingTimeIntervals?.joinToString("\n"){it.name},
         workingTimeModes = workingTimeModes?.joinToString("\n"){it.name}
+    )
+}
+
+fun FavouriteVacancyEntity.VacancyDetails(): VacancyDetails {
+    return VacancyDetails(
+        id = vacancyId,
+        name = name,
+        city = city,
+        employerName = employerName,
+        employerLogoUrl = employerLogoUrl,
+        employment = employment,
+        experience = experience,
+        salary = salary,
+        contactsName = contactsName,
+        contactsEmail = contactsEmail,
+        contactsPhone = contactsPhone,
+        description = description,
+        keySkills = keySkills,
+        professionalRoles = professionalRoles,
+        schedule = schedule,
+        workingDays = workingDays,
+        workingTimeIntervals = workingTimeIntervals,
+        workingTimeModes = workingTimeModes,
+        isFavourite = true
     )
 }
