@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="TeamFragmentTitleStyle">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="titleTextAppearance">@style/FontYSDisplayMediumSize22Weight500</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="TeamFragmentSubTitleStyle">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textAppearance">@style/FontYSDisplayBoldSize32Weight700</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="TeamFragmentDevelopersTextStyle">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textAppearance">@style/FontYSDisplayMediumSize16Weight500</item>
+        <item name="android:layout_marginEnd">@dimen/dp_8</item>
+        <item name="android:layout_marginBottom">@dimen/dp_16</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
     <style name="circleImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/dp_12</item>
     </style>
+
 </resources>

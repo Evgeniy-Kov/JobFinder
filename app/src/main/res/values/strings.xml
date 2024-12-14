@@ -10,4 +10,10 @@
     <string name="main">Главная</string>
     <string name="favourites">Избранное</string>
     <string name="team">Команда</string>
+    <string name="team_title">Над приложением работали</string>
+    <string name="dev_1">Евгений Ковалевский</string>
+    <string name="dev_2">Ольга Румянцева</string>
+    <string name="dev_3">Роман Михайлов</string>
+    <string name="dev_4">Максим Исаев</string>
+    <string name="dev_5">Владислав Доронин</string>
 </resources>
