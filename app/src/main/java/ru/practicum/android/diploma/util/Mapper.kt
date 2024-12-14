@@ -64,3 +64,26 @@ fun FavouriteVacancyEntity.VacancyDetails(): VacancyDetails {
         isFavourite = true
     )
 }
+
+fun VacancyDetails.FavouriteVacancyEntity(): FavouriteVacancyEntity {
+    return FavouriteVacancyEntity(
+        vacancyId = id,
+        name = name,
+        city = city,
+        employerName = employerName,
+        employerLogoUrl = employerLogoUrl,
+        employment = employment,
+        experience = experience,
+        salary = salary,
+        contactsName = contactsName,
+        contactsEmail = contactsEmail,
+        contactsPhone = contactsPhone,
+        description = description,
+        keySkills = keySkills,
+        professionalRoles = professionalRoles,
+        schedule = schedule,
+        workingDays = workingDays,
+        workingTimeIntervals = workingTimeIntervals,
+        workingTimeModes = workingTimeModes,
+    )
+}
