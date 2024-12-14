@@ -16,4 +16,7 @@
     <string name="dev_3">Роман Михайлов</string>
     <string name="dev_4">Максим Исаев</string>
     <string name="dev_5">Владислав Доронин</string>
+    <string name="salary_from">от %d </string>
+    <string name="salary_to">до %d </string>
+    <string name="salary_not_specified">Зарплата не указана</string>
 </resources>
