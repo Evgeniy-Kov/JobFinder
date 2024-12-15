@@ -8,7 +8,8 @@ package ru.practicum.android.diploma.domain.models
  * @param employerLogoUrl `Nullable` Хранит ссылку на логотип компании
  * @param employment `Nullable` Хранит информацию о типе занятости
  * @param experience `Nullable` Хранит информацию об опыте работы
- * @param salary Хранит информацию о зарплате в отформатированном виде
+ * @param salaryFrom `Nullable` Хранит информацию о нижней границе зарплаты
+ * @param salaryTo `Nullable` Хранит информацию о верхней границе зарплаты
  * @param contactsName  `Nullable` Хранит информацию об имени контакта
  * @param contactsEmail  `Nullable` Хранит Email для связи
  * @param contactsPhone  `Nullable` Хранит номер телефона для связи в отформатированном виде
@@ -30,7 +31,8 @@ data class VacancyDetails(
     val employerLogoUrl: String?,
     val employment: String?,
     val experience: String?,
-    val salary: String,
+    val salaryFrom: Int?,
+    val salaryTo: Int?,
     val contactsName: String?,
     val contactsEmail: String?,
     val contactsPhone: String?,

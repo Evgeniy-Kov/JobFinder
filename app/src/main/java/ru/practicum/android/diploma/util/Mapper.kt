@@ -1,31 +1,32 @@
 package ru.practicum.android.diploma.util
 
-import android.content.Context
 import ru.practicum.android.diploma.data.db.entity.FavouriteVacancyEntity
 import ru.practicum.android.diploma.data.dto.VacancyDetailsDto
 import ru.practicum.android.diploma.data.dto.VacancyDto
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
-fun VacancyDto.toVacancy(context: Context): Vacancy {
+fun VacancyDto.toVacancy(): Vacancy {
     return Vacancy(
         id = id,
         name = name,
         city = area.name,
         employerName = employer.name,
         employerLogoUrl = employer.logoUrls?.original,
-        salary = getFormattedSalary(salary, context)
+        salaryFrom = salary?.from,
+        salaryTo = salary?.to
     )
 }
 
-fun VacancyDetailsDto.toVacancyDetails(context: Context): VacancyDetails {
+fun VacancyDetailsDto.toVacancyDetails(): VacancyDetails {
     return VacancyDetails(
         id = id,
         name = name,
         city = area.name,
         employerName = employer?.name,
         employerLogoUrl = employer?.logoUrls?.original,
-        salary = getFormattedSalary(salary, context),
+        salaryFrom = salary?.from,
+        salaryTo = salary?.to,
         employment = employment?.name,
         experience = experience?.name,
         contactsName = contacts?.name,
@@ -50,7 +51,8 @@ fun FavouriteVacancyEntity.toVacancyDetails(): VacancyDetails {
         employerLogoUrl = employerLogoUrl,
         employment = employment,
         experience = experience,
-        salary = salary,
+        salaryFrom = salaryFrom,
+        salaryTo = salaryTo,
         contactsName = contactsName,
         contactsEmail = contactsEmail,
         contactsPhone = contactsPhone,
@@ -74,7 +76,8 @@ fun VacancyDetails.toFavouriteVacancyEntity(): FavouriteVacancyEntity {
         employerLogoUrl = employerLogoUrl,
         employment = employment,
         experience = experience,
-        salary = salary,
+        salaryFrom = salaryFrom,
+        salaryTo = salaryTo,
         contactsName = contactsName,
         contactsEmail = contactsEmail,
         contactsPhone = contactsPhone,

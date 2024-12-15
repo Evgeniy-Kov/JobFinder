@@ -6,7 +6,8 @@ package ru.practicum.android.diploma.domain.models
  * @param city Хранит название региона
  * @param employerName Хранит название компании
  * @param employerLogoUrl `Nullable` Хранит ссылку на логотип компании
- * @param salary Хранит информацию о зарплате в отформатированном виде
+ * @param salaryFrom `Nullable` Хранит информацию о нижней границе зарплаты
+ * @param salaryTo `Nullable` Хранит информацию о верхней границе зарплаты
  */
 
 data class Vacancy(
@@ -15,5 +16,6 @@ data class Vacancy(
     val city: String,
     val employerName: String,
     val employerLogoUrl: String?,
-    val salary: String,
+    val salaryFrom: Int?,
+    val salaryTo: Int?,
 )
