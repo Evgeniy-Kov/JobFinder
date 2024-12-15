@@ -10,6 +10,11 @@
     <string name="main">Главная</string>
     <string name="favourites">Избранное</string>
     <string name="team">Команда</string>
+    <string name="enter_query">Введите запрос</string>
+    <string name="no_internet">Нет интернета</string>
+    <string name="unable_to_retrieve_job_listing">Не удалось получить\nсписок вакансий</string>
+    <string name="no_such_jobs">Таких вакансий нет</string>
+    <string name="server_error">Ошибка сервера</string>
     <string name="team_title">Над приложением работали</string>
     <string name="dev_1">Евгений Ковалевский</string>
     <string name="dev_2">Ольга Румянцева</string>
@@ -19,4 +24,5 @@
     <string name="salary_from">от %d </string>
     <string name="salary_to">до %d </string>
     <string name="salary_not_specified">Зарплата не указана</string>
+
 </resources>
