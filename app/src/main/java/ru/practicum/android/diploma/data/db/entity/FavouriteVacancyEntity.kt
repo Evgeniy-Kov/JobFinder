@@ -17,12 +17,12 @@ import androidx.room.PrimaryKey
  * @param contactsEmail  `Nullable` Хранит Email для связи
  * @param contactsPhone  `Nullable` Хранит номер телефона для связи в отформатированном виде
  * @param description Хранит описание вакансии в html, не менее 200 символов
- * @param keySkills Хранит информацию о ключевых навыках, не более 30
- * @param professionalRoles Хранит информацию о профессиональных ролях
+ * @param keySkills Хранит информацию о ключевых навыках, не более 30 в JSON формате
+ * @param professionalRoles Хранит информацию о профессиональных ролях в JSON формате
  * @param schedule `Nullable` Хранит информацию о графике работы
- * @param workingDays `Nullable` Хранит информацию о рабочих днях
- * @param workingTimeIntervals `Nullable` Хранит информацию о временных интервалах работы
- * @param workingTimeModes `Nullable` Хранит информацию о режимах работы
+ * @param workingDays `Nullable` Хранит информацию о рабочих днях в JSON формате
+ * @param workingTimeIntervals `Nullable` Хранит информацию о временных интервалах работы в JSON формате
+ * @param workingTimeModes `Nullable` Хранит информацию о режимах работы в JSON формате
  */
 
 @Entity(tableName = "favorite_table")

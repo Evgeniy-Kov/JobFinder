@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.util
 
+import com.google.gson.Gson
 import ru.practicum.android.diploma.data.db.entity.FavouriteVacancyEntity
 import ru.practicum.android.diploma.data.dto.VacancyDetailsDto
 import ru.practicum.android.diploma.data.dto.VacancyDto
@@ -33,12 +34,12 @@ fun VacancyDetailsDto.toVacancyDetails(): VacancyDetails {
         contactsEmail = contacts?.email,
         contactsPhone = contacts?.phones?.first()?.formatted,
         description = description,
-        professionalRoles = professionalRoles.joinToString("\n") { it.name },
-        keySkills = keySkills.joinToString("\n") { it.name },
+        professionalRoles = professionalRoles.map { it.name },
+        keySkills = keySkills.map { it.name },
         schedule = schedule?.name,
-        workingDays = workingDays?.joinToString("\n") { it.name },
-        workingTimeIntervals = workingTimeIntervals?.joinToString("\n") { it.name },
-        workingTimeModes = workingTimeModes?.joinToString("\n") { it.name }
+        workingDays = workingDays?.map { it.name },
+        workingTimeIntervals = workingTimeIntervals?.map { it.name },
+        workingTimeModes = workingTimeModes?.map { it.name }
     )
 }
 
@@ -57,12 +58,12 @@ fun FavouriteVacancyEntity.toVacancyDetails(): VacancyDetails {
         contactsEmail = contactsEmail,
         contactsPhone = contactsPhone,
         description = description,
-        keySkills = keySkills,
-        professionalRoles = professionalRoles,
+        keySkills = Gson().fromJson(keySkills, Array<String>::class.java).toList(),
+        professionalRoles = Gson().fromJson(professionalRoles, Array<String>::class.java).toList(),
         schedule = schedule,
-        workingDays = workingDays,
-        workingTimeIntervals = workingTimeIntervals,
-        workingTimeModes = workingTimeModes,
+        workingDays = Gson().fromJson(workingDays, Array<String>::class.java).toList(),
+        workingTimeIntervals = Gson().fromJson(workingTimeIntervals, Array<String>::class.java).toList(),
+        workingTimeModes = Gson().fromJson(workingTimeModes, Array<String>::class.java).toList(),
         isFavourite = true
     )
 }
@@ -82,11 +83,11 @@ fun VacancyDetails.toFavouriteVacancyEntity(): FavouriteVacancyEntity {
         contactsEmail = contactsEmail,
         contactsPhone = contactsPhone,
         description = description,
-        keySkills = keySkills,
-        professionalRoles = professionalRoles,
+        keySkills = Gson().toJson(keySkills),
+        professionalRoles = Gson().toJson(professionalRoles),
         schedule = schedule,
-        workingDays = workingDays,
-        workingTimeIntervals = workingTimeIntervals,
-        workingTimeModes = workingTimeModes,
+        workingDays = Gson().toJson(workingDays),
+        workingTimeIntervals = Gson().toJson(workingTimeIntervals),
+        workingTimeModes = Gson().toJson(workingTimeModes),
     )
 }

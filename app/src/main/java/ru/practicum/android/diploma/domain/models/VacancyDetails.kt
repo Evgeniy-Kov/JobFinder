@@ -14,12 +14,12 @@ package ru.practicum.android.diploma.domain.models
  * @param contactsEmail  `Nullable` Хранит Email для связи
  * @param contactsPhone  `Nullable` Хранит номер телефона для связи в отформатированном виде
  * @param description Хранит описание вакансии в html, не менее 200 символов
- * @param keySkills Хранит информацию о ключевых навыках, не более 30
- * @param professionalRoles Хранит информацию о профессиональных ролях
+ * @param keySkills Хранит информацию о ключевых навыках, не более 30 в виде списка
+ * @param professionalRoles Хранит информацию о профессиональных ролях в виде списка
  * @param schedule `Nullable` Хранит информацию о графике работы
- * @param workingDays `Nullable` Хранит информацию о рабочих днях
- * @param workingTimeIntervals `Nullable` Хранит информацию о временных интервалах работы
- * @param workingTimeModes `Nullable` Хранит информацию о режимах работы
+ * @param workingDays `Nullable` Хранит информацию о рабочих днях в виде списка
+ * @param workingTimeIntervals `Nullable` Хранит информацию о временных интервалах работы в виде списка
+ * @param workingTimeModes `Nullable` Хранит информацию о режимах работы в виде списка
  * @param isFavourite Хранит информацию о добавлении вакансии в список избранных
  */
 
@@ -37,11 +37,11 @@ data class VacancyDetails(
     val contactsEmail: String?,
     val contactsPhone: String?,
     val description: String,
-    val keySkills: String,
-    val professionalRoles: String,
+    val keySkills: List<String>,
+    val professionalRoles: List<String>,
     val schedule: String?,
-    val workingDays: String?,
-    val workingTimeIntervals: String?,
-    val workingTimeModes: String?,
+    val workingDays: List<String>?,
+    val workingTimeIntervals: List<String>?,
+    val workingTimeModes: List<String>?,
     val isFavourite: Boolean = false,
 )
