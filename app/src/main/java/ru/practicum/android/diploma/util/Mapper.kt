@@ -41,7 +41,7 @@ fun VacancyDetailsDto.toVacancyDetails(context: Context): VacancyDetails {
     )
 }
 
-fun FavouriteVacancyEntity.VacancyDetails(): VacancyDetails {
+fun FavouriteVacancyEntity.toVacancyDetails(): VacancyDetails {
     return VacancyDetails(
         id = vacancyId,
         name = name,
@@ -65,7 +65,7 @@ fun FavouriteVacancyEntity.VacancyDetails(): VacancyDetails {
     )
 }
 
-fun VacancyDetails.FavouriteVacancyEntity(): FavouriteVacancyEntity {
+fun VacancyDetails.toFavouriteVacancyEntity(): FavouriteVacancyEntity {
     return FavouriteVacancyEntity(
         vacancyId = id,
         name = name,
