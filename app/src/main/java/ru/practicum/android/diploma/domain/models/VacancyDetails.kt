@@ -1,10 +1,7 @@
-package ru.practicum.android.diploma.data.db.entity
-
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+package ru.practicum.android.diploma.domain.models
 
 /**
- * @param vacancyId Хранит идентификатор вакансии
+ * @param id Хранит идентификатор вакансии
  * @param name Хранит название вакансии
  * @param city Хранит название региона
  * @param employerName `Nullable` Хранит название компании
@@ -17,18 +14,17 @@ import androidx.room.PrimaryKey
  * @param contactsEmail  `Nullable` Хранит Email для связи
  * @param contactsPhone  `Nullable` Хранит номер телефона для связи в отформатированном виде
  * @param description Хранит описание вакансии в html, не менее 200 символов
- * @param keySkills Хранит информацию о ключевых навыках, не более 30 в JSON формате
- * @param professionalRoles Хранит информацию о профессиональных ролях в JSON формате
+ * @param keySkills Хранит информацию о ключевых навыках, не более 30 в виде списка
+ * @param professionalRoles Хранит информацию о профессиональных ролях в виде списка
  * @param schedule `Nullable` Хранит информацию о графике работы
- * @param workingDays `Nullable` Хранит информацию о рабочих днях в JSON формате
- * @param workingTimeIntervals `Nullable` Хранит информацию о временных интервалах работы в JSON формате
- * @param workingTimeModes `Nullable` Хранит информацию о режимах работы в JSON формате
+ * @param workingDays `Nullable` Хранит информацию о рабочих днях в виде списка
+ * @param workingTimeIntervals `Nullable` Хранит информацию о временных интервалах работы в виде списка
+ * @param workingTimeModes `Nullable` Хранит информацию о режимах работы в виде списка
+ * @param isFavourite Хранит информацию о добавлении вакансии в список избранных
  */
 
-@Entity(tableName = "favorite_table")
-data class FavouriteVacancyEntity(
-    @PrimaryKey
-    val vacancyId: String,
+data class VacancyDetails(
+    val id: String,
     val name: String,
     val city: String,
     val employerName: String?,
@@ -41,10 +37,11 @@ data class FavouriteVacancyEntity(
     val contactsEmail: String?,
     val contactsPhone: String?,
     val description: String,
-    val keySkills: String,
-    val professionalRoles: String,
+    val keySkills: List<String>,
+    val professionalRoles: List<String>,
     val schedule: String?,
-    val workingDays: String?,
-    val workingTimeIntervals: String?,
-    val workingTimeModes: String?,
+    val workingDays: List<String>?,
+    val workingTimeIntervals: List<String>?,
+    val workingTimeModes: List<String>?,
+    val isFavourite: Boolean = false,
 )
