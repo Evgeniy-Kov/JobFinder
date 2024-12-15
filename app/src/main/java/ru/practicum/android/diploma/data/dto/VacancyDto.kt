@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.data.dto
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * @param address `Nullable` Хранит экземпляр класса `AddressDto` с информацией об адресе
  * @param area Обязательное поле, хранит экземпляр класса `AreaDto` (Регион)
@@ -10,10 +12,10 @@ package ru.practicum.android.diploma.data.dto
  */
 
 data class VacancyDto(
-    val address: AddressDto?,
-    val area: AreaRegionDto,
-    val employer: EmployerDto,
-    val id: String,
-    val name: String,
-    val salary: SalaryDto?,
+    @SerializedName("address") val address: AddressDto?,
+    @SerializedName("area") val area: AreaRegionDto,
+    @SerializedName("employer") val employer: EmployerDto,
+    @SerializedName("id") val id: String,
+    @SerializedName("name") val name: String,
+    @SerializedName("salary") val salary: SalaryDto?,
 )
