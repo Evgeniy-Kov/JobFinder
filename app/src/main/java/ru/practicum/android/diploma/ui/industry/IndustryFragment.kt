@@ -1,16 +1,16 @@
-package ru.practicum.android.diploma.presentation
+package ru.practicum.android.diploma.ui.industry
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentVacancySearchBinding
+import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
 
-class VacancySearchFragment : Fragment() {
+class IndustryFragment : Fragment() {
 
-    private var _binding: FragmentVacancySearchBinding? = null
-    private val binding: FragmentVacancySearchBinding
+    private var _binding: FragmentIndustryBinding? = null
+    private val binding: FragmentIndustryBinding
         get() = requireNotNull(_binding) { "Binding is null" }
 
     override fun onCreateView(
@@ -18,7 +18,7 @@ class VacancySearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentVacancySearchBinding.inflate(inflater, container, false)
+        _binding = FragmentIndustryBinding.inflate(inflater, container, false)
         return binding.root
     }
 

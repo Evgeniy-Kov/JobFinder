@@ -1,16 +1,16 @@
-package ru.practicum.android.diploma.presentation
+package ru.practicum.android.diploma.ui.favourites
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentCountryBinding
+import ru.practicum.android.diploma.databinding.FragmentFavouritesBinding
 
-class CountryFragment : Fragment() {
+class FavouritesFragment : Fragment() {
 
-    private var _binding: FragmentCountryBinding? = null
-    private val binding: FragmentCountryBinding
+    private var _binding: FragmentFavouritesBinding? = null
+    private val binding: FragmentFavouritesBinding
         get() = requireNotNull(_binding) { "Binding is null" }
 
     override fun onCreateView(
@@ -18,7 +18,7 @@ class CountryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCountryBinding.inflate(inflater, container, false)
+        _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 

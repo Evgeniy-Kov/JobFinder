@@ -1,16 +1,16 @@
-package ru.practicum.android.diploma.presentation
+package ru.practicum.android.diploma.ui.region
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentPlaceOfWorkBinding
+import ru.practicum.android.diploma.databinding.FragmentRegionBinding
 
-class PlaceOfWorkFragment : Fragment() {
+class RegionFragment : Fragment() {
 
-    private var _binding: FragmentPlaceOfWorkBinding? = null
-    private val binding: FragmentPlaceOfWorkBinding
+    private var _binding: FragmentRegionBinding? = null
+    private val binding: FragmentRegionBinding
         get() = requireNotNull(_binding) { "Binding is null" }
 
     override fun onCreateView(
@@ -18,7 +18,7 @@ class PlaceOfWorkFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPlaceOfWorkBinding.inflate(inflater, container, false)
+        _binding = FragmentRegionBinding.inflate(inflater, container, false)
         return binding.root
     }
 
