@@ -6,11 +6,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/colorPrimary"
     android:orientation="vertical"
-    tools:context=".presentation.FavouritesFragment">
+    tools:context=".ui.favourites.FavouritesFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/Toolbar_Favorites_title"
-        style="@style/FavoritesFragmentTitleStyle"
+        style="@style/TeamFragmentTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_64"
         app:tint="?attr/colorOnPrimary"
