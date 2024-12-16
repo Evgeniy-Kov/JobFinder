@@ -1,9 +1,11 @@
 package ru.practicum.android.diploma.data.dto
 
+import com.google.gson.annotations.SerializedName
+
 /**
  *  @param name Название опыта работы
  */
 
 data class ExperienceDto(
-    val name: String
+    @SerializedName("name") val name: String
 )

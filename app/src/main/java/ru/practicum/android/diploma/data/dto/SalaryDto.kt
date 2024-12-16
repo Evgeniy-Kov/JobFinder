@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.data.dto
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * @param currency `Nullable` Код валюты
  * @param from `Nullable` Нижняя граница зарплаты
@@ -8,8 +10,8 @@ package ru.practicum.android.diploma.data.dto
  */
 
 data class SalaryDto(
-    val currency: String?,
-    val from: Int?,
-    val to: Int?,
-    val gross: Boolean?
+    @SerializedName("currency") val currency: String?,
+    @SerializedName("from") val from: Int?,
+    @SerializedName("to") val to: Int?,
+    @SerializedName("gross") val gross: Boolean?
 )

@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
  * @param description Обязательное поле, хранит описание вакансии в html, не менее 200 символов
  * @param employer `Nullable` Хранит экземпляр класса `EmployerDto` с информацией о работодателе
  * @param employment `Nullable` Хранит экземпляр класса `EmploymentDto` с информацией о типе занятости
- * @param experience `Nullable` Хранит экземпляр класса `EmploymentDto` с информацией об опыте работы
+ * @param experience `Nullable` Хранит экземпляр класса `ExperienceDto` с информацией об опыте работы
  * @param id Обязательное поле, хранит идентификатор вакансии
  * @param keySkills Обязательное поле, хранит массив экземпляров класса `EmploymentDto` с информацией о ключевых навыках, не более 30
  * @param name Обязательное поле, хранит название вакансии
