@@ -10,7 +10,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/Toolbar_Favorites_title"
-        style="@style/TeamFragmentTitleStyle"
+        style="@style/FragmentToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_64"
         app:tint="?attr/colorOnPrimary"
