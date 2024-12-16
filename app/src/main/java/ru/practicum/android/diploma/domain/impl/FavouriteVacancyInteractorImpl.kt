@@ -10,7 +10,7 @@ class FavouriteVacancyInteractorImpl(private val repository: FavouriteVacancyRep
     override fun getAllFavouriteVacancies(): Flow<List<VacancyDetails>> =
         repository.getAllFavouriteVacancies()
 
-    override suspend fun getFavouriteVacancyById(id: String): Flow<VacancyDetails> =
+    override fun getFavouriteVacancyById(id: String): Flow<VacancyDetails> =
         repository.getFavouriteVacancyById(id)
 
     override suspend fun addFavouriteVacancy(vacancy: VacancyDetails) {
