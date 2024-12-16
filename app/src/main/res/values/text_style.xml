@@ -30,4 +30,5 @@
         <item name="android:textSize">12sp</item>
         <item name="android:fontWeight">400</item>
     </style>
+
 </resources>

@@ -4,7 +4,7 @@ plugins {
     id("ru.practicum.android.diploma.plugins.developproperties")
     id("org.jetbrains.kotlin.plugin.parcelize")
     id("androidx.navigation.safeargs.kotlin")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -57,7 +57,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.kapt)
+    ksp(libs.androidx.room.compiler)
 
     // UI layer libraries
     implementation(libs.ui.material)
