@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">JobFinder</string>
     <string name="vacancy_search">Поиск вакансий</string>
     <string name="setting_filter">Настройка фильтрации</string>
@@ -10,9 +11,10 @@
     <string name="main">Главная</string>
     <string name="favourites">Избранное</string>
     <string name="team">Команда</string>
+    <string name="empty_favorites">Список пуст</string>
+    <string name="unable_to_retrieve_job_listing">Не удалось получить\nсписок вакансий</string>
     <string name="enter_query">Введите запрос</string>
     <string name="no_internet">Нет интернета</string>
-    <string name="unable_to_retrieve_job_listing">Не удалось получить\nсписок вакансий</string>
     <string name="no_such_jobs">Таких вакансий нет</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="team_title">Над приложением работали</string>
