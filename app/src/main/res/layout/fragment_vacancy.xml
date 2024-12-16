@@ -109,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_80"
                 android:backgroundTint="@color/light_gray"
-                app:cardCornerRadius="@dimen/dp_16">
+                app:cardCornerRadius="@dimen/dp_12">
 
                 <ImageView
                     android:id="@+id/employer_logo"
@@ -167,7 +167,7 @@
                 tools:text="От 1 года до 3 лет" />
 
             <TextView
-                android:id="@+id/schedule"
+                android:id="@+id/employment"
                 style="@style/FragmentRegularTitleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
