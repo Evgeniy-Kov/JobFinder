@@ -26,5 +26,6 @@
     <string name="salary_from">от %d </string>
     <string name="salary_to">до %d </string>
     <string name="salary_not_specified">Зарплата не указана</string>
+    <string name="vacancy_template">%1$s, %2$s</string>
 
 </resources>
