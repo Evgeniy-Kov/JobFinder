@@ -18,7 +18,7 @@ class FavouriteVacancyRepositoryImpl(
         }
     }
 
-    override suspend fun getFavouriteVacancyById(id: String): Flow<VacancyDetails> = flow {
+    override fun getFavouriteVacancyById(id: String): Flow<VacancyDetails> = flow {
         emit(vacancyDBConverter.convert(database.favouriteVacancyDao().getVacancyById(id)))
     }
 
