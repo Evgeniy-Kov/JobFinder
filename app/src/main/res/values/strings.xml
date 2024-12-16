@@ -29,5 +29,6 @@
     <string name="employer_logo">Логотип работодателя</string>
     <string name="experience_header">Требуемый опыт</string>
     <string name="description_header">Описание вакансии</string>
+    <string name="keyskills_header">Ключевые навыки</string>
 
 </resources>

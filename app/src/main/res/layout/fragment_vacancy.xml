@@ -187,8 +187,24 @@
                 style="@style/FragmentRegularTitleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_24"
                 tools:text="Обязанности\n• Разрабатывать новую функциональность приложения\n• Помогать с интеграцией нашего SDK в другие приложения\n• Проектировать большие новые модули\n• Писать UI- и unit-тесты\n• Следить за работоспособностью сервиса и устранять технический долг\nОбязанности\n• Разрабатывать новую функциональность приложения\n• Помогать с интеграцией нашего SDK в другие приложения\n• Проектировать большие новые модули\n• Писать UI- и unit-тесты\n• Следить за работоспособностью сервиса и устранять технический долг\nОбязанности\n• Разрабатывать новую функциональность приложения\n• Помогать с интеграцией нашего SDK в другие приложения\n• Проектировать большие новые модули\n• Писать UI- и unit-тесты\n• Следить за работоспособностью сервиса и устранять технический долг" />
+
+            <TextView
+                android:id="@+id/keyskills_header"
+                style="@style/FragmentMediumTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_16"
+                android:text="@string/keyskills_header" />
+
+            <TextView
+                android:id="@+id/keyskills"
+                style="@style/FragmentRegularTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_24"
+                tools:text="• Знание классических алгоритмов и структуры данных\n• Программирование для Android больше одного года\n• Знание WebRTC" />
 
         </LinearLayout>
     </ScrollView>
