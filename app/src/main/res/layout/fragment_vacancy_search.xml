@@ -20,7 +20,7 @@
         app:titleTextColor="?attr/colorOnPrimary" />
 
     <ImageButton
-        android:id="@+id/back_button"
+        android:id="@+id/parameters_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="@dimen/dp_8"
@@ -33,14 +33,25 @@
 
     <EditText
         android:id="@+id/search_edit_text"
+        style="@style/SearchEditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_56"
-        style="@style/SearchEditTextStyle"
         android:imeOptions="actionDone"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <ImageButton
+        android:id="@+id/clear_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="@+id/search_edit_text"
+        app:layout_constraintEnd_toEndOf="@+id/search_edit_text"
+        app:layout_constraintTop_toTopOf="@+id/search_edit_text"
+        app:tint="@color/black" />
 
     <ImageView
         android:id="@+id/start_iv"
