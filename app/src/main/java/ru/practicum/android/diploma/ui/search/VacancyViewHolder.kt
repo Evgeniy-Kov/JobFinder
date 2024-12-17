@@ -11,9 +11,7 @@ import ru.practicum.android.diploma.util.getVacancyNameForViewHolder
 
 class VacancyViewHolder(private val binding: ViewVacancyItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-
     fun bind(vacancy: Vacancy) {
-
         binding.tvVacancyName.text = getVacancyNameForViewHolder(vacancy.name, vacancy.city)
         binding.tvPlaceOfWork.text = vacancy.employerName
         binding.tvSalary.text = getFormattedSalaryForViewHolder(vacancy.salaryFrom, vacancy.salaryTo, itemView.context)

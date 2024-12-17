@@ -11,7 +11,6 @@ import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
 
-
 class VacancySearchViewModel(
     private val vacancySearchInteractor: VacancySearchInteractor
 ) : ViewModel() {
@@ -51,12 +50,9 @@ class VacancySearchViewModel(
             is Resource.Success -> {
                 val jobs = searchResult.data
                 if (jobs.isNullOrEmpty()) {
-
                     renderState(SearchState.NothingFound)
-
                 } else {
                     renderState(SearchState.ContentSearch(jobs))
-
                 }
             }
 

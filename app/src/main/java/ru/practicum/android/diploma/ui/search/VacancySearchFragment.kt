@@ -32,7 +32,6 @@ class VacancySearchFragment : Fragment() {
     private lateinit var onJobClickDebounce: (Unit) -> Unit
     private var searchAdapter: VacancyAdapter? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,7 +51,6 @@ class VacancySearchFragment : Fragment() {
         val onItemClickListener = OnItemClickListener { item ->
             if (debounceBoolean) {
                 debounceBoolean = false
-                openVacancy(item)
                 onJobClickDebounce(Unit)
             }
         }
@@ -130,10 +128,6 @@ class VacancySearchFragment : Fragment() {
         if (view != null) {
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
-    }
-
-    private fun openVacancy(vacancy: Vacancy) {
-
     }
 
     private fun renderState(state: SearchState) {
@@ -222,11 +216,9 @@ class VacancySearchFragment : Fragment() {
         }
     }
 
-
     companion object {
         const val TEXT_DEF = ""
         const val CLICK_DEBOUNCE_DELAY = 1000L
         const val SEARCH_TEXT = "SEARCH_TEXT"
     }
-
 }

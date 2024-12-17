@@ -39,5 +39,3 @@ fun getFormattedSalaryForViewHolder(salaryFrom: Int?, salaryTo: Int?, context: C
 fun getVacancyNameForViewHolder(vacancyName: String, city: String): String {
     return vacancyName + ", " + city
 }
-
-
