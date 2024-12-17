@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.data.repository
 
-import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.data.NetworkClient
 import ru.practicum.android.diploma.data.network.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.network.VacancyDetailsResponse
 import ru.practicum.android.diploma.domain.api.VacancyDetailsRepository
@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.toVacancyDetails
 
 class VacancyDetailsRepositoryImpl(
-    private val networkClient: RetrofitNetworkClient
+    private val networkClient: NetworkClient
 ) : VacancyDetailsRepository {
     override suspend fun getVacancyDetails(vacancyId: String): Resource<VacancyDetails> {
         val request = VacancyDetailsRequest(vacancyId)
