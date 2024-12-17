@@ -21,7 +21,7 @@ class VacancyViewHolder(private val binding: ViewVacancyItemBinding) : RecyclerV
         Glide.with(itemView)
             .load(vacancy.employerLogoUrl)
             .placeholder(R.drawable.vacancy_cover_placeholder)
-            .centerCrop()
+            .centerInside()
             .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.dp_12)))
             .into(binding.iconImageView)
 
