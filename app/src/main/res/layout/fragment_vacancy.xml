@@ -20,7 +20,7 @@
         app:title="@string/vacancy" />
 
     <ImageButton
-        android:id="@+id/share"
+        android:id="@+id/btn_share"
         android:layout_width="@dimen/dp_48"
         android:layout_height="@dimen/dp_48"
         android:layout_marginHorizontal="@dimen/dp_4"
@@ -28,12 +28,12 @@
         android:contentDescription="@string/share"
         android:src="@drawable/ic_share"
         app:layout_constraintBottom_toBottomOf="@id/toolbar"
-        app:layout_constraintEnd_toStartOf="@id/favourite"
+        app:layout_constraintEnd_toStartOf="@id/btn_favourite"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
         app:tint="?attr/colorOnPrimary" />
 
     <ImageButton
-        android:id="@+id/favourite"
+        android:id="@+id/btn_favourite"
         android:layout_width="@dimen/dp_48"
         android:layout_height="@dimen/dp_48"
         android:layout_marginEnd="@dimen/dp_8"
