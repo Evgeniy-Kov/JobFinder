@@ -1,6 +1,4 @@
-package ru.practicum.android.diploma.domain.models
-
-import ru.practicum.android.diploma.util.ErrorType
+package ru.practicum.android.diploma.util
 
 sealed class Resource<T>(
     open val data: T? = null,
