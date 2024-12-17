@@ -13,7 +13,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.presentation.VacancyDetailsViewModel
-import kotlin.getValue
 
 class VacancyFragment : Fragment() {
 
@@ -24,8 +23,6 @@ class VacancyFragment : Fragment() {
     private val viewModel: VacancyDetailsViewModel by viewModel()
     private val args by navArgs<VacancyFragmentArgs>()
     private var vacancyDetails: VacancyDetails? = null
-
-    //private var temp = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +36,7 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // viewModel.getVacancyDetails(args.vacancyId)
+        viewModel.getVacancyDetails(args.vacancyId)
         viewModel.observeVacancyDetails().observe(viewLifecycleOwner) { details ->
             vacancyDetails = details
         }
@@ -51,13 +48,7 @@ class VacancyFragment : Fragment() {
         binding.btnFavourite.setOnClickListener {
             if (vacancyDetails != null) {
                 viewModel.onFavoriteClick(vacancyDetails!!)
-                /* } else {
-                     renderFavoriteState(temp)
-                     temp = !temp
-
-                 */
             }
-
         }
     }
 
@@ -68,14 +59,14 @@ class VacancyFragment : Fragment() {
 
     private fun renderFavoriteState(isFavourite: Boolean) {
         if (isFavourite) {
+            binding.btnFavourite.setImageResource(R.drawable.ic_favorites_checked)
             binding.btnFavourite.setColorFilter(
                 ContextCompat.getColor(requireContext(), R.color.red)
             )
-            binding.btnFavourite.setImageResource(R.drawable.ic_favorites_checked)
         } else {
             binding.btnFavourite.setImageResource(R.drawable.ic_favorites)
             binding.btnFavourite.setColorFilter(
-                MaterialColors.getColor(binding.btnFavourite, android.R.attr.colorPrimary)
+                MaterialColors.getColor(binding.btnFavourite, com.google.android.material.R.attr.colorOnPrimary)
             )
         }
     }
