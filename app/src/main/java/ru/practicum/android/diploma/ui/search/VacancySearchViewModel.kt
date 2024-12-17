@@ -1,9 +1,8 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -16,8 +15,8 @@ import ru.practicum.android.diploma.util.debounce
 
 
 class VacancySearchViewModel(
-    application: Application, private val vacancySearchInteractor: VacancySearchInteractor
-) : AndroidViewModel(application) {
+    private val vacancySearchInteractor: VacancySearchInteractor
+) : ViewModel() {
 
     private var latestSearchText: String = ""
 
