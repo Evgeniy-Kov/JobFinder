@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.ui.search
 import androidx.recyclerview.widget.DiffUtil
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class JobItemDiffCallBack : DiffUtil.ItemCallback<Vacancy>() {
+class VacancyItemDiffCallBack : DiffUtil.ItemCallback<Vacancy>() {
 
     override fun areItemsTheSame(oldItem: Vacancy, newItem: Vacancy): Boolean {
         return oldItem.id == newItem.id

@@ -30,7 +30,7 @@ class VacancySearchFragment : Fragment() {
     private var searchValue = TEXT_DEF
     private var debounceBoolean = true
     private lateinit var onJobClickDebounce: (Unit) -> Unit
-    private var searchAdapter: JobListAdapter? = null
+    private var searchAdapter: VacancyAdapter? = null
 
 
     override fun onCreateView(
@@ -56,7 +56,7 @@ class VacancySearchFragment : Fragment() {
                 onJobClickDebounce(Unit)
             }
         }
-        searchAdapter = JobListAdapter(onItemClickListener)
+        searchAdapter = VacancyAdapter(onItemClickListener)
         binding.recyclerView.adapter = searchAdapter
 
         binding.clearButton.setOnClickListener {
@@ -85,9 +85,9 @@ class VacancySearchFragment : Fragment() {
             false
         }
 
-//        viewModel.observeSearchState().observe(viewLifecycleOwner) { state ->
-//            renderState(state)
-//        }
+        viewModel.observeSearchState().observe(viewLifecycleOwner) { state ->
+            renderState(state)
+        }
 
     }
 

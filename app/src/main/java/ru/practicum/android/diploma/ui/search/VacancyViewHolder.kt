@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.getFormattedSalaryForViewHolder
 import ru.practicum.android.diploma.util.getVacancyNameForViewHolder
 
-class JobViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
+class VacancyViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val tvVacancyName = itemView.findViewById<TextView>(R.id.tvVacancyName)
     private val tvPlaceOfWork = itemView.findViewById<TextView>(R.id.tvPlaceOfWork)
