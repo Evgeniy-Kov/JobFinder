@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.domain.api.VacancySearchInteractor
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -38,36 +36,33 @@ class VacancySearchViewModel(
         searchState.postValue(state)
     }
 
-    fun searchRequest(newSearchText: String) {
+    private fun searchRequest(newSearchText: String) {
         if (newSearchText.isEmpty() || newSearchText.length < 2) {
             return
         }
         renderState(SearchState.Loading)
-        searchJob = viewModelScope.launch(Dispatchers.IO) {
+        searchJob = viewModelScope.launch {
             processResult(vacancySearchInteractor.searchVacancies(newSearchText, 0, hashMapOf()))
         }
     }
 
-    private suspend fun processResult(searchResult: Resource<List<Vacancy>>) {
+    private fun processResult(searchResult: Resource<List<Vacancy>>) {
         when (searchResult) {
             is Resource.Success -> {
                 val jobs = searchResult.data
                 if (jobs.isNullOrEmpty()) {
-                    withContext(Dispatchers.Main) {
-                        renderState(SearchState.NothingFound)
-                    }
+
+                    renderState(SearchState.NothingFound)
+
                 } else {
-                    withContext(Dispatchers.Main) {
-                        renderState(SearchState.ContentSearch(jobs))
-                    }
+                    renderState(SearchState.ContentSearch(jobs))
+
                 }
             }
 
             is Resource.Error -> {
                 val errorMessage = searchResult.message
-                withContext(Dispatchers.Main) {
-                    renderState(SearchState.Error("Код ошибки: " + errorMessage.toString()))
-                }
+                renderState(SearchState.Error("Код ошибки: " + errorMessage.toString()))
             }
 
         }
