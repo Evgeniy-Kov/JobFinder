@@ -75,7 +75,7 @@ class VacancySearchViewModel(
 
     fun searchDebounce(changedText: String) {
         stopSearch()
-        if (latestSearchText == changedText || changedText.isEmpty() || changedText.length < 2) {
+        if (latestSearchText == changedText || changedText.isEmpty()) {
             return
         }
         latestSearchText = changedText
