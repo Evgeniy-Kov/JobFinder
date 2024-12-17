@@ -149,6 +149,7 @@ class VacancySearchFragment : Fragment() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.isVisible = isLoading
+        binding.startIv.isVisible = false
     }
 
     private fun showDefaultContent() {
