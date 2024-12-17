@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.ui.search
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.databinding.ViewVacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 
 class VacancyAdapter(
@@ -11,8 +11,9 @@ class VacancyAdapter(
 ) : ListAdapter<Vacancy, VacancyViewHolder>(VacancyItemDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.view_vacancy_item, parent, false)
-        return VacancyViewHolder(itemView)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ViewVacancyItemBinding.inflate(layoutInflater, parent, false)
+        return VacancyViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: VacancyViewHolder, position: Int) {
