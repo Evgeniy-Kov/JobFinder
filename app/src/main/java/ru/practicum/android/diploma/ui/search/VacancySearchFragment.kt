@@ -29,8 +29,13 @@ class VacancySearchFragment : Fragment() {
 
     private val viewModel by viewModel<VacancySearchViewModel>()
     private var searchValue = TEXT_DEF
-    private var debounceBoolean = true
-    private lateinit var onJobClickDebounce: (Unit) -> Unit
+    private val onVacancyClickDebounce: (Vacancy) -> Unit by lazy {
+        debounce(
+            CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false
+        ) { vacancy ->
+            onVacancyClick(vacancy)
+        }
+    }
     private var searchAdapter = VacancyAdapter()
 
     override fun onCreateView(
@@ -45,13 +50,9 @@ class VacancySearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onJobClickDebounce = debounce(
-            CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false
-        ) { debounceBoolean = true }
 
         searchAdapter.onItemClickListener = VacancyViewHolder.OnItemClickListener { vacancy ->
-            val direction = VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment()
-            findNavController().navigate(direction)
+            onVacancyClickDebounce(vacancy)
         }
         binding.recyclerView.adapter = searchAdapter
 
@@ -102,6 +103,11 @@ class VacancySearchFragment : Fragment() {
         if (savedInstanceState != null) {
             searchValue = savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF)
         }
+    }
+
+    private fun onVacancyClick(vacancy: Vacancy) {
+        val direction = VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment()
+        findNavController().navigate(direction)
     }
 
     private fun clearSearchAdapter() {
