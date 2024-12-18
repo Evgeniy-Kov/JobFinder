@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.favorites
+package ru.practicum.android.diploma.ui.favourites
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,31 +7,34 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
-import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.presentation.favorites.FavoritesState
-import ru.practicum.android.diploma.presentation.favorites.FavoritesViewModel
-import ru.practicum.android.diploma.ui.adapters.VacancyAdapter
+import ru.practicum.android.diploma.databinding.FragmentFavouritesBinding
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.debounce
 
-class FavoritesFragment : Fragment() {
+class FavouritesFragment : Fragment() {
 
-    private var _binding: FragmentFavoritesBinding? = null
+    private var _binding: FragmentFavouritesBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<FavoritesViewModel>()
-    private var adapter: VacancyAdapter? = null
+    private var vacancyDetailsAdapter = VacancyDetailsAdapter()
+    private var isClickAllowed = true
 
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 300L
+    private val debounceClick: (VacancyDetails) -> Unit by lazy {
+        debounce(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false) { vacancy ->
+            intentVacancyFragment(vacancy)
+        }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -42,49 +45,45 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        isClickAllowed = true
 
-        viewModel.getStateLiveData().observe(viewLifecycleOwner) { state ->
+        viewModel.favoritesState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is FavoritesState.Content -> showContent(state.vacanciesList)
-                is FavoritesState.Empty -> showEmptyMessage()
-                is FavoritesState.Error -> showError()
+                is FavoritesState.Content -> {
+                    vacancyDetailsAdapter.submitList(state.vacanciesList)
+                    showContent(state.vacanciesList)
+                }
 
+                is FavoritesState.Error -> showError()
+                is FavoritesState.Empty -> showEmpty()
             }
         }
 
-        val onVacancyClickDebounce = debounce<Vacancy>(
-            CLICK_DEBOUNCE_DELAY,
-            viewLifecycleOwner.lifecycleScope,
-            false
-        )
-        //{ vacancy ->
-        //launchVacancyDetails(vacancy)
-        //}
+        vacancyDetailsAdapter.onItemClickListener = VacancyDetailsViewHolder.OnItemClickListener { vacancy ->
+            debounceClick(vacancy)
+        }
 
-        adapter = VacancyAdapter { vacancy -> onVacancyClickDebounce(vacancy) }
-        binding.favoritesList.adapter = adapter
+        binding.favoritesList.adapter = vacancyDetailsAdapter
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateFavoritesList()
+    private fun intentVacancyFragment(vacancy: VacancyDetails) {
+        val direction = FavouritesFragmentDirections.actionFavouritesFragmentToVacancyFragment(vacancy.id)
+        findNavController().navigate(direction)
     }
 
-    private fun showContent(listOfVacancies: List<Vacancy>) {
-        adapter?.setData(listOfVacancies)
+    private fun showContent(newListVacancies: List<VacancyDetails>) {
+        vacancyDetailsAdapter?.submitList(newListVacancies)
         binding.imgError.isVisible = false
         binding.txtError.isVisible = false
-        binding.loading.isVisible = false
         binding.favoritesList.isVisible = true
     }
 
-    private fun showEmptyMessage() {
+    private fun showEmpty() {
         binding.imgError.setImageResource(R.drawable.empty_favorites)
         binding.txtError.setText(R.string.empty_favorites)
 
         binding.imgError.isVisible = true
         binding.txtError.isVisible = true
-        binding.loading.isVisible = false
         binding.favoritesList.isVisible = false
     }
 
@@ -94,16 +93,11 @@ class FavoritesFragment : Fragment() {
 
         binding.imgError.isVisible = true
         binding.txtError.isVisible = true
-        binding.loading.isVisible = false
         binding.favoritesList.isVisible = false
     }
 
-    // необходимо сделать ссылку на экран описания вакансии при нажатии на вакансию из списка изранного
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 300L
+    }
 
-    //private fun launchVacancyDetails(vacancy: Vacancy) {
-    //   findNavController().navigate(
-    //       R.id.,
-    //       VacancyDetailsFragment.createArgs(vacancy = vacancy, vacancyNeedUpdate = false)
-    // )
-    //
 }
