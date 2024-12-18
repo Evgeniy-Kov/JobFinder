@@ -1,16 +1,6 @@
 package ru.practicum.android.diploma.domain.models
 
-import ru.practicum.android.diploma.util.ErrorType
-
-sealed class Resource<T>(
-    open val data: T? = null,
-    val errorType: ErrorType? = null,
-    val message: String? = null
-) {
-    class Success<T>(override val data: T) : Resource<T>(data = data)
-    class Error<T>(
-        errorType: ErrorType,
-        message: String? = null,
-        data: T? = null
-    ) : Resource<T>(data = data, errorType = errorType, message = message)
+sealed interface Resource<T> {
+    data class Success<T>(val data: T) : Resource<T>
+    data class Error<T>(val message: Int) : Resource<T>
 }
