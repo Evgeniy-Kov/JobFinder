@@ -18,7 +18,6 @@ class VacancyViewHolder(private val binding: ViewBinding) : RecyclerView.ViewHol
     ) {
         if (itemViewType == VacancyAdapter.VIEW_TYPE_VACANCY) {
             (binding as ViewVacancyItemBinding).apply {
-
                 root.setOnClickListener {
                     onItemClickListener?.onItemClick(vacancy)
                 }

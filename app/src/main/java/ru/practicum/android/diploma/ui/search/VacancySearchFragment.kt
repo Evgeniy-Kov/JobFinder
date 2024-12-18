@@ -31,7 +31,9 @@ class VacancySearchFragment : Fragment() {
     private var searchValue = TEXT_DEF
     private val onVacancyClickDebounce: (Vacancy) -> Unit by lazy {
         debounce(
-            CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
         ) { vacancy ->
             onVacancyClick(vacancy)
         }
@@ -49,7 +51,6 @@ class VacancySearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         searchAdapter.onItemClickListener = VacancyViewHolder.OnItemClickListener { vacancy ->
             onVacancyClickDebounce(vacancy)

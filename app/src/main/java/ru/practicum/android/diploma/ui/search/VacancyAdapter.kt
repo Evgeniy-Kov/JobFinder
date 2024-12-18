@@ -7,7 +7,7 @@ import ru.practicum.android.diploma.databinding.ViewEmptyItemBinding
 import ru.practicum.android.diploma.databinding.ViewVacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class VacancyAdapter() : ListAdapter<Vacancy, VacancyViewHolder>(VacancyItemDiffCallBack()) {
+class VacancyAdapter : ListAdapter<Vacancy, VacancyViewHolder>(VacancyItemDiffCallBack()) {
 
     var onItemClickListener: VacancyViewHolder.OnItemClickListener? = null
 
