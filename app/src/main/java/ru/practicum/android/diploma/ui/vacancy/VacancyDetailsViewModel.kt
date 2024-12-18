@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.presentation
+package ru.practicum.android.diploma.ui.vacancy
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
