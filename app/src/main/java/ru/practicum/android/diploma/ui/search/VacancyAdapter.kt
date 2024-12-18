@@ -31,8 +31,6 @@ class VacancyAdapter : ListAdapter<Vacancy, VacancyViewHolder>(VacancyItemDiffCa
                 getItem(position - 1),
                 onItemClickListener
             )
-//            holder.itemView.setOnClickListener { onItemClickListener.onItemClick(getItem(position - 1))
-//            }
         }
     }
 
