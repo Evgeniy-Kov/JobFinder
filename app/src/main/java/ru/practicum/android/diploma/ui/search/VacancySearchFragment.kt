@@ -114,6 +114,7 @@ class VacancySearchFragment : Fragment() {
     private fun clearSearchAdapter() {
         viewModel.stopSearch()
         searchAdapter?.submitList(mutableListOf())
+        searchAdapter.notifyDataSetChanged()
     }
 
     private fun clearButtonVisibility(s: CharSequence?, v: ImageView) {
