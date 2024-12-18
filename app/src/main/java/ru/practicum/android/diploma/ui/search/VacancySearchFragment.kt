@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancySearchBinding
@@ -30,7 +31,7 @@ class VacancySearchFragment : Fragment() {
     private var searchValue = TEXT_DEF
     private var debounceBoolean = true
     private lateinit var onJobClickDebounce: (Unit) -> Unit
-    private var searchAdapter: VacancyAdapter? = null
+    private var searchAdapter = VacancyAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,13 +49,10 @@ class VacancySearchFragment : Fragment() {
             CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false
         ) { debounceBoolean = true }
 
-        val onItemClickListener = OnItemClickListener { item ->
-            if (debounceBoolean) {
-                debounceBoolean = false
-                onJobClickDebounce(Unit)
-            }
+        searchAdapter.onItemClickListener = VacancyViewHolder.OnItemClickListener { vacancy ->
+            val direction = VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment()
+            findNavController().navigate(direction)
         }
-        searchAdapter = VacancyAdapter(onItemClickListener)
         binding.recyclerView.adapter = searchAdapter
 
         binding.clearButton.setOnClickListener {
