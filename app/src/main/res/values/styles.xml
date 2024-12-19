@@ -48,13 +48,11 @@
         <item name="android:layout_marginTop">@dimen/dp_8</item>
         <item name="android:layout_marginBottom">@dimen/dp_8</item>
         <item name="android:paddingStart">@dimen/dp_16</item>
-        <item name="android:paddingEnd">@dimen/dp_16</item>
+        <item name="android:paddingEnd">@dimen/dp_48</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">?attr/colorPrimaryVariant</item>
         <item name="android:textAppearance">@style/FontYSDisplayRegularSize16Weight400</item>
-        <item name="android:drawableTint">@color/black</item>
         <item name="android:inputType">textNoSuggestions</item>
-        <item name="android:drawableRight">@drawable/ic_search</item>
         <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
     </style>
 

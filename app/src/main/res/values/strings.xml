@@ -32,5 +32,6 @@
     <string name="experience_header">Требуемый опыт</string>
     <string name="description_header">Описание вакансии</string>
     <string name="keyskills_header">Ключевые навыки</string>
+    <string name="vacancies_found">Найдено %d вакансий</string>
 
 </resources>
