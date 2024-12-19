@@ -98,7 +98,7 @@ class VacancyFragment : Fragment() {
             binding.experienceTv.text = details.experience
             binding.employmentTv.text = details.employment
             binding.descriptionTv.text = Html.fromHtml(details.description, Html.FROM_HTML_MODE_COMPACT)
-            if (details.keySkills.isEmpty()) {
+            if (details.keySkills.isNullOrEmpty()) {
                 binding.keyskillsTv.visibility = View.GONE
                 binding.keyskillsHeader.visibility = View.GONE
             } else {

@@ -21,7 +21,7 @@ class VacancyDbConverter {
             contactsEmail = vacancy.contactsEmail,
             contactsPhone = vacancy.contactsPhone,
             description = vacancy.description,
-            keySkills = convertToJson(vacancy.keySkills),
+            keySkills = convertToJson(vacancy.keySkills.orEmpty()),
             professionalRoles = convertToJson(vacancy.professionalRoles),
             schedule = vacancy.schedule,
             workingDays = vacancy.workingDays?.let { convertToJson(it) },
