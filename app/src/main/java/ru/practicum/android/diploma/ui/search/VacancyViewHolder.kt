@@ -13,10 +13,10 @@ import ru.practicum.android.diploma.util.getVacancyNameForViewHolder
 class VacancyViewHolder(private val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
-        vacancy: Vacancy,
+        vacancy: Vacancy?,
         onItemClickListener: OnItemClickListener?
     ) {
-        if (itemViewType == VacancyAdapter.VIEW_TYPE_VACANCY) {
+        if (vacancy != null) {
             (binding as ViewVacancyItemBinding).apply {
                 root.setOnClickListener {
                     onItemClickListener?.onItemClick(vacancy)

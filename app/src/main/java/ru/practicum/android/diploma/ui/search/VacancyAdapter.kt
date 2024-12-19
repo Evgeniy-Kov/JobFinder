@@ -2,12 +2,12 @@ package ru.practicum.android.diploma.ui.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import ru.practicum.android.diploma.databinding.ViewEmptyItemBinding
 import ru.practicum.android.diploma.databinding.ViewVacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class VacancyAdapter : ListAdapter<Vacancy, VacancyViewHolder>(VacancyItemDiffCallBack()) {
+class VacancyAdapter : PagingDataAdapter<Vacancy, VacancyViewHolder>(VacancyItemDiffCallBack()) {
 
     var onItemClickListener: VacancyViewHolder.OnItemClickListener? = null
 
@@ -35,6 +35,7 @@ class VacancyAdapter : ListAdapter<Vacancy, VacancyViewHolder>(VacancyItemDiffCa
     }
 
     override fun getItemCount(): Int {
+        val currentList = snapshot()
         if (currentList.size == 0) {
             return super.getItemCount()
         } else {
@@ -43,11 +44,13 @@ class VacancyAdapter : ListAdapter<Vacancy, VacancyViewHolder>(VacancyItemDiffCa
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (position) {
+        val type = when (position) {
             0 -> VIEW_TYPE_EMPTY
 
             else -> VIEW_TYPE_VACANCY
         }
+
+        return type
     }
 
     companion object {
