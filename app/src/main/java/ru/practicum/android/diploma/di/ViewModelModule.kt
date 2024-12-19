@@ -1,8 +1,10 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.core.module.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.practicum.android.diploma.ui.search.VacancySearchViewModel
+import ru.practicum.android.diploma.ui.vacancy.VacancyDetailsViewModel
 
 val viewModelModule = module {
 
@@ -10,4 +12,7 @@ val viewModelModule = module {
         VacancySearchViewModel(get())
     }
 
+    viewModel {
+        VacancyDetailsViewModel(get())
+    }
 }
