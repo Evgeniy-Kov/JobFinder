@@ -1,14 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.vacancy.VacancyFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/FragmentToolbarStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/vacancy" />
+        android:layout_height="@dimen/dp_64"
+        android:paddingVertical="@dimen/dp_4"
+        app:contentInsetStartWithNavigation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:title="@string/vacancy" />
 
-</FrameLayout>
+    <ImageButton
+        android:id="@+id/btn_share"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        android:layout_marginHorizontal="@dimen/dp_4"
+        android:backgroundTint="#00000000"
+        android:contentDescription="@string/share"
+        android:src="@drawable/ic_share"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintEnd_toStartOf="@id/btn_favourite"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:tint="?attr/colorOnPrimary" />
+
+    <ImageButton
+        android:id="@+id/btn_favourite"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:backgroundTint="#00000000"
+        android:contentDescription="@string/to_favorites"
+        android:src="@drawable/ic_favorites"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:tint="?attr/colorOnPrimary" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/dp_16" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dp_16" />
+
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/FragmentSubTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_16"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:text="Android-разработчик" />
+
+    <TextView
+        android:id="@+id/salary"
+        style="@style/FragmentMediumTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_4"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:text="от 100 000 ₽" />
+
+    <Space
+        android:id="@+id/placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/salary" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/placeholder">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/employer_card"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_80"
+                android:backgroundTint="@color/light_gray"
+                app:cardCornerRadius="@dimen/dp_12">
+
+                <ImageView
+                    android:id="@+id/employer_logo"
+                    android:layout_width="@dimen/dp_48"
+                    android:layout_height="@dimen/dp_48"
+                    android:layout_margin="@dimen/dp_16"
+                    android:contentDescription="@string/employer_logo"
+                    android:src="@drawable/vacancy_cover_placeholder" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/dp_72"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_19"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/employer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dp_26"
+                        android:maxLines="1"
+                        android:textAppearance="@style/FontYSDisplayMediumSize22Weight500"
+                        android:textColor="@color/black"
+                        tools:text="Еда" />
+
+                    <TextView
+                        android:id="@+id/employer_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dp_19"
+                        android:maxLines="1"
+                        android:textAppearance="@style/FontYSDisplayRegularSize16Weight400"
+                        android:textColor="@color/black"
+                        tools:text="Москва" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/experience_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_24"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:text="@string/experience_header"
+                android:textAppearance="@style/FontYSDisplayMediumSize16Weight500"
+                android:textColor="?attr/colorOnPrimary" />
+
+            <TextView
+                android:id="@+id/experience"
+                style="@style/FragmentRegularTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_8"
+                tools:text="От 1 года до 3 лет" />
+
+            <TextView
+                android:id="@+id/employment"
+                style="@style/FragmentRegularTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_32"
+                tools:text="Полная занятость, Удаленная работа" />
+
+            <TextView
+                android:id="@+id/description_header"
+                style="@style/FragmentMediumTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_16"
+                android:text="@string/description_header" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/FragmentRegularTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_24"
+                tools:text="Обязанности\n• Разрабатывать новую функциональность приложения\n• Помогать с интеграцией нашего SDK в другие приложения\n• Проектировать большие новые модули\n• Писать UI- и unit-тесты\n• Следить за работоспособностью сервиса и устранять технический долг\nОбязанности\n• Разрабатывать новую функциональность приложения\n• Помогать с интеграцией нашего SDK в другие приложения\n• Проектировать большие новые модули\n• Писать UI- и unit-тесты\n• Следить за работоспособностью сервиса и устранять технический долг\nОбязанности\n• Разрабатывать новую функциональность приложения\n• Помогать с интеграцией нашего SDK в другие приложения\n• Проектировать большие новые модули\n• Писать UI- и unit-тесты\n• Следить за работоспособностью сервиса и устранять технический долг" />
+
+            <TextView
+                android:id="@+id/keyskills_header"
+                style="@style/FragmentMediumTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_16"
+                android:text="@string/keyskills_header" />
+
+            <TextView
+                android:id="@+id/keyskills"
+                style="@style/FragmentRegularTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_24"
+                tools:text="• Знание классических алгоритмов и структуры данных\n• Программирование для Android больше одного года\n• Знание WebRTC" />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

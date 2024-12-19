@@ -8,7 +8,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        style="@style/TeamFragmentTitleStyle"
+        style="@style/FragmentToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_64"
         app:contentInsetStartWithNavigation="0dp"
@@ -20,7 +20,7 @@
         app:titleTextColor="?attr/colorOnPrimary" />
 
     <ImageButton
-        android:id="@+id/back_button"
+        android:id="@+id/parameters_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="@dimen/dp_8"
@@ -33,14 +33,25 @@
 
     <EditText
         android:id="@+id/search_edit_text"
+        style="@style/SearchEditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_56"
-        style="@style/SearchEditTextStyle"
         android:imeOptions="actionDone"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <ImageButton
+        android:id="@+id/clear_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="@+id/search_edit_text"
+        app:layout_constraintEnd_toEndOf="@+id/search_edit_text"
+        app:layout_constraintTop_toTopOf="@+id/search_edit_text"
+        app:tint="@color/black" />
 
     <ImageView
         android:id="@+id/start_iv"
@@ -140,6 +151,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/no_result_search_iv" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/rv_progress_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_edit_text"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/value_search_result_tv"
         android:layout_width="wrap_content"
@@ -157,19 +181,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_edit_text" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/rv_progress_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_edit_text"
-        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/rv_progress_bar"

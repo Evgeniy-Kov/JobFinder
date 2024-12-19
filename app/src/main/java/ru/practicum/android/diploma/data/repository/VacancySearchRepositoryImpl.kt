@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.data.repository
 
-import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.data.NetworkClient
 import ru.practicum.android.diploma.data.network.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.network.VacanciesSearchResponse
 import ru.practicum.android.diploma.domain.api.VacancySearchRepository
@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.toVacancy
 
 class VacancySearchRepositoryImpl(
-    private val networkClient: RetrofitNetworkClient,
+    private val networkClient: NetworkClient,
 ) : VacancySearchRepository {
     override suspend fun searchVacancies(
         query: String,
