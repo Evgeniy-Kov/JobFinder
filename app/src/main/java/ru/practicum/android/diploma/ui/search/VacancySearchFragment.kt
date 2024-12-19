@@ -192,7 +192,6 @@ class VacancySearchFragment : Fragment() {
 
     private fun renderState(state: SearchState) {
         when (state) {
-            // добавить потом стейт нет интернета
             is SearchState.ContentSearch -> updateContentSearch(state.jobs)
             is SearchState.Error -> showErrorMessage(state.errorMessage)
             is SearchState.Loading -> showLoading(true)
@@ -216,7 +215,6 @@ class VacancySearchFragment : Fragment() {
         binding.noResultSearchIv.isVisible = false
         binding.noResultSearchTv.isVisible = false
         binding.valueSearchResultTv.isVisible = false
-        binding.rvProgressBar.isVisible = false
         binding.startIv.isVisible = true
         clearSearchAdapter()
     }
@@ -231,7 +229,6 @@ class VacancySearchFragment : Fragment() {
         binding.progressBar.isVisible = false
         binding.noResultSearchIv.isVisible = false
         binding.noResultSearchTv.isVisible = false
-        binding.rvProgressBar.isVisible = false // переделать потом на постраничную загрузку
         binding.startIv.isVisible = false
     }
 
@@ -251,7 +248,6 @@ class VacancySearchFragment : Fragment() {
         binding.noResultSearchTv.isVisible = true
         binding.valueSearchResultTv.text = getString(R.string.no_such_jobs)
         binding.valueSearchResultTv.isVisible = true
-        binding.rvProgressBar.isVisible = false
         binding.startIv.isVisible = false
         clearSearchAdapter()
     }
@@ -267,7 +263,6 @@ class VacancySearchFragment : Fragment() {
         binding.noResultSearchTv.isVisible = false
         binding.valueSearchResultTv.text = getString(R.string.no_such_jobs)
         binding.valueSearchResultTv.isVisible = false
-        binding.rvProgressBar.isVisible = false
         binding.startIv.isVisible = false
         clearSearchAdapter()
     }
@@ -282,7 +277,6 @@ class VacancySearchFragment : Fragment() {
         binding.noResultSearchIv.isVisible = false
         binding.noResultSearchTv.isVisible = false
         binding.valueSearchResultTv.isVisible = false
-        binding.rvProgressBar.isVisible = false
         binding.startIv.isVisible = false
         clearSearchAdapter()
         if (additionalMessage.isNotEmpty()) {
