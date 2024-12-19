@@ -72,7 +72,7 @@ class FavouritesFragment : Fragment() {
     }
 
     private fun showContent(newListVacancies: List<VacancyDetails>) {
-        vacancyDetailsAdapter?.submitList(newListVacancies)
+        vacancyDetailsAdapter.submitList(newListVacancies)
         binding.imgError.isVisible = false
         binding.txtError.isVisible = false
         binding.favoritesList.isVisible = true
