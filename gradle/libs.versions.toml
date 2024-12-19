@@ -4,6 +4,7 @@ java = "VERSION_1_8"
 activityVersion = "1.9.3"
 glideVersion = "4.16.0"
 gsonVersion = "2.11.0"
+pagingVersion = "3.3.2"
 retrofitVersion = "2.11.0"
 activityKtxVersion = "1.9.3"
 koinVersion = "4.0.0"
@@ -52,6 +53,7 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinVers
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingVersion" }
 
 # Unit tests
 unitTests-junit = "junit:junit:4.13.2"
