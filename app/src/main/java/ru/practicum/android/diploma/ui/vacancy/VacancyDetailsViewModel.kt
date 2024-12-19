@@ -8,17 +8,33 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.FavouriteVacancyInteractor
+import ru.practicum.android.diploma.domain.api.VacancyDetailsRepository
+import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
-class VacancyDetailsViewModel(private val favouritesInteractor: FavouriteVacancyInteractor) : ViewModel() {
+class VacancyDetailsViewModel(
+    private val favouritesInteractor: FavouriteVacancyInteractor,
+    private val detailsRepository: VacancyDetailsRepository,
+) : ViewModel() {
     private val favoriteState = MutableLiveData<Boolean>()
     fun observeFavoriteState(): LiveData<Boolean> = favoriteState
     private val vacancyDetails = MutableLiveData<VacancyDetails>()
     fun observeVacancyDetails(): LiveData<VacancyDetails> = vacancyDetails
 
     fun getVacancyDetails(vacancyId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            vacancyDetails.postValue(favouritesInteractor.getFavouriteVacancyById(vacancyId).first())
+        viewModelScope.launch {
+            if (favouritesInteractor.isFavorite(vacancyId)) {
+                vacancyDetails.postValue(
+                    favouritesInteractor.getFavouriteVacancyById(vacancyId).first()
+                )
+            } else {
+
+                val result = detailsRepository.getVacancyDetails(vacancyId)
+                when (result) {
+                    is Resource.Error -> result.message
+                    is Resource.Success -> vacancyDetails.postValue(result.data)
+                }
+            }
         }
     }
 

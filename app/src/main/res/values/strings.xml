@@ -33,5 +33,6 @@
     <string name="description_header">Описание вакансии</string>
     <string name="keyskills_header">Ключевые навыки</string>
     <string name="vacancies_found">Найдено %d вакансий</string>
+    <string name="keyskills_separator">"\n• "</string>
 
 </resources>

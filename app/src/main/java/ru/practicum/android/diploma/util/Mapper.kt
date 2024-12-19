@@ -30,7 +30,7 @@ fun VacancyDetailsDto.toVacancyDetails(): VacancyDetails {
         experience = experience?.name,
         contactsName = contacts?.name,
         contactsEmail = contacts?.email,
-        contactsPhone = contacts?.phones?.first()?.formatted,
+        contactsPhone = contacts?.phones?.firstOrNull()?.formatted,
         description = description,
         professionalRoles = professionalRoles.map { it.name },
         keySkills = keySkills.map { it.name },

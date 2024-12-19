@@ -107,7 +107,7 @@ class VacancySearchFragment : Fragment() {
     }
 
     private fun onVacancyClick(vacancy: Vacancy) {
-        val direction = VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment()
+        val direction = VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment(vacancy.id)
         findNavController().navigate(direction)
     }
 
