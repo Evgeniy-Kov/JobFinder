@@ -62,6 +62,31 @@ class VacancySearchFragment : Fragment() {
         }
         binding.recyclerView.adapter = searchAdapter.withLoadStateFooter(LoaderStateAdapter())
 
+        initializeViews()
+
+        viewModel.observeSearchState().observe(viewLifecycleOwner) { state ->
+            renderState(state)
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.vacancies
+                    .collectLatest {
+                        searchAdapter.submitData(it)
+                        searchAdapter.addLoadStateListener { state ->
+                            processResult(searchAdapter.snapshot().size, state.refresh)
+                        }
+                    }
+            }
+        }
+
+        viewModel.itemCountLivedata.observe(viewLifecycleOwner) { count ->
+            binding.valueSearchResultTv.text =
+                String.format(getString(R.string.vacancies_found), count)
+        }
+    }
+
+    private fun initializeViews() {
         binding.clearButton.setOnClickListener {
             binding.searchEditText.text.clear()
             clearSearchAdapter()
@@ -87,27 +112,6 @@ class VacancySearchFragment : Fragment() {
             }
             false
         }
-
-        viewModel.observeSearchState().observe(viewLifecycleOwner) { state ->
-            renderState(state)
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.vacancies
-                    .collectLatest {
-                        searchAdapter.submitData(it)
-                        searchAdapter.addLoadStateListener { state ->
-                            processResult(searchAdapter.snapshot().size, state.refresh)
-                        }
-                    }
-            }
-        }
-
-        viewModel.itemCountLivedata.observe(viewLifecycleOwner) { count ->
-            binding.valueSearchResultTv.text =
-                String.format(getString(R.string.vacancies_found), count)
-        }
     }
 
     private fun processResult(dataSize: Int, state: LoadState) {
@@ -122,7 +126,11 @@ class VacancySearchFragment : Fragment() {
             }
 
             is LoadState.NotLoading -> {
-                showContentSearch()
+                if (dataSize == 0) {
+                    showEmptyView()
+                } else {
+                    showContentSearch()
+                }
             }
         }
     }

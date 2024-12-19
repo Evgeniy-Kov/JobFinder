@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ViewErrorItemBinding
 import ru.practicum.android.diploma.databinding.ViewProgressItemBinding
 
-class LoaderStateAdapter() : LoadStateAdapter<LoaderStateAdapter.ItemViewHolder>() {
+class LoaderStateAdapter : LoadStateAdapter<LoaderStateAdapter.ItemViewHolder>() {
 
     override fun getStateViewType(loadState: LoadState) = when (loadState) {
         is LoadState.NotLoading -> error("Not supported")

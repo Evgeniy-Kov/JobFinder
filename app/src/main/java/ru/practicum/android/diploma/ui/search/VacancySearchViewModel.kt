@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import ru.practicum.android.diploma.domain.api.PagingSourceInteractor
-import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
 
@@ -65,7 +64,7 @@ class VacancySearchViewModel(
     private val getItemCountCallback: (Int) -> Unit = { count -> _itemCountLivedata.value = count }
 
     private fun newPager(query: String): Pager<Int, Vacancy> {
-        return Pager(PagingConfig(20, enablePlaceholders = false)) {
+        return Pager(PagingConfig(PAGE_SIZE, enablePlaceholders = false)) {
             pagingSourceInteractor.getVacanciesPagingSource(query, getItemCountCallback)
                 .also { newPagingSource = it }
         }
@@ -73,25 +72,6 @@ class VacancySearchViewModel(
 
     private fun renderState(state: SearchState) {
         searchState.postValue(state)
-    }
-
-    private fun processResult(searchResult: Resource<List<Vacancy>>) {
-        when (searchResult) {
-            is Resource.Success -> {
-                val jobs = searchResult.data
-                if (jobs.isNullOrEmpty()) {
-                    renderState(SearchState.NothingFound)
-                } else {
-                    renderState(SearchState.ContentSearch(jobs))
-                }
-            }
-
-            is Resource.Error -> {
-                val errorMessage = searchResult.message
-                renderState(SearchState.Error("Код ошибки: " + errorMessage.toString()))
-            }
-
-        }
     }
 
     fun searchDebounce(changedText: String) {
@@ -109,6 +89,7 @@ class VacancySearchViewModel(
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val PAGE_SIZE = 20
     }
 
 }

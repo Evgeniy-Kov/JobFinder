@@ -18,7 +18,6 @@ class VacanciesPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vacancy> {
-
         if (query.isBlank()) {
             return LoadResult.Page(emptyList(), null, null)
         }
@@ -26,7 +25,6 @@ class VacanciesPagingSource(
         val pageNumber = params.key ?: 0
         val request = VacanciesSearchRequest(query, pageNumber, emptyMap())
         val response = networkClient.doRequest(request)
-
 
         return when (response) {
             is VacanciesSearchResponse -> {
