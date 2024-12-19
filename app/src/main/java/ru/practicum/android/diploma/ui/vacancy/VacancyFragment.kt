@@ -78,6 +78,7 @@ class VacancyFragment : Fragment() {
                 MaterialColors.getColor(binding.btnFavourite, com.google.android.material.R.attr.colorOnPrimary)
             )
         }
+        vacancyDetails = vacancyDetails?.copy(isFavourite = isFavourite)
     }
 
     private fun renderUI(details: VacancyDetails?) {
