@@ -6,13 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.api.PagingSourceInteractor
 import ru.practicum.android.diploma.domain.api.VacancySearchInteractor
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
 
 class VacancySearchViewModel(
-    private val vacancySearchInteractor: VacancySearchInteractor
+    private val vacancySearchInteractor: VacancySearchInteractor,
+    private val pagingSourceInteractor: PagingSourceInteractor
 ) : ViewModel() {
 
     private var latestSearchText: String = ""
