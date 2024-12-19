@@ -54,13 +54,20 @@ class VacancySearchViewModel(
         renderState(SearchState.Default)
     }
 
-    fun setQuery(query: String) {
+    private fun setQuery(query: String) {
         _query.tryEmit(query)
     }
 
+    private val _itemCountLivedata = MutableLiveData<Int>()
+    val itemCountLivedata: LiveData<Int>
+        get() = _itemCountLivedata
+
+    private val getItemCountCallback: (Int) -> Unit = { count -> _itemCountLivedata.value = count }
+
     private fun newPager(query: String): Pager<Int, Vacancy> {
-        return Pager(PagingConfig(5, enablePlaceholders = false)) {
-            pagingSourceInteractor.getVacanciesPagingSource(query).also { newPagingSource = it }
+        return Pager(PagingConfig(20, enablePlaceholders = false)) {
+            pagingSourceInteractor.getVacanciesPagingSource(query, getItemCountCallback)
+                .also { newPagingSource = it }
         }
     }
 

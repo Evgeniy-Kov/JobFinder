@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.domain.api.PagingSourceRepository
 class PagingSourceRepositoryImpl(
     private val networkClient: NetworkClient
 ) : PagingSourceRepository {
-    override fun getVacanciesPagingSource(query: String): VacanciesPagingSource {
-        return VacanciesPagingSource(networkClient, query)
+    override fun getVacanciesPagingSource(query: String, foundItemsCallback: (Int) -> Unit): VacanciesPagingSource {
+        return VacanciesPagingSource(networkClient, query, foundItemsCallback)
     }
 }

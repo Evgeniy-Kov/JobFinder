@@ -14,14 +14,11 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -107,11 +104,10 @@ class VacancySearchFragment : Fragment() {
             }
         }
 
-        viewModel.query
-            .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
-            .onEach(::updateSearchQuery)
-            .launchIn(lifecycleScope)
-
+        viewModel.itemCountLivedata.observe(viewLifecycleOwner) { count ->
+            binding.valueSearchResultTv.text =
+                String.format(getString(R.string.vacancies_found), count)
+        }
     }
 
     private fun processResult(dataSize: Int, state: LoadState) {
@@ -126,7 +122,7 @@ class VacancySearchFragment : Fragment() {
             }
 
             is LoadState.NotLoading -> {
-                showContentSearch(dataSize)
+                showContentSearch()
             }
         }
     }
@@ -145,14 +141,6 @@ class VacancySearchFragment : Fragment() {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null) {
             searchValue = savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF)
-        }
-    }
-
-    private fun updateSearchQuery(searchQuery: String) {
-        with(binding.searchEditText) {
-            if ((text?.toString() ?: "") != searchQuery) {
-                setText(searchQuery)
-            }
         }
     }
 
@@ -216,9 +204,8 @@ class VacancySearchFragment : Fragment() {
         clearSearchAdapter()
     }
 
-    private fun showContentSearch(jobsValue: Int) {
+    private fun showContentSearch() {
         binding.recyclerView.isVisible = true
-        binding.valueSearchResultTv.text = String.format(getString(R.string.vacancies_found), jobsValue)
         binding.valueSearchResultTv.isVisible = true
         binding.noInternetIv.isVisible = false
         binding.noInternetTv.isVisible = false
@@ -233,7 +220,7 @@ class VacancySearchFragment : Fragment() {
 
     private fun updateContentSearch(jobs: List<Vacancy>) {
         showLoading(false)
-        showContentSearch(jobs.size)
+        showContentSearch()
     }
 
     private fun showEmptyView() {

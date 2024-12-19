@@ -10,7 +10,8 @@ import ru.practicum.android.diploma.util.toVacancy
 
 class VacanciesPagingSource(
     private val networkClient: NetworkClient,
-    private val query: String
+    private val query: String,
+    private val getItemCountCallback: (Int) -> Unit
 ) : PagingSource<Int, Vacancy>() {
     override fun getRefreshKey(state: PagingState<Int, Vacancy>): Int? {
         return null
@@ -29,7 +30,8 @@ class VacanciesPagingSource(
 
         return when (response) {
             is VacanciesSearchResponse -> {
-                response.found
+                getItemCountCallback(response.found)
+
                 val nextPage = if (pageNumber < response.pages) pageNumber + 1 else null
                 val vacancies = response.items.map { it.toVacancy() }
                 LoadResult.Page(vacancies, null, nextPage)
