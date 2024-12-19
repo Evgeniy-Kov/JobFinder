@@ -13,8 +13,16 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancySearchBinding
@@ -55,7 +63,7 @@ class VacancySearchFragment : Fragment() {
         searchAdapter.onItemClickListener = VacancyViewHolder.OnItemClickListener { vacancy ->
             onVacancyClickDebounce(vacancy)
         }
-        binding.recyclerView.adapter = searchAdapter
+        binding.recyclerView.adapter = searchAdapter.withLoadStateFooter(LoaderStateAdapter())
 
         binding.clearButton.setOnClickListener {
             binding.searchEditText.text.clear()
@@ -87,6 +95,40 @@ class VacancySearchFragment : Fragment() {
             renderState(state)
         }
 
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.vacancies
+                    .collectLatest {
+                        searchAdapter.submitData(it)
+                        searchAdapter.addLoadStateListener { state ->
+                            processResult(searchAdapter.snapshot().size, state.refresh)
+                        }
+                    }
+            }
+        }
+
+        viewModel.query
+            .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
+            .onEach(::updateSearchQuery)
+            .launchIn(lifecycleScope)
+
+    }
+
+    private fun processResult(dataSize: Int, state: LoadState) {
+        when (state) {
+            is LoadState.Loading -> {
+                showLoading(true)
+            }
+
+            is LoadState.Error -> {
+                val errorMessage = state.error.localizedMessage
+                renderState(SearchState.Error("Код ошибки: " + errorMessage.toString()))
+            }
+
+            is LoadState.NotLoading -> {
+                showContentSearch(dataSize)
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -106,15 +148,22 @@ class VacancySearchFragment : Fragment() {
         }
     }
 
+    private fun updateSearchQuery(searchQuery: String) {
+        with(binding.searchEditText) {
+            if ((text?.toString() ?: "") != searchQuery) {
+                setText(searchQuery)
+            }
+        }
+    }
+
     private fun onVacancyClick(vacancy: Vacancy) {
-        val direction = VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment()
+        val direction =
+            VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment(vacancy.id)
         findNavController().navigate(direction)
     }
 
     private fun clearSearchAdapter() {
         viewModel.stopSearch()
-        searchAdapter?.submitList(mutableListOf())
-        searchAdapter.notifyDataSetChanged()
     }
 
     private fun clearButtonVisibility(s: CharSequence?, v: ImageView) {
@@ -175,6 +224,7 @@ class VacancySearchFragment : Fragment() {
         binding.noInternetTv.isVisible = false
         binding.serverErrorIv.isVisible = false
         binding.serverErrorTv.isVisible = false
+        binding.progressBar.isVisible = false
         binding.noResultSearchIv.isVisible = false
         binding.noResultSearchTv.isVisible = false
         binding.rvProgressBar.isVisible = false // переделать потом на постраничную загрузку
@@ -183,8 +233,6 @@ class VacancySearchFragment : Fragment() {
 
     private fun updateContentSearch(jobs: List<Vacancy>) {
         showLoading(false)
-        searchAdapter?.submitList(jobs)
-        //   searchAdapter?.itemCount?.let { searchAdapter?.notifyItemRangeChanged(0, it) }
         showContentSearch(jobs.size)
     }
 
