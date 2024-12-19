@@ -25,6 +25,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancySearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
+import ru.practicum.android.diploma.util.isInternetAvailable
 
 class VacancySearchFragment : Fragment() {
 
@@ -101,14 +102,22 @@ class VacancySearchFragment : Fragment() {
             if (binding.searchEditText.hasFocus() && s?.isEmpty() == true) {
                 showDefaultContent()
             } else {
-                viewModel.searchDebounce(searchValue)
+                if (isInternetAvailable(requireContext())) {
+                    viewModel.searchDebounce(searchValue)
+                } else {
+                    showNoConnection()
+                }
             }
 
         }
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.searchDebounce(searchValue)
+                if (isInternetAvailable(requireContext())) {
+                    viewModel.searchDebounce(searchValue)
+                } else {
+                    showNoConnection()
+                }
             }
             false
         }
@@ -242,6 +251,22 @@ class VacancySearchFragment : Fragment() {
         binding.noResultSearchTv.isVisible = true
         binding.valueSearchResultTv.text = getString(R.string.no_such_jobs)
         binding.valueSearchResultTv.isVisible = true
+        binding.rvProgressBar.isVisible = false
+        binding.startIv.isVisible = false
+        clearSearchAdapter()
+    }
+
+    private fun showNoConnection() {
+        showLoading(false)
+        binding.recyclerView.isVisible = false
+        binding.noInternetIv.isVisible = true
+        binding.noInternetTv.isVisible = true
+        binding.serverErrorIv.isVisible = false
+        binding.serverErrorTv.isVisible = false
+        binding.noResultSearchIv.isVisible = false
+        binding.noResultSearchTv.isVisible = false
+        binding.valueSearchResultTv.text = getString(R.string.no_such_jobs)
+        binding.valueSearchResultTv.isVisible = false
         binding.rvProgressBar.isVisible = false
         binding.startIv.isVisible = false
         clearSearchAdapter()
