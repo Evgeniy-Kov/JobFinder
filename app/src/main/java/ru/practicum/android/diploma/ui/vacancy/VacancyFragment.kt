@@ -54,7 +54,7 @@ class VacancyFragment : Fragment() {
 
                 is Resource.Success -> {
                     vacancyDetails = result.data
-                    renderUI(vacancyDetails)
+                    renderUI()
                 }
             }
         }
@@ -110,8 +110,9 @@ class VacancyFragment : Fragment() {
         vacancyDetails = vacancyDetails?.copy(isFavourite = isFavourite)
     }
 
-    private fun renderUI(details: VacancyDetails?) {
-        if (details != null) {
+    private fun renderUI() {
+        if (vacancyDetails != null) {
+            val details = vacancyDetails!!
             binding.titleTv.text = details.name
             binding.salaryTv.text =
                 getFormattedSalaryForViewHolder(details.salaryFrom, details.salaryTo, requireContext())
@@ -136,6 +137,7 @@ class VacancyFragment : Fragment() {
                     append(details.keySkills.joinToString(getString(R.string.keyskills_separator)))
                 }
             }
+            renderFavoriteState(details.isFavourite)
         }
     }
 }
