@@ -37,6 +37,7 @@ data class FavouriteVacancyEntity(
     val experience: String?,
     val salaryFrom: Int?,
     val salaryTo: Int?,
+    val currencySymbol: String?,
     val contactsName: String?,
     val contactsEmail: String?,
     val contactsPhone: String?,
