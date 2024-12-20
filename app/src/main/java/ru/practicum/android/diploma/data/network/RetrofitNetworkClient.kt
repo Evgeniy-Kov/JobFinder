@@ -19,41 +19,45 @@ class RetrofitNetworkClient(
 
         return withContext(Dispatchers.IO) {
             try {
-                when (dto) {
-                    is VacanciesSearchRequest -> {
-                        getVacancies(dto)
-                    }
-
-                    is VacancyDetailsRequest -> {
-                        getVacancyDetails(dto)
-                    }
-
-                    is IndustriesRequest -> {
-                        getIndustries()
-                    }
-
-                    is CountriesRequest -> {
-                        getCountries()
-                    }
-
-                    is AreaRequest -> {
-                        getAreaById(dto)
-                    }
-
-                    is DictionariesRequest -> {
-                        getDictionaries()
-                    }
-
-                    else -> {
-                        Response(NetworkClient.BAD_REQUEST)
-                    }
-                }
+                getResponse(dto)
             } catch (e: UnknownHostException) {
                 e.printStackTrace()
                 Response(NetworkClient.SERVER_ERROR)
             } catch (e: SocketTimeoutException) {
                 e.printStackTrace()
                 Response(NetworkClient.SERVER_ERROR)
+            }
+        }
+    }
+
+    private suspend fun getResponse(dto: Any): Response {
+        return when (dto) {
+            is VacanciesSearchRequest -> {
+                getVacancies(dto)
+            }
+
+            is VacancyDetailsRequest -> {
+                getVacancyDetails(dto)
+            }
+
+            is IndustriesRequest -> {
+                getIndustries()
+            }
+
+            is CountriesRequest -> {
+                getCountries()
+            }
+
+            is AreaRequest -> {
+                getAreaById(dto)
+            }
+
+            is DictionariesRequest -> {
+                getDictionaries()
+            }
+
+            else -> {
+                Response(NetworkClient.BAD_REQUEST)
             }
         }
     }
