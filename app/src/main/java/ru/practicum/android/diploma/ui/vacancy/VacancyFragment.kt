@@ -1,10 +1,12 @@
 package ru.practicum.android.diploma.ui.vacancy
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -15,6 +17,7 @@ import com.google.android.material.color.MaterialColors
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.getFormattedSalaryForViewHolder
 
@@ -41,9 +44,19 @@ class VacancyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getVacancyDetails(args.vacancyId)
-        viewModel.observeVacancyDetails().observe(viewLifecycleOwner) { details ->
-            vacancyDetails = details
-            renderUI(vacancyDetails)
+        viewModel.observeVacancyDetails().observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG)
+                        .show()
+                    findNavController().navigateUp()
+                }
+
+                is Resource.Success -> {
+                    vacancyDetails = result.data
+                    renderUI(vacancyDetails)
+                }
+            }
         }
 
         viewModel.observeFavoriteState().observe(viewLifecycleOwner) { isFavorite ->
@@ -59,11 +72,27 @@ class VacancyFragment : Fragment() {
                 viewModel.onFavoriteClick(vacancyDetails!!)
             }
         }
+
+        binding.btnShare.setOnClickListener {
+            shareVacancy()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun shareVacancy() {
+        if (vacancyDetails != null) {
+            val share = Intent.createChooser(Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, vacancyDetails!!.url)
+                setType("text/plain")
+                putExtra(Intent.EXTRA_TITLE, getString(R.string.app_name))
+            }, null)
+            startActivity(share)
+        }
     }
 
     private fun renderFavoriteState(isFavourite: Boolean) {
@@ -108,8 +137,5 @@ class VacancyFragment : Fragment() {
                 }
             }
         }
-
     }
 }
-
-

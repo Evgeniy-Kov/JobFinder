@@ -43,7 +43,9 @@ class VacancySearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val onVacancyClickDebounce = debounce<Vacancy>(
-            CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
         ) { vacancy ->
             onVacancyClick(vacancy)
         }
@@ -109,7 +111,7 @@ class VacancySearchFragment : Fragment() {
 
     private fun clearSearchAdapter() {
         viewModel.stopSearch()
-        searchAdapter?.submitList(mutableListOf())
+        searchAdapter.submitList(mutableListOf())
         searchAdapter.notifyDataSetChanged()
     }
 

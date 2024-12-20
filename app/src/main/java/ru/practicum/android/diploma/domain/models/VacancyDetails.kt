@@ -43,5 +43,6 @@ data class VacancyDetails(
     val workingDays: List<String>?,
     val workingTimeIntervals: List<String>?,
     val workingTimeModes: List<String>?,
+    val url: String,
     val isFavourite: Boolean = false,
 )

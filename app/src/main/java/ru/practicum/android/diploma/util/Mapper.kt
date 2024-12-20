@@ -37,6 +37,7 @@ fun VacancyDetailsDto.toVacancyDetails(): VacancyDetails {
         schedule = schedule?.name,
         workingDays = workingDays?.map { it.name },
         workingTimeIntervals = workingTimeIntervals?.map { it.name },
-        workingTimeModes = workingTimeModes?.map { it.name }
+        workingTimeModes = workingTimeModes?.map { it.name },
+        url = url
     )
 }

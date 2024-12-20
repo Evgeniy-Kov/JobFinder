@@ -47,4 +47,5 @@ data class FavouriteVacancyEntity(
     val workingDays: String?,
     val workingTimeIntervals: String?,
     val workingTimeModes: String?,
+    val url: String,
 )
