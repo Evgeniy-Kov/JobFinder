@@ -28,6 +28,7 @@
         android:textColor="?attr/colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@id/tvPlaceOfWork"
         app:layout_constraintStart_toEndOf="@id/iconImageView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Android-разработчик, Москва" />
 

@@ -63,10 +63,6 @@ class VacancySearchFragment : Fragment() {
 
         initializeViews()
 
-        viewModel.observeSearchState().observe(viewLifecycleOwner) { state ->
-            renderState(state)
-        }
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.vacancies
@@ -83,6 +79,8 @@ class VacancySearchFragment : Fragment() {
             binding.valueSearchResultTv.text =
                 String.format(getString(R.string.vacancies_found), count)
         }
+
+        processResult(searchAdapter.snapshot().size, LoadState.NotLoading(false))
     }
 
     private fun initializeViews() {
@@ -123,6 +121,7 @@ class VacancySearchFragment : Fragment() {
     }
 
     private fun processResult(dataSize: Int, state: LoadState) {
+        _binding ?: return
         when (state) {
             is LoadState.Loading -> {
                 showLoading(true)
