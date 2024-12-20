@@ -37,11 +37,12 @@ data class VacancyDetails(
     val contactsEmail: String?,
     val contactsPhone: String?,
     val description: String,
-    val keySkills: List<String>,
+    val keySkills: List<String>?,
     val professionalRoles: List<String>,
     val schedule: String?,
     val workingDays: List<String>?,
     val workingTimeIntervals: List<String>?,
     val workingTimeModes: List<String>?,
+    val url: String,
     val isFavourite: Boolean = false,
 )

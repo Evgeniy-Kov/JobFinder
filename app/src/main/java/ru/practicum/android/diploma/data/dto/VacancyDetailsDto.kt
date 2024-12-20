@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * @param address `Nullable` Хранит экземпляр класса `AddressDto` с информацией об адресе
  * @param area Обязательное поле, хранит экземпляр класса `AreaDto` (Регион)
+ * @param url Обязательное поле, хранит ссылку на представление вакансии на сайте
  * @param contacts  `Nullable` Хранит экземпляр класса `ContactsDto` Контактная информация
  * @param description Обязательное поле, хранит описание вакансии в html, не менее 200 символов
  * @param employer `Nullable` Хранит экземпляр класса `EmployerDto` с информацией о работодателе
@@ -24,6 +25,7 @@ import com.google.gson.annotations.SerializedName
 data class VacancyDetailsDto(
     @SerializedName("address") val address: AddressDto?,
     @SerializedName("area") val area: AreaRegionDto,
+    @SerializedName("alternate_url") val url: String,
     @SerializedName("contacts") val contacts: ContactsDto?,
     @SerializedName("description") val description: String,
     @SerializedName("employer") val employer: EmployerDto?,
@@ -37,5 +39,5 @@ data class VacancyDetailsDto(
     @SerializedName("schedule") val schedule: ScheduleDto?,
     @SerializedName("working_days") val workingDays: List<WorkingDaysDto>?,
     @SerializedName("working_time_intervals") val workingTimeIntervals: List<WorkingTimeIntervalsDto>?,
-    @SerializedName("working_time_modes") val workingTimeModes: List<WorkingTimeModesDto>?
+    @SerializedName("working_time_modes") val workingTimeModes: List<WorkingTimeModesDto>?,
 )
