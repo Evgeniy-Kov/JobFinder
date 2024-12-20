@@ -30,13 +30,14 @@ fun VacancyDetailsDto.toVacancyDetails(): VacancyDetails {
         experience = experience?.name,
         contactsName = contacts?.name,
         contactsEmail = contacts?.email,
-        contactsPhone = contacts?.phones?.first()?.formatted,
+        contactsPhone = contacts?.phones?.firstOrNull()?.formatted,
         description = description,
         professionalRoles = professionalRoles.map { it.name },
         keySkills = keySkills.map { it.name },
         schedule = schedule?.name,
         workingDays = workingDays?.map { it.name },
         workingTimeIntervals = workingTimeIntervals?.map { it.name },
-        workingTimeModes = workingTimeModes?.map { it.name }
+        workingTimeModes = workingTimeModes?.map { it.name },
+        url = url
     )
 }

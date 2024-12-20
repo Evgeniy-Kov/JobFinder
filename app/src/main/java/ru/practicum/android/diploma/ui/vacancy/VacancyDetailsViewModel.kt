@@ -8,17 +8,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.FavouriteVacancyInteractor
+import ru.practicum.android.diploma.domain.api.VacancyDetailsInteractor
+import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
-class VacancyDetailsViewModel(private val favouritesInteractor: FavouriteVacancyInteractor) : ViewModel() {
+class VacancyDetailsViewModel(
+    private val favouritesInteractor: FavouriteVacancyInteractor,
+    private val detailsInteractor: VacancyDetailsInteractor,
+) : ViewModel() {
     private val favoriteState = MutableLiveData<Boolean>()
     fun observeFavoriteState(): LiveData<Boolean> = favoriteState
-    private val vacancyDetails = MutableLiveData<VacancyDetails>()
-    fun observeVacancyDetails(): LiveData<VacancyDetails> = vacancyDetails
+    private val vacancyDetails = MutableLiveData<Resource<VacancyDetails>>()
+    fun observeVacancyDetails(): LiveData<Resource<VacancyDetails>> = vacancyDetails
 
     fun getVacancyDetails(vacancyId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            vacancyDetails.postValue(favouritesInteractor.getFavouriteVacancyById(vacancyId).first())
+        viewModelScope.launch {
+            if (favouritesInteractor.isFavorite(vacancyId)) {
+                vacancyDetails.postValue(
+                    Resource.Success(favouritesInteractor.getFavouriteVacancyById(vacancyId).first())
+                )
+            } else {
+                vacancyDetails.postValue(detailsInteractor.getVacancyDetails(vacancyId))
+            }
         }
     }
 

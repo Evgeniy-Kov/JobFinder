@@ -41,10 +41,11 @@ data class FavouriteVacancyEntity(
     val contactsEmail: String?,
     val contactsPhone: String?,
     val description: String,
-    val keySkills: String,
+    val keySkills: String?,
     val professionalRoles: String,
     val schedule: String?,
     val workingDays: String?,
     val workingTimeIntervals: String?,
     val workingTimeModes: String?,
+    val url: String,
 )
