@@ -53,6 +53,11 @@ class VacancySearchViewModel(
         renderState(SearchState.Default)
     }
 
+    fun clearLatestSearchText() {
+        latestSearchText = ""
+        setQuery("")
+    }
+
     private fun setQuery(query: String) {
         _query.tryEmit(query)
     }

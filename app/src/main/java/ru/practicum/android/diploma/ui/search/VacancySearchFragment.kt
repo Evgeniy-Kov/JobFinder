@@ -91,6 +91,7 @@ class VacancySearchFragment : Fragment() {
         binding.clearButton.setOnClickListener {
             binding.searchEditText.text.clear()
             clearSearchAdapter()
+            viewModel.clearLatestSearchText()
         }
 
         binding.searchEditText.requestFocus()
@@ -98,7 +99,7 @@ class VacancySearchFragment : Fragment() {
 
         binding.searchEditText.doOnTextChanged { s, _, _, _ ->
             clearButtonVisibility(s, binding.clearButton)
-            searchValue = s.toString()
+            searchValue = s.toString().trim()
             if (binding.searchEditText.hasFocus() && s?.isEmpty() == true) {
                 showDefaultContent()
             } else {
@@ -135,10 +136,18 @@ class VacancySearchFragment : Fragment() {
             }
 
             is LoadState.NotLoading -> {
-                if (dataSize == 0) {
-                    showEmptyView()
-                } else {
-                    showContentSearch()
+                when {
+                    dataSize == 0 && searchValue.isBlank() -> {
+                        showDefaultContent()
+                    }
+
+                    dataSize == 0 && searchValue.isNotBlank() -> {
+                        showEmptyView()
+                    }
+
+                    else -> {
+                        showContentSearch()
+                    }
                 }
             }
         }
@@ -192,7 +201,7 @@ class VacancySearchFragment : Fragment() {
 
     private fun renderState(state: SearchState) {
         when (state) {
-            is SearchState.ContentSearch -> updateContentSearch(state.jobs)
+            is SearchState.ContentSearch -> updateContentSearch()
             is SearchState.Error -> showErrorMessage(state.errorMessage)
             is SearchState.Loading -> showLoading(true)
             is SearchState.NothingFound -> showEmptyView()
@@ -232,7 +241,7 @@ class VacancySearchFragment : Fragment() {
         binding.startIv.isVisible = false
     }
 
-    private fun updateContentSearch(jobs: List<Vacancy>) {
+    private fun updateContentSearch() {
         showLoading(false)
         showContentSearch()
     }
