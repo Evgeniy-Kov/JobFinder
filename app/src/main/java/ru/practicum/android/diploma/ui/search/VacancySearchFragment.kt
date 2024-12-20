@@ -63,7 +63,6 @@ class VacancySearchFragment : Fragment() {
 
         initializeViews()
 
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.vacancies
