@@ -33,9 +33,6 @@ class VacancySearchViewModel(
 
     private var searchJob: Job? = null
 
-    private val searchState = MutableLiveData<SearchState>()
-    fun observeSearchState(): LiveData<SearchState> = searchState
-
     private val jobSearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
             setQuery(changedText)
@@ -48,10 +45,6 @@ class VacancySearchViewModel(
         .flatMapLatest { pager -> pager.flow }
         .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
         .cachedIn(viewModelScope)
-
-    init {
-        renderState(SearchState.Default)
-    }
 
     fun clearLatestSearchText() {
         latestSearchText = ""
@@ -69,14 +62,10 @@ class VacancySearchViewModel(
     private val getItemCountCallback: (Int) -> Unit = { count -> _itemCountLivedata.value = count }
 
     private fun newPager(query: String): Pager<Int, Vacancy> {
-        return Pager(PagingConfig(PAGE_SIZE, enablePlaceholders = false)) {
+        return Pager(PagingConfig(PAGE_SIZE, enablePlaceholders = false, prefetchDistance = PAGE_SIZE / 2)) {
             pagingSourceInteractor.getVacanciesPagingSource(query, getItemCountCallback)
                 .also { newPagingSource = it }
         }
-    }
-
-    private fun renderState(state: SearchState) {
-        searchState.postValue(state)
     }
 
     fun searchDebounce(changedText: String) {
