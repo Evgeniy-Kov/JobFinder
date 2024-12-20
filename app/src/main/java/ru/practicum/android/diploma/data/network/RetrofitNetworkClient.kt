@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.NetworkClient
 import ru.practicum.android.diploma.util.isInternetAvailable
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class RetrofitNetworkClient(
@@ -44,6 +45,9 @@ class RetrofitNetworkClient(
                     }
                 }
             } catch (e: UnknownHostException) {
+                e.printStackTrace()
+                Response(NetworkClient.SERVER_ERROR)
+            } catch (e: SocketTimeoutException) {
                 e.printStackTrace()
                 Response(NetworkClient.SERVER_ERROR)
             }
