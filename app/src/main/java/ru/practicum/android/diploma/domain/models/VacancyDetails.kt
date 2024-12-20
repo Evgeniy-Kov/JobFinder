@@ -33,6 +33,7 @@ data class VacancyDetails(
     val experience: String?,
     val salaryFrom: Int?,
     val salaryTo: Int?,
+    val currencySymbol: String? = null,
     val contactsName: String?,
     val contactsEmail: String?,
     val contactsPhone: String?,

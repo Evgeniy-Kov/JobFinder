@@ -13,7 +13,7 @@ fun VacancyDto.toVacancy(): Vacancy {
         employerName = employer.name,
         employerLogoUrl = employer.logoUrls?.original,
         salaryFrom = salary?.from,
-        salaryTo = salary?.to
+        salaryTo = salary?.to,
     )
 }
 

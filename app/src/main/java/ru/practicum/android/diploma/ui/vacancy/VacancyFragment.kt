@@ -19,7 +19,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacancyDetails
-import ru.practicum.android.diploma.util.getFormattedSalaryForViewHolder
+import ru.practicum.android.diploma.util.getFormattedSalary
 
 class VacancyFragment : Fragment() {
 
@@ -115,7 +115,7 @@ class VacancyFragment : Fragment() {
             val details = vacancyDetails!!
             binding.titleTv.text = details.name
             binding.salaryTv.text =
-                getFormattedSalaryForViewHolder(details.salaryFrom, details.salaryTo, requireContext())
+                getFormattedSalary(details.salaryFrom, details.salaryTo, details.currencySymbol, requireContext())
             binding.employerNameTv.text = details.employerName
             binding.employerCityTv.text = details.city
             Glide.with(requireContext())

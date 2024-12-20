@@ -39,6 +39,10 @@ class RetrofitNetworkClient(
                         getAreaById(dto)
                     }
 
+                    is DictionariesRequest -> {
+                        getDictionaries()
+                    }
+
                     else -> {
                         Response(NetworkClient.BAD_REQUEST)
                     }
@@ -71,5 +75,9 @@ class RetrofitNetworkClient(
     private suspend fun getAreaById(request: AreaRequest): AreaResponse {
         return AreaResponse(hhApiService.getAreaById(request.areaId))
             .apply { resultCode = NetworkClient.SUCCESS }
+    }
+
+    private suspend fun getDictionaries(): DictionariesResponse {
+        return DictionariesResponse(hhApiService.getDictionaries()).apply { resultCode = NetworkClient.SUCCESS }
     }
 }
