@@ -23,12 +23,6 @@ class FavouritesFragment : Fragment() {
     private var vacancyDetailsAdapter = VacancyDetailsAdapter()
     private var isClickAllowed = true
 
-    private val debounceClick: (VacancyDetails) -> Unit by lazy {
-        debounce(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false) { vacancy ->
-            intentVacancyFragment(vacancy)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,6 +40,11 @@ class FavouritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         isClickAllowed = true
+
+        val debounceClick: (VacancyDetails) -> Unit =
+            debounce(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false) { vacancy ->
+                intentVacancyFragment(vacancy)
+            }
 
         viewModel.favoritesState.observe(viewLifecycleOwner) { state ->
             when (state) {
