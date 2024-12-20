@@ -13,13 +13,19 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancySearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
+import ru.practicum.android.diploma.util.isInternetAvailable
 
 class VacancySearchFragment : Fragment() {
 
@@ -53,11 +59,37 @@ class VacancySearchFragment : Fragment() {
         searchAdapter.onItemClickListener = VacancyViewHolder.OnItemClickListener { vacancy ->
             onVacancyClickDebounce(vacancy)
         }
-        binding.recyclerView.adapter = searchAdapter
+        binding.recyclerView.adapter = searchAdapter.withLoadStateFooter(LoaderStateAdapter())
 
+        initializeViews()
+
+        viewModel.observeSearchState().observe(viewLifecycleOwner) { state ->
+            renderState(state)
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.vacancies
+                    .collectLatest {
+                        searchAdapter.submitData(it)
+                        searchAdapter.addLoadStateListener { state ->
+                            processResult(searchAdapter.snapshot().size, state.refresh)
+                        }
+                    }
+            }
+        }
+
+        viewModel.itemCountLivedata.observe(viewLifecycleOwner) { count ->
+            binding.valueSearchResultTv.text =
+                String.format(getString(R.string.vacancies_found), count)
+        }
+    }
+
+    private fun initializeViews() {
         binding.clearButton.setOnClickListener {
             binding.searchEditText.text.clear()
             clearSearchAdapter()
+            viewModel.clearLatestSearchText()
         }
 
         binding.searchEditText.requestFocus()
@@ -65,26 +97,58 @@ class VacancySearchFragment : Fragment() {
 
         binding.searchEditText.doOnTextChanged { s, _, _, _ ->
             clearButtonVisibility(s, binding.clearButton)
-            searchValue = s.toString()
+            searchValue = s.toString().trim()
             if (binding.searchEditText.hasFocus() && s?.isEmpty() == true) {
                 showDefaultContent()
             } else {
-                viewModel.searchDebounce(searchValue)
+                if (isInternetAvailable(requireContext())) {
+                    viewModel.searchDebounce(searchValue)
+                } else {
+                    showNoConnection()
+                }
             }
 
         }
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.searchDebounce(searchValue)
+                if (isInternetAvailable(requireContext())) {
+                    viewModel.searchDebounce(searchValue)
+                } else {
+                    showNoConnection()
+                }
             }
             false
         }
+    }
 
-        viewModel.observeSearchState().observe(viewLifecycleOwner) { state ->
-            renderState(state)
+    private fun processResult(dataSize: Int, state: LoadState) {
+        when (state) {
+            is LoadState.Loading -> {
+                showLoading(true)
+            }
+
+            is LoadState.Error -> {
+                val errorMessage = state.error.localizedMessage
+                renderState(SearchState.Error("Код ошибки: " + errorMessage.toString()))
+            }
+
+            is LoadState.NotLoading -> {
+                when {
+                    dataSize == 0 && searchValue.isBlank() -> {
+                        showDefaultContent()
+                    }
+
+                    dataSize == 0 && searchValue.isNotBlank() -> {
+                        showEmptyView()
+                    }
+
+                    else -> {
+                        showContentSearch()
+                    }
+                }
+            }
         }
-
     }
 
     override fun onDestroyView() {
@@ -105,14 +169,13 @@ class VacancySearchFragment : Fragment() {
     }
 
     private fun onVacancyClick(vacancy: Vacancy) {
-        val direction = VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment(vacancy.id)
+        val direction =
+            VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment(vacancy.id)
         findNavController().navigate(direction)
     }
 
     private fun clearSearchAdapter() {
         viewModel.stopSearch()
-        searchAdapter.submitList(mutableListOf())
-        searchAdapter.notifyDataSetChanged()
     }
 
     private fun clearButtonVisibility(s: CharSequence?, v: ImageView) {
@@ -136,8 +199,7 @@ class VacancySearchFragment : Fragment() {
 
     private fun renderState(state: SearchState) {
         when (state) {
-            // добавить потом стейт нет интернета
-            is SearchState.ContentSearch -> updateContentSearch(state.jobs)
+            is SearchState.ContentSearch -> updateContentSearch()
             is SearchState.Error -> showErrorMessage(state.errorMessage)
             is SearchState.Loading -> showLoading(true)
             is SearchState.NothingFound -> showEmptyView()
@@ -160,30 +222,26 @@ class VacancySearchFragment : Fragment() {
         binding.noResultSearchIv.isVisible = false
         binding.noResultSearchTv.isVisible = false
         binding.valueSearchResultTv.isVisible = false
-        binding.rvProgressBar.isVisible = false
         binding.startIv.isVisible = true
         clearSearchAdapter()
     }
 
-    private fun showContentSearch(jobsValue: Int) {
+    private fun showContentSearch() {
         binding.recyclerView.isVisible = true
-        binding.valueSearchResultTv.text = String.format(getString(R.string.vacancies_found), jobsValue)
         binding.valueSearchResultTv.isVisible = true
         binding.noInternetIv.isVisible = false
         binding.noInternetTv.isVisible = false
         binding.serverErrorIv.isVisible = false
         binding.serverErrorTv.isVisible = false
+        binding.progressBar.isVisible = false
         binding.noResultSearchIv.isVisible = false
         binding.noResultSearchTv.isVisible = false
-        binding.rvProgressBar.isVisible = false // переделать потом на постраничную загрузку
         binding.startIv.isVisible = false
     }
 
-    private fun updateContentSearch(jobs: List<Vacancy>) {
+    private fun updateContentSearch() {
         showLoading(false)
-        searchAdapter?.submitList(jobs)
-        //   searchAdapter?.itemCount?.let { searchAdapter?.notifyItemRangeChanged(0, it) }
-        showContentSearch(jobs.size)
+        showContentSearch()
     }
 
     private fun showEmptyView() {
@@ -197,7 +255,21 @@ class VacancySearchFragment : Fragment() {
         binding.noResultSearchTv.isVisible = true
         binding.valueSearchResultTv.text = getString(R.string.no_such_jobs)
         binding.valueSearchResultTv.isVisible = true
-        binding.rvProgressBar.isVisible = false
+        binding.startIv.isVisible = false
+        clearSearchAdapter()
+    }
+
+    private fun showNoConnection() {
+        showLoading(false)
+        binding.recyclerView.isVisible = false
+        binding.noInternetIv.isVisible = true
+        binding.noInternetTv.isVisible = true
+        binding.serverErrorIv.isVisible = false
+        binding.serverErrorTv.isVisible = false
+        binding.noResultSearchIv.isVisible = false
+        binding.noResultSearchTv.isVisible = false
+        binding.valueSearchResultTv.text = getString(R.string.no_such_jobs)
+        binding.valueSearchResultTv.isVisible = false
         binding.startIv.isVisible = false
         clearSearchAdapter()
     }
@@ -212,7 +284,6 @@ class VacancySearchFragment : Fragment() {
         binding.noResultSearchIv.isVisible = false
         binding.noResultSearchTv.isVisible = false
         binding.valueSearchResultTv.isVisible = false
-        binding.rvProgressBar.isVisible = false
         binding.startIv.isVisible = false
         clearSearchAdapter()
         if (additionalMessage.isNotEmpty()) {
