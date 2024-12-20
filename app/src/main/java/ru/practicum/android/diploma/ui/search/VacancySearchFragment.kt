@@ -9,7 +9,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -102,7 +103,7 @@ class VacancySearchFragment : Fragment() {
                 if (isInternetAvailable(requireContext())) {
                     viewModel.searchDebounce(searchValue)
                 } else {
-                    showNoConnection()
+                    showErrorPlaceholder(R.string.no_internet, R.drawable.no_internet)
                 }
             }
 
@@ -113,7 +114,7 @@ class VacancySearchFragment : Fragment() {
                 if (isInternetAvailable(requireContext())) {
                     viewModel.searchDebounce(searchValue)
                 } else {
-                    showNoConnection()
+                    showErrorPlaceholder(R.string.no_internet, R.drawable.no_internet)
                 }
             }
             false
@@ -124,28 +125,31 @@ class VacancySearchFragment : Fragment() {
         _binding ?: return
         when (state) {
             is LoadState.Loading -> {
-                showLoading(true)
+                showLoading()
             }
 
             is LoadState.Error -> {
-                val errorMessage = state.error.localizedMessage
-                renderState(SearchState.Error("Код ошибки: " + errorMessage.toString()))
+                showErrorPlaceholder(R.string.server_error, R.drawable.server_error)
             }
 
             is LoadState.NotLoading -> {
-                when {
-                    dataSize == 0 && searchValue.isBlank() -> {
-                        showDefaultContent()
-                    }
+                handleNotLoadingState(dataSize)
+            }
+        }
+    }
 
-                    dataSize == 0 && searchValue.isNotBlank() -> {
-                        showEmptyView()
-                    }
+    private fun handleNotLoadingState(dataSize: Int) {
+        when {
+            dataSize == 0 && searchValue.isBlank() -> {
+                showDefaultContent()
+            }
 
-                    else -> {
-                        showContentSearch()
-                    }
-                }
+            dataSize == 0 && searchValue.isNotBlank() -> {
+                showEmptyView()
+            }
+
+            else -> {
+                showContentSearch()
             }
         }
     }
@@ -196,33 +200,39 @@ class VacancySearchFragment : Fragment() {
         }
     }
 
-    private fun renderState(state: SearchState) {
-        when (state) {
-            is SearchState.ContentSearch -> updateContentSearch()
-            is SearchState.Error -> showErrorMessage(state.errorMessage)
-            is SearchState.Loading -> showLoading(true)
-            is SearchState.NothingFound -> showEmptyView()
-            is SearchState.Default -> showDefaultContent()
-        }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.isVisible = isLoading
-        binding.startIv.isVisible = false
-    }
-
-    private fun showDefaultContent() {
-        showLoading(false)
+    private fun showLoading() {
+        binding.progressBar.isVisible = true
         binding.recyclerView.isVisible = false
         binding.noInternetIv.isVisible = false
         binding.noInternetTv.isVisible = false
-        binding.serverErrorIv.isVisible = false
-        binding.serverErrorTv.isVisible = false
-        binding.noResultSearchIv.isVisible = false
-        binding.noResultSearchTv.isVisible = false
+        binding.valueSearchResultTv.isVisible = false
+        binding.startIv.isVisible = false
+        viewModel.stopSearch()
+    }
+
+    private fun showDefaultContent() {
+        binding.progressBar.isVisible = false
+        binding.recyclerView.isVisible = false
+        binding.noInternetIv.isVisible = false
+        binding.noInternetTv.isVisible = false
         binding.valueSearchResultTv.isVisible = false
         binding.startIv.isVisible = true
-        clearSearchAdapter()
+        viewModel.stopSearch()
+    }
+
+    private fun showErrorPlaceholder(
+        @StringRes stringResId: Int,
+        @DrawableRes imageResId: Int
+    ) {
+        binding.progressBar.isVisible = false
+        binding.recyclerView.isVisible = false
+        binding.noInternetIv.isVisible = true
+        binding.noInternetTv.isVisible = true
+        binding.noInternetIv.setImageResource(imageResId)
+        binding.noInternetTv.text = requireContext().getString(stringResId)
+        binding.valueSearchResultTv.isVisible = false
+        binding.startIv.isVisible = false
+        viewModel.stopSearch()
     }
 
     private fun showContentSearch() {
@@ -230,64 +240,21 @@ class VacancySearchFragment : Fragment() {
         binding.valueSearchResultTv.isVisible = true
         binding.noInternetIv.isVisible = false
         binding.noInternetTv.isVisible = false
-        binding.serverErrorIv.isVisible = false
-        binding.serverErrorTv.isVisible = false
         binding.progressBar.isVisible = false
-        binding.noResultSearchIv.isVisible = false
-        binding.noResultSearchTv.isVisible = false
         binding.startIv.isVisible = false
-    }
-
-    private fun updateContentSearch() {
-        showLoading(false)
-        showContentSearch()
     }
 
     private fun showEmptyView() {
-        showLoading(false)
-        binding.recyclerView.isVisible = false
-        binding.noInternetIv.isVisible = false
-        binding.noInternetTv.isVisible = false
-        binding.serverErrorIv.isVisible = false
-        binding.serverErrorTv.isVisible = false
-        binding.noResultSearchIv.isVisible = true
-        binding.noResultSearchTv.isVisible = true
-        binding.valueSearchResultTv.text = getString(R.string.no_such_jobs)
-        binding.valueSearchResultTv.isVisible = true
-        binding.startIv.isVisible = false
-        clearSearchAdapter()
-    }
-
-    private fun showNoConnection() {
-        showLoading(false)
+        binding.progressBar.isVisible = false
         binding.recyclerView.isVisible = false
         binding.noInternetIv.isVisible = true
         binding.noInternetTv.isVisible = true
-        binding.serverErrorIv.isVisible = false
-        binding.serverErrorTv.isVisible = false
-        binding.noResultSearchIv.isVisible = false
-        binding.noResultSearchTv.isVisible = false
+        binding.noInternetIv.setImageResource(R.drawable.no_jobs)
+        binding.noInternetTv.text = requireContext().getString(R.string.unable_to_retrieve_job_listing)
         binding.valueSearchResultTv.text = getString(R.string.no_such_jobs)
-        binding.valueSearchResultTv.isVisible = false
+        binding.valueSearchResultTv.isVisible = true
         binding.startIv.isVisible = false
-        clearSearchAdapter()
-    }
-
-    private fun showErrorMessage(additionalMessage: String) {
-        showLoading(false)
-        binding.recyclerView.isVisible = false
-        binding.noInternetIv.isVisible = false
-        binding.noInternetTv.isVisible = false
-        binding.serverErrorIv.isVisible = true
-        binding.serverErrorTv.isVisible = true
-        binding.noResultSearchIv.isVisible = false
-        binding.noResultSearchTv.isVisible = false
-        binding.valueSearchResultTv.isVisible = false
-        binding.startIv.isVisible = false
-        clearSearchAdapter()
-        if (additionalMessage.isNotEmpty()) {
-            Toast.makeText(context, additionalMessage, Toast.LENGTH_LONG).show()
-        }
+        viewModel.stopSearch()
     }
 
     companion object {
