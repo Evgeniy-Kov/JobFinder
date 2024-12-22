@@ -1,7 +1,9 @@
 package ru.practicum.android.diploma.util
 
+import ru.practicum.android.diploma.data.dto.AreaDto
 import ru.practicum.android.diploma.data.dto.VacancyDetailsDto
 import ru.practicum.android.diploma.data.dto.VacancyDto
+import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
@@ -39,5 +41,14 @@ fun VacancyDetailsDto.toVacancyDetails(): VacancyDetails {
         workingTimeIntervals = workingTimeIntervals?.map { it.name },
         workingTimeModes = workingTimeModes?.map { it.name },
         url = url
+    )
+}
+
+fun AreaDto.toArea(): Area {
+    return Area(
+        parentId = parentId,
+        id = id,
+        name = name,
+        areas = areas.map { it.toArea() }
     )
 }
