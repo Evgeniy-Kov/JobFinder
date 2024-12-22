@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.placeofwork.PlaceOfWorkFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/Toolbar_place_of_work"
+        style="@style/FragmentToolbarStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/choosing_place_of_work" />
+        android:layout_height="@dimen/dp_64"
+        android:paddingVertical="@dimen/dp_4"
+        app:contentInsetStartWithNavigation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:title="@string/choosing_place_of_work" />
 
-</FrameLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Country"
+        style="@style/filter_text_action"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_16"
+        android:gravity="center_vertical"
+        android:hint="@string/country"
+        app:layout_constraintTop_toBottomOf="@+id/Toolbar_place_of_work">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Country_enter"
+            style="@style/filter_edit_text_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Region"
+        style="@style/filter_text_action"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_16"
+        android:gravity="center_vertical"
+        android:hint="@string/region"
+        app:layout_constraintTop_toBottomOf="@+id/Country">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Region_enter"
+            style="@style/filter_edit_text_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/Choose_button"
+        style="@style/accept_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginHorizontal="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:text="@string/Choose"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
