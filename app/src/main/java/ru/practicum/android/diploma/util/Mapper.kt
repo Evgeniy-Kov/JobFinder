@@ -1,9 +1,12 @@
 package ru.practicum.android.diploma.util
 
 import ru.practicum.android.diploma.data.dto.AreaDto
+import ru.practicum.android.diploma.data.dto.IndustryDto
+import ru.practicum.android.diploma.data.dto.IndustryItemDto
 import ru.practicum.android.diploma.data.dto.VacancyDetailsDto
 import ru.practicum.android.diploma.data.dto.VacancyDto
 import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
@@ -50,5 +53,19 @@ fun AreaDto.toArea(): Area {
         id = id,
         name = name,
         areas = areas.map { it.toArea() }
+    )
+}
+
+fun IndustryDto.toIndustry(): Industry {
+    return Industry(
+        id = id,
+        name = name
+    )
+}
+
+fun IndustryItemDto.toIndustry(): Industry {
+    return Industry(
+        id = id,
+        name = name
     )
 }
