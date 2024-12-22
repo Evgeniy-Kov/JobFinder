@@ -80,5 +80,39 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/without_salary"
+        style="@style/without_salary"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_24"
+        android:checkable="true"
+        android:text="@string/without_salary"
+        app:icon="@drawable/ic_check_box_off"
+        app:iconTint="@color/blue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/salary_frame" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/accept_button"
+        style="@style/accept_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginHorizontal="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:text="@string/accept"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/reset_button" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reset_button"
+        style="@style/reset_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginBottom="@dimen/dp_4"
+        android:text="@string/reset"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
