@@ -84,7 +84,6 @@
         <item name="endIconTint">?attr/colorOnPrimary</item>
         <item name="endIconMode">custom</item>
         <item name="android:textColorHint">@color/gray</item>
-        <item name="prefixTextColor">@color/gray</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textAppearance">@style/FontYSDisplayRegularSize16Weight400</item>
         <item name="boxStrokeWidth">@dimen/dp_0</item>
