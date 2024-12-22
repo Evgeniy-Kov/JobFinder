@@ -79,4 +79,54 @@
         <item name="cornerSize">@dimen/dp_12</item>
     </style>
 
+    <style name="filter_text_action">
+        <item name="endIconDrawable">@drawable/ic_arrow_forward</item>
+        <item name="endIconTint">?attr/colorOnPrimary</item>
+        <item name="endIconMode">custom</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="prefixTextColor">@color/gray</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:textAppearance">@style/FontYSDisplayRegularSize16Weight400</item>
+        <item name="boxStrokeWidth">@dimen/dp_0</item>
+        <item name="boxStrokeWidthFocused">@dimen/dp_0</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+    </style>
+
+    <style name="filter_edit_text_action">
+        <item name="android:focusable">false</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColorHint">?attr/colorOnPrimary</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textAppearance">@style/FontYSDisplayRegularSize16Weight400</item>
+        <item name="hintTextAppearance">@style/FontYSDisplayRegularSize12Weight400</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="filter_salary">
+        <item name="boxBackgroundColor">?attr/colorSecondary</item>
+        <item name="android:focusable">true</item>
+        <item name="android:contextClickable">true</item>
+        <item name="hintTextAppearance">@style/FontYSDisplayRegularSize12Weight400</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="boxStrokeWidth">@dimen/dp_0</item>
+        <item name="boxStrokeWidthFocused">@dimen/dp_0</item>
+        <item name="boxCornerRadiusTopStart">@dimen/dp_12</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/dp_12</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/dp_12</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/dp_12</item>
+    </style>
+
+    <style name="filter_salary_edit_text">
+        <item name="hintTextAppearance">@style/FontYSDisplayRegularSize12Weight400</item>
+
+        <item name="android:focusable">true</item>
+        <item name="android:contextClickable">true</item>
+
+    </style>
+
 </resources>

@@ -1,14 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.settingfilter.SettingFilterFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/Toolbar"
+        style="@style/FragmentToolbarStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/setting_filter" />
+        android:layout_height="@dimen/dp_64"
+        android:paddingVertical="@dimen/dp_4"
+        app:contentInsetStartWithNavigation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:title="@string/setting_filter" />
 
-</FrameLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Place_of_work"
+        style="@style/filter_text_action"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_16"
+        android:gravity="center_vertical"
+        android:hint="@string/place_of_work"
+        app:layout_constraintTop_toBottomOf="@+id/Toolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Place_of_work_enter"
+            style="@style/filter_edit_text_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Industry"
+        style="@style/filter_text_action"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:gravity="center_vertical"
+        android:hint="@string/Industry"
+        app:layout_constraintTop_toBottomOf="@+id/Place_of_work">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Industry_enter"
+            style="@style/filter_edit_text_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/salary_frame"
+        style="@style/filter_salary"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_52"
+        android:layout_marginHorizontal="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_24"
+        android:hint="@string/salary_expected"
+        android:textColorHint="?attr/colorPrimaryVariant"
+        app:expandedHintEnabled="false"
+        app:hintTextColor="@color/blue"
+        app:layout_constraintTop_toBottomOf="@id/Industry">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Salary_enter"
+            style="@style/filter_salary_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/enter_salary" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
