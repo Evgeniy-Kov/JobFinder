@@ -8,7 +8,7 @@
     tools:context=".ui.placeofwork.PlaceOfWorkFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/Toolbar_place_of_work"
+        android:id="@+id/toolbar_place_of_work"
         style="@style/FragmentToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_64"
@@ -21,17 +21,17 @@
         app:title="@string/choosing_place_of_work" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/Country"
+        android:id="@+id/country"
         style="@style/filter_text_action"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
         android:layout_marginTop="@dimen/dp_16"
         android:gravity="center_vertical"
         android:hint="@string/country"
-        app:layout_constraintTop_toBottomOf="@+id/Toolbar_place_of_work">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_place_of_work">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Country_enter"
+            android:id="@+id/country_enter"
             style="@style/filter_edit_text_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,17 +40,17 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/Region"
+        android:id="@+id/region"
         style="@style/filter_text_action"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
         android:layout_marginTop="@dimen/dp_16"
         android:gravity="center_vertical"
         android:hint="@string/region"
-        app:layout_constraintTop_toBottomOf="@+id/Country">
+        app:layout_constraintTop_toBottomOf="@+id/country">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Region_enter"
+            android:id="@+id/region_enter"
             style="@style/filter_edit_text_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/Choose_button"
+        android:id="@+id/choose_button"
         style="@style/accept_button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
