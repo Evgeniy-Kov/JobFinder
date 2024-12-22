@@ -8,7 +8,7 @@
     tools:context=".ui.settingfilter.SettingFilterFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/Toolbar"
+        android:id="@+id/toolbar_filter"
         style="@style/FragmentToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_64"
@@ -21,17 +21,17 @@
         app:title="@string/setting_filter" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/Place_of_work"
+        android:id="@+id/place_of_work"
         style="@style/filter_text_action"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
         android:layout_marginTop="@dimen/dp_16"
         android:gravity="center_vertical"
         android:hint="@string/place_of_work"
-        app:layout_constraintTop_toBottomOf="@+id/Toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_filter">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Place_of_work_enter"
+            android:id="@+id/place_of_work_enter"
             style="@style/filter_edit_text_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,17 +40,17 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/Industry"
+        android:id="@+id/industry"
         style="@style/filter_text_action"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
         android:gravity="center_vertical"
         android:hint="@string/Industry"
-        app:layout_constraintTop_toBottomOf="@+id/Place_of_work">
+        app:layout_constraintTop_toBottomOf="@+id/place_of_work">
 
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Industry_enter"
+            android:id="@+id/industry_enter"
             style="@style/filter_edit_text_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,14 +69,16 @@
         android:textColorHint="?attr/colorPrimaryVariant"
         app:expandedHintEnabled="false"
         app:hintTextColor="@color/blue"
-        app:layout_constraintTop_toBottomOf="@id/Industry">
+        app:layout_constraintTop_toBottomOf="@id/industry">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/Salary_enter"
             style="@style/filter_salary_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/enter_salary" />
+            android:hint="@string/enter_salary"
+            android:textColor="@color/black"
+            android:textColorHint="?attr/colorPrimaryVariant" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,9 +99,11 @@
         android:id="@+id/accept_button"
         style="@style/accept_button"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_60"
-        android:layout_marginHorizontal="@dimen/dp_16"
-        android:layout_marginBottom="@dimen/dp_4"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="4dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:text="@string/accept"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/reset_button" />
@@ -109,7 +113,7 @@
         style="@style/reset_button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
-        android:layout_marginBottom="@dimen/dp_4"
+        android:layout_marginBottom="@dimen/dp_24"
         android:text="@string/reset"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
