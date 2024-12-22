@@ -122,6 +122,8 @@
 
     <style name="filter_salary_edit_text">
         <item name="hintTextAppearance">@style/FontYSDisplayRegularSize12Weight400</item>
+        <item name="hintTextColor">@color/blue</item>
+        <item name="cursorColor">@color/blue</item>
         <item name="android:textAppearance">@style/FontYSDisplayRegularSize16Weight400</item>
         <item name="android:focusable">true</item>
         <item name="android:contextClickable">true</item>
