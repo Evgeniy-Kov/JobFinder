@@ -9,7 +9,6 @@ package ru.practicum.android.diploma.domain.models
  * @property isDefault  Хранит флаг, указывающий на то, являются ли значения фильтра значениями по умолчанию
  */
 
-
 data class Filter(
     val country: Country? = null,
     val region: Region? = null,
@@ -18,9 +17,5 @@ data class Filter(
     val onlyWithSalary: Boolean = false
 ) {
     val isDefault: Boolean
-        get() = isFilterDefault()
-
-    private fun isFilterDefault(): Boolean {
-        return country == null && region == null && industry == null && !onlyWithSalary
-    }
+        get() = country == null && region == null && industry == null && !onlyWithSalary
 }
