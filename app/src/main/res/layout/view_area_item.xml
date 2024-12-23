@@ -9,7 +9,7 @@
         android:id="@+id/region_country_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/region_country"
+        android:text="region_country"
         android:textAppearance="@style/FontYSDisplayRegularSize16Weight400"
         android:textColor="@color/gray"
         android:gravity="center_vertical"
