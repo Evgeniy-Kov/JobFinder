@@ -79,10 +79,6 @@
         <item name="cornerSize">@dimen/dp_12</item>
     </style>
 
-     <style name="RegionEditTextStyle">
-         <item name="android:textColor">?attr/colorOnPrimary</item>
-            <item name="android:textAppearance">@style/FontYSDisplayRegularSize16Weight400</item>
-     </style>
 
     
 </resources>
