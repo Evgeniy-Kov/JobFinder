@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="region_country"
         android:textAppearance="@style/FontYSDisplayRegularSize16Weight400"
-        android:textColor="@color/gray"
+        android:textColor="?attr/colorOnPrimary"
         android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/end_icon"
@@ -23,7 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_forward"
-        android:tint="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
