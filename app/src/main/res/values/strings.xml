@@ -35,4 +35,7 @@
     <string name="vacancies_found">Найдено %d вакансий</string>
     <string name="keyskills_separator">"\n• "</string>
     <string name="enter_region">"Введите регион"</string>
+    <string name="the_region_does_not_exist">"Такого региона нет"</string>
+    <string name="not_get_list">"Не удалось получить\nсписок"</string>
+    
 </resources>
