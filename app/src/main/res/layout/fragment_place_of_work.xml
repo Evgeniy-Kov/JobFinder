@@ -34,7 +34,7 @@
             android:id="@+id/country_enter"
             style="@style/filter_edit_text_action"
             android:cursorVisible="false" 
-            android:focusable="false
+            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="" />
@@ -54,8 +54,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/region_enter"
             style="@style/filter_edit_text_action"
-            android:cursorVisible="false" 
-            android:focusable="false
+           android:cursorVisible="false" 
+            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="" />
