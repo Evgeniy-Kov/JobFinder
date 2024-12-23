@@ -68,7 +68,7 @@
         android:insetTop="@dimen/dp_0"
         android:insetBottom="@dimen/dp_0"
         android:text="@string/Choose"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
