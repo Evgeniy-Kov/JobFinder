@@ -72,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@id/industry">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Salary_enter"
+            android:id="@+id/salary_enter"
             style="@style/filter_salary_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
