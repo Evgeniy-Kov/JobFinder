@@ -49,7 +49,7 @@
         android:layout_marginTop="@dimen/dp_16"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Tregion_edit_text" />
+        app:layout_constraintTop_toBottomOf="@id/region_edit_text" />
 
       <ImageView
         android:id="@+id/img_error"
