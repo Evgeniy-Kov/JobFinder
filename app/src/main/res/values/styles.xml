@@ -92,6 +92,7 @@
     </style>
 
     <style name="filter_edit_text_action">
+        <item name="android:cursorVisible">false</item>
         <item name="android:focusable">false</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textColorHint">?attr/colorOnPrimary</item>
