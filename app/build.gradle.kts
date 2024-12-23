@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.ui.material)
     implementation(libs.ui.constraintLayout)
     implementation(libs.androidx.activity)
+    implementation(libs.koin.androidx.navigation)
 
     // region Unit tests
     testImplementation(libs.unitTests.junit)
