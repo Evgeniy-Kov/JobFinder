@@ -6,6 +6,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ViewVacancyItemBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
+import ru.practicum.android.diploma.util.getFormattedSalary
 
 class VacancyDetailsViewHolder(
     private val binding: ViewVacancyItemBinding
@@ -20,7 +21,12 @@ class VacancyDetailsViewHolder(
         }
         binding.tvVacancyName.text = "${vacancy.name}, ${vacancy.city}"
         binding.tvPlaceOfWork.text = vacancy.employerName
-        binding.tvSalary.text = "TODO"
+        binding.tvSalary.text = getFormattedSalary(
+            vacancy.salaryFrom,
+            vacancy.salaryTo,
+            vacancy.currencySymbol,
+            binding.root.context
+        )
 
         Glide.with(itemView)
             .load(vacancy.employerLogoUrl)

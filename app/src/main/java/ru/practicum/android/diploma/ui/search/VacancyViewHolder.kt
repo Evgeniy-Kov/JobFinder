@@ -7,16 +7,16 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ViewVacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.util.getFormattedSalaryForViewHolder
+import ru.practicum.android.diploma.util.getFormattedSalary
 import ru.practicum.android.diploma.util.getVacancyNameForViewHolder
 
 class VacancyViewHolder(private val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
-        vacancy: Vacancy,
+        vacancy: Vacancy?,
         onItemClickListener: OnItemClickListener?
     ) {
-        if (itemViewType == VacancyAdapter.VIEW_TYPE_VACANCY) {
+        if (vacancy != null) {
             (binding as ViewVacancyItemBinding).apply {
                 root.setOnClickListener {
                     onItemClickListener?.onItemClick(vacancy)
@@ -24,10 +24,11 @@ class VacancyViewHolder(private val binding: ViewBinding) : RecyclerView.ViewHol
 
                 binding.tvVacancyName.text = getVacancyNameForViewHolder(vacancy.name, vacancy.city)
                 binding.tvPlaceOfWork.text = vacancy.employerName
-                binding.tvSalary.text = getFormattedSalaryForViewHolder(
+                binding.tvSalary.text = getFormattedSalary(
                     vacancy.salaryFrom,
                     vacancy.salaryTo,
-                    itemView.context
+                    vacancy.currencySymbol,
+                    binding.root.context
                 )
 
                 Glide.with(itemView)

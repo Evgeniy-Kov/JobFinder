@@ -18,4 +18,5 @@ data class Vacancy(
     val employerLogoUrl: String?,
     val salaryFrom: Int?,
     val salaryTo: Int?,
+    val currencySymbol: String? = null,
 )

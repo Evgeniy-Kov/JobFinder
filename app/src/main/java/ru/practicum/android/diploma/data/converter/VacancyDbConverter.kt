@@ -17,16 +17,18 @@ class VacancyDbConverter {
             experience = vacancy.experience,
             salaryFrom = vacancy.salaryFrom,
             salaryTo = vacancy.salaryTo,
+            currencySymbol = vacancy.currencySymbol,
             contactsName = vacancy.contactsName,
             contactsEmail = vacancy.contactsEmail,
             contactsPhone = vacancy.contactsPhone,
             description = vacancy.description,
-            keySkills = convertToJson(vacancy.keySkills),
+            keySkills = convertToJson(vacancy.keySkills.orEmpty()),
             professionalRoles = convertToJson(vacancy.professionalRoles),
             schedule = vacancy.schedule,
             workingDays = vacancy.workingDays?.let { convertToJson(it) },
             workingTimeIntervals = vacancy.workingTimeIntervals?.let { convertToJson(it) },
-            workingTimeModes = vacancy.workingTimeModes?.let { convertToJson(it) }
+            workingTimeModes = vacancy.workingTimeModes?.let { convertToJson(it) },
+            url = vacancy.url
         )
     }
 
@@ -41,6 +43,7 @@ class VacancyDbConverter {
             experience = vacancy.experience,
             salaryFrom = vacancy.salaryFrom,
             salaryTo = vacancy.salaryTo,
+            currencySymbol = vacancy.currencySymbol,
             contactsName = vacancy.contactsName,
             contactsEmail = vacancy.contactsEmail,
             contactsPhone = vacancy.contactsPhone,
@@ -51,6 +54,7 @@ class VacancyDbConverter {
             workingDays = vacancy.workingDays?.let { convertFromJson(it) },
             workingTimeIntervals = vacancy.workingTimeIntervals?.let { convertFromJson(it) },
             workingTimeModes = vacancy.workingTimeModes?.let { convertFromJson(it) },
+            url = vacancy.url,
             isFavourite = true,
         )
     }
