@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".ui.region.RegionFragment">
 
-      <androidx.appcompat.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_region"
         style="@style/FragmentToolbarStyle"
         android:layout_width="match_parent"
@@ -20,11 +20,12 @@
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="@string/choosing_region" />
 
-     <EditText
+    <EditText
         android:id="@+id/region_edit_text"
-        style="@style/RegionEditTextStyle"
+        style="@style/FilterEditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_56"
+        android:hint="@string/enter_region"
         android:imeOptions="actionDone"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,16 +43,17 @@
         app:layout_constraintTop_toTopOf="@+id/region_edit_text"
         app:tint="@color/black" />
 
- <androidx.recyclerview.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/region_list"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0"
         android:layout_marginTop="@dimen/dp_16"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/region_edit_text" />
+        app:layout_constraintTop_toBottomOf="@id/region_edit_text"
+        tools:listitem="@layout/view_area_item" />
 
-      <ImageView
+    <ImageView
         android:id="@+id/img_error"
         android:layout_width="@dimen/dp_0"
         android:layout_height="wrap_content"
@@ -72,5 +74,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img_error" />
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>
