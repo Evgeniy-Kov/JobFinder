@@ -34,6 +34,9 @@
     <string name="keyskills_header">Ключевые навыки</string>
     <string name="vacancies_found">Найдено %d вакансий</string>
     <string name="keyskills_separator">"\n• "</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="Choose">Выбрать</string>
     <string name="place_of_work">Место работы</string>
     <string name="Industry">Отрасль</string>
     <string name="salary_expected"> Ожидаемая зарплата</string>
