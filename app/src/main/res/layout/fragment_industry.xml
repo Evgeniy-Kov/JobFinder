@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="@+id/industry_edit_text"
         app:layout_constraintTop_toTopOf="@+id/industry_edit_text"
         app:tint="@color/black" />
-    
+
  <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/industry_list"
         android:layout_width="match_parent"
@@ -49,5 +49,5 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
      app:layout_constraintTop_toBottomOf="@id/industry_edit_text" />
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>
