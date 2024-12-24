@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout.END_ICON_CLEAR_TEXT
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import org.koin.androidx.navigation.koinNavGraphViewModel
@@ -37,10 +39,18 @@ class SettingFilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.salaryFrame.endIconMode = END_ICON_NONE
+        binding.toolbarFilter.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding.salaryEnter.doOnTextChanged { s, _, _, _ ->
-            binding.salaryFrame.endIconMode = if (s?.isNotEmpty() == true) END_ICON_CLEAR_TEXT else END_ICON_NONE
-            //.setVisible(s?.isNotEmpty() == true, true)
+            if (s?.isNotEmpty() == true) {
+                binding.salaryFrame.endIconMode = END_ICON_CLEAR_TEXT
+                binding.salaryFrame.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_clear)
+            } else {
+                binding.salaryFrame.endIconMode = END_ICON_NONE
+                binding.salaryFrame.endIconDrawable = null
+            }
         }
     }
 

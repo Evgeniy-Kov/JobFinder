@@ -61,8 +61,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/salary_frame"
         style="@style/filter_salary"
-        app:endIconDrawable="@drawable/ic_clear"
-        app:endIconMode="custom"
+        android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined"
         app:endIconTint="?attr/colorOnPrimary"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_52"
