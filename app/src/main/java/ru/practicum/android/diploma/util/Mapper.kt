@@ -60,7 +60,6 @@ fun IndustryDto.toIndustry(): Industry {
     return Industry(
         id = id,
         name = name,
-        industry = industries.map { it.toIndustry() }
     )
 }
 
@@ -68,6 +67,5 @@ fun IndustryItemDto.toIndustry(): Industry {
     return Industry(
         id = id,
         name = name,
-        industry = null
     )
 }

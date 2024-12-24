@@ -12,6 +12,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Industry(
     val id: String,
-    val industry: List<Industry>?,
     val name: String,
 ) : Parcelable
