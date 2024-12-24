@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -19,6 +17,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,7 +27,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancySearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
-import ru.practicum.android.diploma.util.isInternetAvailable
 
 class VacancySearchFragment : Fragment() {
 
@@ -37,6 +37,8 @@ class VacancySearchFragment : Fragment() {
     private val viewModel by viewModel<VacancySearchViewModel>()
     private var searchValue = TEXT_DEF
     private var searchAdapter = VacancyAdapter()
+
+    private var isLoadHasError = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +59,24 @@ class VacancySearchFragment : Fragment() {
             onVacancyClick(vacancy)
         }
 
+        val onScrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (isLoadHasError) {
+                    if (dy > 0) {
+                        val pos =
+                            (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                        val itemsCount = searchAdapter.itemCount
+                        if (pos >= itemsCount - RETRY_INDENT) {
+                            retryLoad()
+                        }
+                    }
+                } else {
+                    binding.recyclerView.removeOnScrollListener(this)
+                }
+            }
+        }
+
         searchAdapter.onItemClickListener = VacancyViewHolder.OnItemClickListener { vacancy ->
             onVacancyClickDebounce(vacancy)
         }
@@ -64,24 +84,43 @@ class VacancySearchFragment : Fragment() {
 
         initializeViews()
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.vacancies
-                    .collectLatest {
-                        searchAdapter.submitData(it)
-                        searchAdapter.addLoadStateListener { state ->
-                            processResult(searchAdapter.snapshot().size, state.refresh)
-                        }
-                    }
-            }
-        }
+        observeLoadingData(onScrollListener)
 
         viewModel.itemCountLivedata.observe(viewLifecycleOwner) { count ->
             binding.valueSearchResultTv.text =
                 String.format(getString(R.string.vacancies_found), count)
         }
 
-        processResult(searchAdapter.snapshot().size, LoadState.NotLoading(false))
+        renderState(SearchScreenState.Default)
+    }
+
+    private fun observeLoadingData(listener: RecyclerView.OnScrollListener) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.vacancies
+                    .collectLatest {
+                        searchAdapter.submitData(it)
+                        searchAdapter.addLoadStateListener { state ->
+                            processResult(searchAdapter.snapshot().size, state.refresh)
+                            if (state.hasError) {
+                                isLoadHasError = true
+                                binding.recyclerView.addOnScrollListener(listener)
+                            } else {
+                                isLoadHasError = false
+                            }
+                        }
+                    }
+            }
+        }
+    }
+
+    private fun retryLoad() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(RETRY_DEBOUNCE_DELAY)
+            if (isLoadHasError) {
+                searchAdapter.retry()
+            }
+        }
     }
 
     private fun initializeViews() {
@@ -98,38 +137,29 @@ class VacancySearchFragment : Fragment() {
             clearButtonVisibility(s, binding.clearButton)
             searchValue = s.toString().trim()
             if (binding.searchEditText.hasFocus() && s?.isEmpty() == true) {
-                showDefaultContent()
+                renderState(SearchScreenState.Default)
             } else {
-                if (isInternetAvailable(requireContext())) {
-                    viewModel.searchDebounce(searchValue)
-                } else {
-                    showErrorPlaceholder(R.string.no_internet, R.drawable.no_internet)
-                }
+                viewModel.searchDebounce(searchValue)
             }
 
         }
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if (isInternetAvailable(requireContext())) {
-                    viewModel.searchDebounce(searchValue)
-                } else {
-                    showErrorPlaceholder(R.string.no_internet, R.drawable.no_internet)
-                }
+                viewModel.searchDebounce(searchValue)
             }
             false
         }
     }
 
     private fun processResult(dataSize: Int, state: LoadState) {
-        _binding ?: return
         when (state) {
             is LoadState.Loading -> {
-                showLoading()
+                renderState(SearchScreenState.Loading)
             }
 
             is LoadState.Error -> {
-                showErrorPlaceholder(R.string.server_error, R.drawable.server_error)
+                renderState(SearchScreenState.Error(state.error.message ?: ""))
             }
 
             is LoadState.NotLoading -> {
@@ -141,15 +171,15 @@ class VacancySearchFragment : Fragment() {
     private fun handleNotLoadingState(dataSize: Int) {
         when {
             dataSize == 0 && searchValue.isBlank() -> {
-                showDefaultContent()
+                renderState(SearchScreenState.Default)
             }
 
             dataSize == 0 && searchValue.isNotBlank() -> {
-                showEmptyView()
+                renderState(SearchScreenState.NothingFound)
             }
 
             else -> {
-                showContentSearch()
+                renderState(SearchScreenState.Content)
             }
         }
     }
@@ -200,66 +230,59 @@ class VacancySearchFragment : Fragment() {
         }
     }
 
-    private fun showLoading() {
-        binding.progressBar.isVisible = true
-        binding.recyclerView.isVisible = false
-        binding.noInternetIv.isVisible = false
-        binding.noInternetTv.isVisible = false
-        binding.valueSearchResultTv.isVisible = false
-        binding.startIv.isVisible = false
-        viewModel.stopSearch()
+    private fun renderState(state: SearchScreenState) {
+        binding.progressBar.isVisible = state is SearchScreenState.Loading
+        binding.recyclerView.isVisible = state is SearchScreenState.Content
+        binding.placeholderIv.isVisible = state !is SearchScreenState.Content && state !is SearchScreenState.Loading
+        binding.placeholderTv.isVisible = state !is SearchScreenState.Content && state !is SearchScreenState.Loading
+        binding.valueSearchResultTv.isVisible =
+            state is SearchScreenState.Content || state is SearchScreenState.NothingFound
+        if (state !is SearchScreenState.Content && state !is SearchScreenState.Loading) {
+            setMessagesAndDrawable(state)
+        }
     }
 
-    private fun showDefaultContent() {
-        binding.progressBar.isVisible = false
-        binding.recyclerView.isVisible = false
-        binding.noInternetIv.isVisible = false
-        binding.noInternetTv.isVisible = false
-        binding.valueSearchResultTv.isVisible = false
-        binding.startIv.isVisible = true
-        viewModel.stopSearch()
+    private fun setMessagesAndDrawable(state: SearchScreenState) {
+        val message = getPlaceholderMessage(state)
+        val drawableResId = getPlaceholderDrawableResId(state)
+        binding.placeholderIv.setImageResource(drawableResId)
+        binding.placeholderTv.text = message
+        if (state is SearchScreenState.NothingFound) {
+            binding.valueSearchResultTv.text = requireContext().getString(R.string.no_such_jobs)
+        }
     }
 
-    private fun showErrorPlaceholder(
-        @StringRes stringResId: Int,
-        @DrawableRes imageResId: Int
-    ) {
-        binding.progressBar.isVisible = false
-        binding.recyclerView.isVisible = false
-        binding.noInternetIv.isVisible = true
-        binding.noInternetTv.isVisible = true
-        binding.noInternetIv.setImageResource(imageResId)
-        binding.noInternetTv.text = requireContext().getString(stringResId)
-        binding.valueSearchResultTv.isVisible = false
-        binding.startIv.isVisible = false
-        viewModel.stopSearch()
+    private fun getPlaceholderMessage(state: SearchScreenState): String {
+        return when (state) {
+            is SearchScreenState.NothingFound -> requireContext().getString(R.string.unable_to_retrieve_job_listing)
+            is SearchScreenState.Error -> getPlaceholderErrorMessage(state.errorMessage)
+            else -> ""
+        }
     }
 
-    private fun showContentSearch() {
-        binding.recyclerView.isVisible = true
-        binding.valueSearchResultTv.isVisible = true
-        binding.noInternetIv.isVisible = false
-        binding.noInternetTv.isVisible = false
-        binding.progressBar.isVisible = false
-        binding.startIv.isVisible = false
+    private fun getPlaceholderDrawableResId(state: SearchScreenState): Int {
+        return when (state) {
+            is SearchScreenState.NothingFound -> R.drawable.no_jobs
+            is SearchScreenState.Error -> getPlaceholderErrorDrawableResId(state.errorMessage)
+            else -> R.drawable.start_search_image
+        }
     }
 
-    private fun showEmptyView() {
-        binding.progressBar.isVisible = false
-        binding.recyclerView.isVisible = false
-        binding.noInternetIv.isVisible = true
-        binding.noInternetTv.isVisible = true
-        binding.noInternetIv.setImageResource(R.drawable.no_jobs)
-        binding.noInternetTv.text = requireContext().getString(R.string.unable_to_retrieve_job_listing)
-        binding.valueSearchResultTv.text = getString(R.string.no_such_jobs)
-        binding.valueSearchResultTv.isVisible = true
-        binding.startIv.isVisible = false
-        viewModel.stopSearch()
+    private fun getPlaceholderErrorMessage(errorCode: String): String {
+        val stringResId = if (errorCode == "-1") R.string.no_internet else R.string.server_error
+        return requireContext().getString(stringResId)
+    }
+
+    private fun getPlaceholderErrorDrawableResId(errorCode: String): Int {
+        return if (errorCode == "-1") R.drawable.no_internet else R.drawable.server_error
+
     }
 
     companion object {
         const val TEXT_DEF = ""
         const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val RETRY_DEBOUNCE_DELAY = 2000L
+        const val RETRY_INDENT = 3
         const val SEARCH_TEXT = "SEARCH_TEXT"
     }
 }
