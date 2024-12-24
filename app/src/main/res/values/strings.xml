@@ -37,4 +37,11 @@
     <string name="country">Страна</string>
     <string name="region">Регион</string>
     <string name="Choose">Выбрать</string>
+    <string name="place_of_work">Место работы</string>
+    <string name="Industry">Отрасль</string>
+    <string name="salary_expected"> Ожидаемая зарплата</string>
+    <string name="enter_salary"> Введите сумму</string>
+    <string name="without_salary">Не показывать без зарплаты</string>
+    <string name="accept">Применить</string>
+    <string name="reset">Сбросить</string>
 </resources>
