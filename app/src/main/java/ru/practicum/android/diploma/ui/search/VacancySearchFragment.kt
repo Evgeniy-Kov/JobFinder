@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancySearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -34,7 +34,7 @@ class VacancySearchFragment : Fragment() {
     private val binding: FragmentVacancySearchBinding
         get() = requireNotNull(_binding) { "Binding is null" }
 
-    private val viewModel by viewModel<VacancySearchViewModel>()
+    private val viewModel by koinNavGraphViewModel<VacancySearchViewModel>(R.id.vacancySearchFragment)
     private var searchValue = TEXT_DEF
     private var searchAdapter = VacancyAdapter()
 
