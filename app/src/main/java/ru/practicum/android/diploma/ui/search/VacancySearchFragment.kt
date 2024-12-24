@@ -52,9 +52,7 @@ class VacancySearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val onVacancyClickDebounce = debounce<Vacancy>(
-            CLICK_DEBOUNCE_DELAY,
-            viewLifecycleOwner.lifecycleScope,
-            false
+            CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false
         ) { vacancy ->
             onVacancyClick(vacancy)
         }
@@ -80,6 +78,11 @@ class VacancySearchFragment : Fragment() {
         searchAdapter.onItemClickListener = VacancyViewHolder.OnItemClickListener { vacancy ->
             onVacancyClickDebounce(vacancy)
         }
+
+        binding.parametersButton.setOnClickListener {
+            findNavController().navigate(R.id.action_vacancySearchFragment_to_settingFilterFragment)
+        }
+        
         binding.recyclerView.adapter = searchAdapter.withLoadStateFooter(LoaderStateAdapter())
 
         initializeViews()
@@ -87,8 +90,7 @@ class VacancySearchFragment : Fragment() {
         observeLoadingData(onScrollListener)
 
         viewModel.itemCountLivedata.observe(viewLifecycleOwner) { count ->
-            binding.valueSearchResultTv.text =
-                String.format(getString(R.string.vacancies_found), count)
+            binding.valueSearchResultTv.text = String.format(getString(R.string.vacancies_found), count)
         }
 
         renderState(SearchScreenState.Default)
@@ -97,8 +99,7 @@ class VacancySearchFragment : Fragment() {
     private fun observeLoadingData(listener: RecyclerView.OnScrollListener) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.vacancies
-                    .collectLatest {
+                viewModel.vacancies.collectLatest {
                         searchAdapter.submitData(it)
                         searchAdapter.addLoadStateListener { state ->
                             processResult(searchAdapter.snapshot().size, state.refresh)
@@ -141,7 +142,6 @@ class VacancySearchFragment : Fragment() {
             } else {
                 viewModel.searchDebounce(searchValue)
             }
-
         }
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -202,8 +202,7 @@ class VacancySearchFragment : Fragment() {
     }
 
     private fun onVacancyClick(vacancy: Vacancy) {
-        val direction =
-            VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment(vacancy.id)
+        val direction = VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment(vacancy.id)
         findNavController().navigate(direction)
     }
 
