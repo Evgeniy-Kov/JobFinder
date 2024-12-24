@@ -12,7 +12,9 @@ class IndustriesRepositoryImpl(private val networkClient: NetworkClient) : Indus
     override suspend fun getIndustries(): Resource<List<Industry>> {
         val response = networkClient.doRequest(IndustriesRequest())
         if (response.resultCode == NetworkClient.SUCCESS) {
-            val industriesList = (response as IndustriesResponse).industries.map { it.toIndustry() }
+            val industriesList = (response as IndustriesResponse).industries.map { item ->
+                item.toIndustry()
+            }
             return Resource.Success(industriesList)
         } else {
             return Resource.Error(response.resultCode)
