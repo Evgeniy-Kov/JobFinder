@@ -50,9 +50,9 @@ class VacancyFragment : Fragment() {
             when (result) {
                 is Resource.Error -> {
                     if (!isInternetAvailable(requireContext())) {
-                        showErrorPlaceholder(R.string.no_internet, R.drawable.no_internet)
+                        showErrorPlaceholder(R.string.not_found_vacancy, R.drawable.not_found_vacancy)
                     } else {
-                        showErrorPlaceholder(R.string.server_error, R.drawable.server_error)
+                        showErrorPlaceholder(R.string.server_error, R.drawable.server_error_vacancy)
                     }
                 }
 

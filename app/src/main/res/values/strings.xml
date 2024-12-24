@@ -34,5 +34,6 @@
     <string name="keyskills_header">Ключевые навыки</string>
     <string name="vacancies_found">Найдено %d вакансий</string>
     <string name="keyskills_separator">"\n• "</string>
+    <string name="not_found_vacancy">Вакансия не найдена или удалена</string>
 
 </resources>
