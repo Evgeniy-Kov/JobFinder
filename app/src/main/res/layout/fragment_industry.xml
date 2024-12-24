@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.industry.IndustryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_industry"
+        style="@style/FragmentToolbarStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/choosing_industry" />
+        android:layout_height="@dimen/dp_64"
+        android:paddingVertical="@dimen/dp_4"
+        app:contentInsetStartWithNavigation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:title="@string/choosing_industry" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/industry_edit_text"
+        style="@style/IndustryEditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_56"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_industry" />
+
+    <ImageButton
+        android:id="@+id/clear_button"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="@+id/industry_edit_text"
+        app:layout_constraintEnd_toEndOf="@+id/industry_edit_text"
+        app:layout_constraintTop_toTopOf="@+id/industry_edit_text"
+        app:tint="@color/black" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/industry_list"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0"
+        android:layout_marginTop="@dimen/dp_16"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/industry_edit_text"
+        tools:listitem="@layout/view_industry_item" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

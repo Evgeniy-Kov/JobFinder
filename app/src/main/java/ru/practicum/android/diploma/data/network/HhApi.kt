@@ -6,7 +6,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
-import ru.practicum.android.diploma.data.dto.AreaDto
+import ru.practicum.android.diploma.data.dto.AreasDto
 import ru.practicum.android.diploma.data.dto.CountriesDto
 import ru.practicum.android.diploma.data.dto.DictionaryDto
 import ru.practicum.android.diploma.data.dto.IndustriesDto
@@ -37,8 +37,8 @@ interface HhApi {
     @GET("/areas/countries")
     suspend fun getCountries(): CountriesDto
 
-    @GET("/areas/{areaId}")
-    suspend fun getAreaById(@Path("areaId") areaId: String): AreaDto
+    @GET("/areas")
+    suspend fun getAreas(): AreasDto
 
     @GET("/dictionaries")
     suspend fun getDictionaries(): DictionaryDto
