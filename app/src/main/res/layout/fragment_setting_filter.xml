@@ -61,14 +61,14 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/salary_frame"
         style="@style/filter_salary"
-        android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined"
-        app:endIconTint="?attr/colorOnPrimary"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_52"
         android:layout_marginHorizontal="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_24"
         android:hint="@string/salary_expected"
         android:textColorHint="?attr/colorPrimaryVariant"
+        android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined"
+        app:endIconTint="?attr/colorOnPrimary"
         app:expandedHintEnabled="false"
         app:hintTextColor="@color/blue"
         app:layout_constraintTop_toBottomOf="@id/industry">
@@ -80,8 +80,8 @@
             android:layout_height="match_parent"
             android:hint="@string/enter_salary"
             android:textColor="@color/black"
-            android:textCursorDrawable="@drawable/edit_text_cursor"
-            android:textColorHint="?attr/colorPrimaryVariant" />
+            android:textColorHint="?attr/colorPrimaryVariant"
+            android:textCursorDrawable="@drawable/edit_text_cursor" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,17 +109,21 @@
         android:insetBottom="@dimen/dp_0"
         android:text="@string/accept"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/reset_button" />
+        app:layout_constraintBottom_toTopOf="@id/reset_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/reset_button"
         style="@style/reset_button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
+        android:layout_marginHorizontal="@dimen/dp_16"
         android:layout_marginBottom="@dimen/dp_24"
         android:text="@string/reset"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
