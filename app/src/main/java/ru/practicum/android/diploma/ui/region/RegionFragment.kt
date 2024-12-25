@@ -1,9 +1,13 @@
 package ru.practicum.android.diploma.ui.region
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -53,9 +57,14 @@ class RegionFragment : Fragment() {
         }
 
         binding.regionEditText.doOnTextChanged { text, _, _, _ ->
+            clearButtonVisibility(text, binding.clearButton)
             if (!text.isNullOrBlank()) {
                 viewModel.setRegionNameFilter(text.toString())
             }
+        }
+
+        binding.clearButton.setOnClickListener {
+            binding.regionEditText.setText("")
         }
 
         binding.regionList.itemAnimator = null
@@ -129,6 +138,25 @@ class RegionFragment : Fragment() {
             }
         }
         areaAdapter.onItemClickListener = AreaViewHolder.OnItemClickListener {
+        }
+    }
+
+    private fun clearButtonVisibility(s: CharSequence?, v: ImageView) {
+        if (s.isNullOrEmpty()) {
+            v.setImageResource(R.drawable.ic_search)
+            v.isEnabled = false
+            view?.let { activity?.hideKeyboard() }
+        } else {
+            v.setImageResource(R.drawable.ic_clear)
+            v.isEnabled = true
+        }
+    }
+
+    private fun Activity.hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = currentFocus
+        if (view != null) {
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 }
