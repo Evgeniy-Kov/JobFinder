@@ -12,6 +12,5 @@ import kotlinx.parcelize.Parcelize
 data class Industry(
     val id: String,
     val name: String,
-) : Parcelable {
     var isClicked: Boolean = false
-}
+) : Parcelable
