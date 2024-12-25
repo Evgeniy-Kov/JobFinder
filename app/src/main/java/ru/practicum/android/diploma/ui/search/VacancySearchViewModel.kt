@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -11,10 +12,7 @@ import androidx.paging.PagingSource
 import androidx.paging.cachedIn
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -26,8 +24,8 @@ class VacancySearchViewModel(
     private val pagingSourceInteractor: PagingSourceInteractor
 ) : ViewModel() {
 
-    private val _query = MutableStateFlow("")
-    val query: StateFlow<String> = _query.asStateFlow()
+    private val _query = MutableLiveData<String>()
+    val query: LiveData<String> = _query
 
     private var latestSearchText: String = ""
 
@@ -40,11 +38,15 @@ class VacancySearchViewModel(
 
     private var newPagingSource: PagingSource<*, *>? = null
 
-    val vacancies: Flow<PagingData<Vacancy>> = query
+    val vacancies: Flow<PagingData<Vacancy>> = query.asFlow()
         .map(::newPager)
         .flatMapLatest { pager -> pager.flow }
         .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
         .cachedIn(viewModelScope)
+
+    private val _itemCountLivedata = MutableLiveData<Int>()
+    val itemCountLivedata: LiveData<Int>
+        get() = _itemCountLivedata
 
     fun clearLatestSearchText() {
         latestSearchText = ""
@@ -52,12 +54,8 @@ class VacancySearchViewModel(
     }
 
     private fun setQuery(query: String) {
-        _query.tryEmit(query)
+        if (query.isNotBlank()) _query.value = query
     }
-
-    private val _itemCountLivedata = MutableLiveData<Int>()
-    val itemCountLivedata: LiveData<Int>
-        get() = _itemCountLivedata
 
     private val getItemCountCallback: (Int) -> Unit = { count -> _itemCountLivedata.value = count }
 

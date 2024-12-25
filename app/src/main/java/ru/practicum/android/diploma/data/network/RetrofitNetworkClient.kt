@@ -49,7 +49,7 @@ class RetrofitNetworkClient(
             }
 
             is AreaRequest -> {
-                getAreaById(dto)
+                getAreas()
             }
 
             is DictionariesRequest -> {
@@ -80,8 +80,8 @@ class RetrofitNetworkClient(
         return CountriesResponse(hhApiService.getCountries()).apply { resultCode = NetworkClient.SUCCESS }
     }
 
-    private suspend fun getAreaById(request: AreaRequest): AreaResponse {
-        return AreaResponse(hhApiService.getAreaById(request.areaId))
+    private suspend fun getAreas(): AreaResponse {
+        return AreaResponse(hhApiService.getAreas())
             .apply { resultCode = NetworkClient.SUCCESS }
     }
 

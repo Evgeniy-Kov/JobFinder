@@ -20,4 +20,8 @@ class App : Application() {
 
     }
 
+    companion object {
+        const val PREFERENCES = "_preferences"
+    }
+
 }
