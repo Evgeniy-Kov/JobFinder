@@ -2,7 +2,9 @@ package ru.practicum.android.diploma.ui.search
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +27,10 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancySearchBinding
+import ru.practicum.android.diploma.domain.models.Country
+import ru.practicum.android.diploma.domain.models.Filter
+import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
 
@@ -90,8 +96,44 @@ class VacancySearchFragment : Fragment() {
             binding.valueSearchResultTv.text =
                 String.format(getString(R.string.vacancies_found), count)
         }
+        // test
+        test()
+        // end test
 
         renderState(SearchScreenState.Default)
+    }
+
+    fun test() {
+        viewModel.preferenceUpdates.observe(viewLifecycleOwner) { filter ->
+            updateFilterUI(filter)
+        }
+
+        binding.placeholderIv.setOnClickListener {
+            viewModel.clearFilter()
+        }
+
+        binding.parametersButton.setOnClickListener {
+            viewModel.saveFilter(
+                Filter(
+                    country = Country("id", "Ru"),
+                    region = Region("id", "Moscow"),
+                    industry = Industry("id", "IT"),
+                    salary = 222,
+                    onlyWithSalary = true
+                )
+            )
+        }
+    }
+
+    private fun updateFilterUI(filter: Filter?) {
+        if (filter != null) {
+            binding.parametersButton.backgroundTintList =
+                ColorStateList.valueOf(requireContext().getColor(R.color.blue))
+            Log.d("filter", filter.toString())
+        } else {
+            binding.parametersButton.backgroundTintList =
+                ColorStateList.valueOf(requireContext().getColor(R.color.transparent))
+        }
     }
 
     private fun observeLoadingData(listener: RecyclerView.OnScrollListener) {

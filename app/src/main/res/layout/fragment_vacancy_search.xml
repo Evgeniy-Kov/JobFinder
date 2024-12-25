@@ -80,6 +80,7 @@
         app:layout_constraintTop_toBottomOf="@+id/search_edit_text" />
 
     <ImageView
+        android:clickable="true"
         android:id="@+id/placeholder_iv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

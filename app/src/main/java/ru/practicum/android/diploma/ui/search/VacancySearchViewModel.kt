@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,16 +17,24 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import ru.practicum.android.diploma.App.Companion.FILTER_PREFERENCES_KEY
 import ru.practicum.android.diploma.domain.api.PagingSourceInteractor
+import ru.practicum.android.diploma.domain.api.SharedPreferencesInteractor
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
 
 class VacancySearchViewModel(
-    private val pagingSourceInteractor: PagingSourceInteractor
+    private val pagingSourceInteractor: PagingSourceInteractor,
+    private val sharedPrefInteractor: SharedPreferencesInteractor,
 ) : ViewModel() {
 
     private val _query = MutableLiveData<String>()
     val query: LiveData<String> = _query
+
+    private val _preferenceUpdates = MutableLiveData<Filter?>()
+    val preferenceUpdates: LiveData<Filter?>
+        get() = _preferenceUpdates
 
     private var latestSearchText: String = ""
 
@@ -78,10 +87,31 @@ class VacancySearchViewModel(
     fun stopSearch() {
         searchJob?.cancel()
     }
+    fun saveFilter(filter: Filter) = sharedPrefInteractor.saveFilter(filter)
+    fun clearFilter() = sharedPrefInteractor.clearFilter()
+
+    private val preferenceChangeListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+            when (key) {
+                FILTER_PREFERENCES_KEY -> {
+                    val newValue = sharedPrefInteractor.loadFilter()
+                    _preferenceUpdates.postValue(newValue)
+                }
+            }
+        }
+
+    init {
+        sharedPrefInteractor.setPreferencesListener(preferenceChangeListener)
+        _preferenceUpdates.postValue(sharedPrefInteractor.loadFilter())
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        sharedPrefInteractor.deletePreferencesListener(preferenceChangeListener)
+    }
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val PAGE_SIZE = 20
     }
-
 }
