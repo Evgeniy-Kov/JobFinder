@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.ui.search.VacancySearchFragment.Companion.TEXT_DEF
 import ru.practicum.android.diploma.ui.search.VacancySearchViewModel
 import ru.practicum.android.diploma.util.debounce
@@ -25,8 +27,6 @@ class IndustryFragment : Fragment() {
     private var searchAdapter = IndustryAdapter()
     private val selectedIndustries = hashSetOf<Industry>() // добавить потом все эти ранее выбранные отрасли в фильтр
 
-    private val arr = arrayListOf(Industry("123","Жижка"), Industry("124","Пыпыжка"))
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +38,9 @@ class IndustryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.toolbarIndustry.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
         val onIndustryClickDebounce = debounce<Industry>(
             CLICK_DEBOUNCE_DELAY,
             viewLifecycleOwner.lifecycleScope,
@@ -51,8 +53,16 @@ class IndustryFragment : Fragment() {
             onIndustryClickDebounce(industry)
         }
 
-        searchAdapter.submitList(arr)
-
+        viewModel.getIndustries()
+        viewModel.industriesList.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Resource.Error -> TODO()
+                is Resource.Success -> {
+                    searchAdapter.submitList(result.data)
+                    binding.industryList.adapter = searchAdapter
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -72,5 +82,4 @@ class IndustryFragment : Fragment() {
     companion object {
         const val CLICK_DEBOUNCE_DELAY = 300L
     }
-
 }

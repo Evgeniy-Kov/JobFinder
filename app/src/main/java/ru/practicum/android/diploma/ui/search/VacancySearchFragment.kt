@@ -90,6 +90,9 @@ class VacancySearchFragment : Fragment() {
             binding.valueSearchResultTv.text =
                 String.format(getString(R.string.vacancies_found), count)
         }
+        binding.parametersButton.setOnClickListener {
+            findNavController().navigate(R.id.action_vacancySearchFragment_to_industryFragment)
+        }
 
         renderState(SearchScreenState.Default)
     }

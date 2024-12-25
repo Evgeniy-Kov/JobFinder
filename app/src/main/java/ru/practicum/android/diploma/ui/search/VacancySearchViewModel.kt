@@ -16,16 +16,24 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.api.IndustriesInteractor
 import ru.practicum.android.diploma.domain.api.PagingSourceInteractor
+import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
 
 class VacancySearchViewModel(
-    private val pagingSourceInteractor: PagingSourceInteractor
+    private val pagingSourceInteractor: PagingSourceInteractor,
+    private val industriesInteractor: IndustriesInteractor
 ) : ViewModel() {
 
     private val _query = MutableLiveData<String>()
     val query: LiveData<String> = _query
+
+    private val _industriesList = MutableLiveData<Resource<List<Industry>>>()
+    val industriesList: LiveData<Resource<List<Industry>>> = _industriesList
 
     private var latestSearchText: String = ""
 
@@ -77,6 +85,13 @@ class VacancySearchViewModel(
 
     fun stopSearch() {
         searchJob?.cancel()
+    }
+
+    fun getIndustries() {
+        viewModelScope.launch {
+            _industriesList.postValue(industriesInteractor.getIndustries())
+        }
+
     }
 
     companion object {
