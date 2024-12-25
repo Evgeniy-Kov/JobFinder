@@ -4,6 +4,7 @@ java = "VERSION_1_8"
 activityVersion = "1.9.3"
 glideVersion = "4.16.0"
 gsonVersion = "2.11.0"
+kotlinxCoroutinesCoreVersion = "1.5.0-RC"
 pagingVersion = "3.3.2"
 retrofitVersion = "2.11.0"
 activityKtxVersion = "1.9.3"
@@ -45,6 +46,7 @@ androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navVersion" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navVersion" }
 koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation", version.ref = "koinVersion" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCoreVersion" }
 
 # Data layer libraries
 gson = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }

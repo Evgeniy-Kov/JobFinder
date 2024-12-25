@@ -7,9 +7,13 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.practicum.android.diploma.R
@@ -60,11 +64,24 @@ class RegionFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        viewModel.regionNameFilter
+            .flowWithLifecycle(lifecycle, Lifecycle.State.CREATED)
+            .onEach(::updateSearchQuery)
+            .launchIn(lifecycleScope)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun updateSearchQuery(searchQuery: String) {
+        with(binding.regionEditText) {
+            val queryText = text?.toString() ?: ""
+            if (queryText != searchQuery) {
+                setText(searchQuery)
+            }
+        }
     }
 
     private fun renderState(state: AreaScreenState) {

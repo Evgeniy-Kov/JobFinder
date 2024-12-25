@@ -85,7 +85,7 @@ class VacancySearchViewModel(
     }
 
     fun setRegionNameFilter(regionNameFilter: String) {
-        _regionNameFilter.value = regionNameFilter
+        _regionNameFilter.tryEmit(regionNameFilter)
     }
 
     fun getAreas() {
