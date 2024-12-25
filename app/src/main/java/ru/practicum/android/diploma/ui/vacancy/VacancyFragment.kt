@@ -6,7 +6,8 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,7 @@ import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.getFormattedSalary
+import ru.practicum.android.diploma.util.isInternetAvailable
 
 class VacancyFragment : Fragment() {
 
@@ -47,9 +49,11 @@ class VacancyFragment : Fragment() {
         viewModel.observeVacancyDetails().observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Error -> {
-                    Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG)
-                        .show()
-                    findNavController().navigateUp()
+                    if (!isInternetAvailable(requireContext())) {
+                        showErrorPlaceholder(R.string.not_found_vacancy, R.drawable.not_found_vacancy)
+                    } else {
+                        showErrorPlaceholder(R.string.server_error, R.drawable.server_error_vacancy)
+                    }
                 }
 
                 is Resource.Success -> {
@@ -112,6 +116,10 @@ class VacancyFragment : Fragment() {
 
     private fun renderUI() {
         if (vacancyDetails != null) {
+            binding.vacancyScroll.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.GONE
+            binding.noInternetTv.visibility = View.GONE
+            binding.noInternetIv.visibility = View.GONE
             val details = vacancyDetails!!
             binding.titleTv.text = details.name
             binding.salaryTv.text =
@@ -139,5 +147,17 @@ class VacancyFragment : Fragment() {
             }
             renderFavoriteState(details.isFavourite)
         }
+    }
+
+    private fun showErrorPlaceholder(
+        @StringRes stringResId: Int,
+        @DrawableRes imageResId: Int,
+    ) {
+        binding.vacancyScroll.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+        binding.noInternetIv.visibility = View.VISIBLE
+        binding.noInternetTv.visibility = View.VISIBLE
+        binding.noInternetIv.setImageResource(imageResId)
+        binding.noInternetTv.text = getString(stringResId)
     }
 }
