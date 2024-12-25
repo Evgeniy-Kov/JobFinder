@@ -56,6 +56,10 @@ class RegionFragment : Fragment() {
 
         binding.regionList.itemAnimator = null
 
+        binding.toolbarRegion.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
     }
 
     override fun onDestroyView() {

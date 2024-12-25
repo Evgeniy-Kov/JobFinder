@@ -34,6 +34,10 @@ class SettingFilterFragment : Fragment() {
         binding.placeOfWorkEnter.setOnClickListener {
             findNavController().navigate(R.id.placeOfWorkFragment)
         }
+
+        binding.toolbarFilter.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {

@@ -42,6 +42,10 @@ class PlaceOfWorkFragment : Fragment() {
             findNavController().navigate(direction)
         }
 
+        binding.toolbarPlaceOfWork.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
     }
 
     override fun onDestroyView() {
