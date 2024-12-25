@@ -45,10 +45,10 @@ class SettingFilterFragment : Fragment() {
             findNavController().navigateUp()
         }
         binding.resetButton.setOnClickListener {
-            //viewModel.resetFilter()
+            // viewModel.resetFilter()
         }
         binding.acceptButton.setOnClickListener {
-            //viewModel.applyFilter()
+            // viewModel.applyFilter()
         }
 
         binding.salaryEnter.doOnTextChanged { s, _, _, _ ->
@@ -59,7 +59,7 @@ class SettingFilterFragment : Fragment() {
             } else {
                 binding.salaryFrame.endIconMode = END_ICON_NONE
                 binding.salaryFrame.endIconDrawable = null
-                //не забыть убрать
+                // не забыть убрать
                 setButtonsVisibility(GONE)
             }
         }

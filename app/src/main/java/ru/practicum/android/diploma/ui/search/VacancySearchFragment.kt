@@ -52,7 +52,9 @@ class VacancySearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val onVacancyClickDebounce = debounce<Vacancy>(
-            CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
         ) { vacancy ->
             onVacancyClick(vacancy)
         }
@@ -82,7 +84,7 @@ class VacancySearchFragment : Fragment() {
         binding.parametersButton.setOnClickListener {
             findNavController().navigate(R.id.action_vacancySearchFragment_to_settingFilterFragment)
         }
-        
+
         binding.recyclerView.adapter = searchAdapter.withLoadStateFooter(LoaderStateAdapter())
 
         initializeViews()
@@ -100,17 +102,17 @@ class VacancySearchFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.vacancies.collectLatest {
-                        searchAdapter.submitData(it)
-                        searchAdapter.addLoadStateListener { state ->
-                            processResult(searchAdapter.snapshot().size, state.refresh)
-                            if (state.hasError) {
-                                isLoadHasError = true
-                                binding.recyclerView.addOnScrollListener(listener)
-                            } else {
-                                isLoadHasError = false
-                            }
+                    searchAdapter.submitData(it)
+                    searchAdapter.addLoadStateListener { state ->
+                        processResult(searchAdapter.snapshot().size, state.refresh)
+                        if (state.hasError) {
+                            isLoadHasError = true
+                            binding.recyclerView.addOnScrollListener(listener)
+                        } else {
+                            isLoadHasError = false
                         }
                     }
+                }
             }
         }
     }
