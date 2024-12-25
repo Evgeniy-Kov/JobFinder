@@ -25,7 +25,7 @@ class IndustryFragment : Fragment() {
     private var searchAdapter = IndustryAdapter()
     private val selectedIndustries = hashSetOf<Industry>() // добавить потом все эти ранее выбранные отрасли в фильтр
 
-    val arr = arrayListOf(Industry("123","Жижка"), Industry("124","Пыпыжка"))
+    private val arr = arrayListOf(Industry("123","Жижка"), Industry("124","Пыпыжка"))
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +60,7 @@ class IndustryFragment : Fragment() {
         _binding = null
     }
 
-    fun onIndustryClick(industry: Industry) {
+    private fun onIndustryClick(industry: Industry) {
         industry.isClicked = !industry.isClicked
         if (industry.isClicked) {
             selectedIndustries.add(industry)
