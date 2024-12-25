@@ -6,11 +6,13 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ru.practicum.android.diploma.App.Companion.PREFERENCES
 import ru.practicum.android.diploma.data.repository.FavouriteVacancyRepositoryImpl
+import ru.practicum.android.diploma.data.repository.IndustriesRepositoryImpl
 import ru.practicum.android.diploma.data.repository.PagingSourceRepositoryImpl
 import ru.practicum.android.diploma.data.repository.SharedPreferencesRepositoryImpl
 import ru.practicum.android.diploma.data.repository.VacancyDetailsRepositoryImpl
 import ru.practicum.android.diploma.data.repository.VacancySearchRepositoryImpl
 import ru.practicum.android.diploma.domain.api.FavouriteVacancyRepository
+import ru.practicum.android.diploma.domain.api.IndustriesRepository
 import ru.practicum.android.diploma.domain.api.PagingSourceRepository
 import ru.practicum.android.diploma.domain.api.SharedPreferencesRepository
 import ru.practicum.android.diploma.domain.api.VacancyDetailsRepository
@@ -31,6 +33,10 @@ val repositoryModule = module {
 
     single<PagingSourceRepository> {
         PagingSourceRepositoryImpl(get())
+    }
+
+    single<IndustriesRepository> {
+        IndustriesRepositoryImpl(get())
     }
 
     single<SharedPreferences> {

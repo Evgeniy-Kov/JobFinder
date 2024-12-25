@@ -59,13 +59,13 @@ fun AreaDto.toArea(): Area {
 fun IndustryDto.toIndustry(): Industry {
     return Industry(
         id = id,
-        name = name
+        name = name,
     )
 }
 
 fun IndustryItemDto.toIndustry(): Industry {
     return Industry(
         id = id,
-        name = name
+        name = name,
     )
 }
