@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSettingFilterBinding
@@ -25,6 +26,14 @@ class SettingFilterFragment : Fragment() {
     ): View {
         _binding = FragmentSettingFilterBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.placeOfWorkEnter.setOnClickListener {
+            findNavController().navigate(R.id.placeOfWorkFragment)
+        }
     }
 
     override fun onDestroyView() {
