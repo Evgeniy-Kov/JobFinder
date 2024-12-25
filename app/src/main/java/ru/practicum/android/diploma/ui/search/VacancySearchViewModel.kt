@@ -105,7 +105,13 @@ class VacancySearchViewModel(
         if (query.isBlank()) {
             return list
         }
-        return list.filter { it.name.lowercase().contains(query.lowercase()) }
+        val filteredList = list.filter { it.name.lowercase().contains(query.lowercase()) }
+        if (filteredList.isEmpty()) {
+            _areaScreenState.value = AreaScreenState.Empty
+        } else {
+            _areaScreenState.value = AreaScreenState.Content
+        }
+        return filteredList
 
     }
 

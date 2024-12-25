@@ -64,7 +64,9 @@ class RegionFragment : Fragment() {
         }
 
         binding.clearButton.setOnClickListener {
+            renderState(AreaScreenState.Content)
             binding.regionEditText.setText("")
+            viewModel.setRegionNameFilter("")
         }
 
         binding.regionList.itemAnimator = null
@@ -99,15 +101,30 @@ class RegionFragment : Fragment() {
         binding.imgError.isVisible = state !is AreaScreenState.Content && state !is AreaScreenState.Loading
         binding.txtError.isVisible = state !is AreaScreenState.Content && state !is AreaScreenState.Loading
         if (state !is AreaScreenState.Content && state !is AreaScreenState.Loading) {
-            setMessagesAndDrawable()
+            setMessagesAndDrawable(state)
         }
     }
 
-    private fun setMessagesAndDrawable() {
-        val message = requireContext().getString(R.string.not_get_list)
-        val drawableResId = R.drawable.region_error_placeholder
+    private fun setMessagesAndDrawable(state: AreaScreenState) {
+        val message = getPlaceholderMessage(state)
+        val drawableResId = getPlaceholderDrawableResId(state)
         binding.imgError.setImageResource(drawableResId)
         binding.txtError.text = message
+    }
+
+    private fun getPlaceholderMessage(state: AreaScreenState): String {
+        return when (state) {
+            is AreaScreenState.Empty -> requireContext().getString(R.string.no_such_region)
+            is AreaScreenState.Error -> requireContext().getString(R.string.not_get_list)
+            else -> ""
+        }
+    }
+
+    private fun getPlaceholderDrawableResId(state: AreaScreenState): Int {
+        return when (state) {
+            is AreaScreenState.Empty -> R.drawable.no_jobs
+            else -> R.drawable.region_error_placeholder
+        }
     }
 
     private fun setScreenMode() {
