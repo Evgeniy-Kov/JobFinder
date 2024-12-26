@@ -8,13 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.android.material.color.MaterialColors
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
@@ -102,14 +100,8 @@ class VacancyFragment : Fragment() {
     private fun renderFavoriteState(isFavourite: Boolean) {
         if (isFavourite) {
             binding.btnFavourite.setImageResource(R.drawable.ic_favorites_checked)
-            binding.btnFavourite.setColorFilter(
-                ContextCompat.getColor(requireContext(), R.color.red)
-            )
         } else {
             binding.btnFavourite.setImageResource(R.drawable.ic_favorites)
-            binding.btnFavourite.setColorFilter(
-                MaterialColors.getColor(binding.btnFavourite, com.google.android.material.R.attr.colorOnPrimary)
-            )
         }
         vacancyDetails = vacancyDetails?.copy(isFavourite = isFavourite)
     }

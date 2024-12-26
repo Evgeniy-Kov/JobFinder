@@ -24,12 +24,11 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="@dimen/dp_8"
-        android:src="@drawable/ic_parameters"
         android:backgroundTint="?attr/colorPrimary"
+        android:src="@drawable/ic_parameters"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:tint="?attr/colorOnPrimary" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
     <EditText
         android:id="@+id/search_edit_text"
@@ -122,12 +121,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_12"
         android:background="@drawable/no_jobs_layout"
-        android:textAppearance="@style/FontYSDisplayRegularSize16Weight400"
         android:paddingStart="@dimen/dp_12"
         android:paddingTop="@dimen/dp_4"
         android:paddingEnd="@dimen/dp_12"
         android:paddingBottom="@dimen/dp_4"
         android:text="@string/no_such_jobs"
+        android:textAppearance="@style/FontYSDisplayRegularSize16Weight400"
         android:textColor="@color/white"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"

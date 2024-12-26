@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.ui.constraintLayout)
     implementation(libs.androidx.activity)
     implementation(libs.koin.androidx.navigation)
+    implementation(libs.kotlinx.coroutines.core)
 
     // region Unit tests
     testImplementation(libs.unitTests.junit)

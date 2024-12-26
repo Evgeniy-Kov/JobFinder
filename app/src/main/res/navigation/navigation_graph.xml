@@ -55,7 +55,11 @@
         android:id="@+id/regionFragment"
         android:name="ru.practicum.android.diploma.ui.region.RegionFragment"
         android:label="fragment_region"
-        tools:layout="@layout/fragment_region" />
+        tools:layout="@layout/fragment_region">
+        <argument
+            android:name="isRegionMode"
+            app:argType="boolean" />
+    </fragment>
     <fragment
         android:id="@+id/vacancyFragment"
         android:name="ru.practicum.android.diploma.ui.vacancy.VacancyFragment"
