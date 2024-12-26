@@ -82,7 +82,6 @@ class IndustryFragment : Fragment() {
         }
 
         binding.chooseButton.setOnClickListener {
-
         }
     }
 
@@ -133,10 +132,6 @@ class IndustryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun onIndustryClick(industry: Industry) {
-            selectedIndustry = industry
     }
 
     private fun clearButtonVisibility(s: CharSequence?, v: ImageView) {

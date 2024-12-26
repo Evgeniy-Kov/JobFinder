@@ -177,17 +177,11 @@ class VacancySearchFragment : Fragment() {
 
     private fun handleNotLoadingState(dataSize: Int) {
         when {
-            dataSize == 0 && searchValue.isBlank() -> {
-                renderState(SearchScreenState.Default)
-            }
+            dataSize == 0 && searchValue.isBlank() -> renderState(SearchScreenState.Default)
 
-            dataSize == 0 && searchValue.isNotBlank() -> {
-                renderState(SearchScreenState.NothingFound)
-            }
+            dataSize == 0 && searchValue.isNotBlank() -> renderState(SearchScreenState.NothingFound)
 
-            else -> {
-                renderState(SearchScreenState.Content)
-            }
+            else -> renderState(SearchScreenState.Content)
         }
     }
 
