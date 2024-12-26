@@ -50,13 +50,6 @@ class IndustryFragment : Fragment() {
             findNavController().navigateUp()
         }
         binding.industryList.adapter = searchAdapter
-        val onIndustryClickDebounce = debounce<Industry>(
-            CLICK_DEBOUNCE_DELAY,
-            viewLifecycleOwner.lifecycleScope,
-            false
-        ) { industry ->
-            onIndustryClick(industry)
-        }
 
         binding.industryEditText.doOnTextChanged { text, _, _, _ ->
             clearButtonVisibility(text, binding.clearButton)
@@ -77,7 +70,7 @@ class IndustryFragment : Fragment() {
             .launchIn(lifecycleScope)
 
         searchAdapter.onItemClickListener = IndustryViewHolder.OnItemClickListener { industry ->
-            onIndustryClickDebounce(industry)
+            onIndustryClick(industry)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -163,7 +156,4 @@ class IndustryFragment : Fragment() {
         }
     }
 
-    companion object {
-        const val CLICK_DEBOUNCE_DELAY = 300L
-    }
 }
