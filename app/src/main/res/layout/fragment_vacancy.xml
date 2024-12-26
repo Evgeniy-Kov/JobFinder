@@ -42,8 +42,7 @@
         android:src="@drawable/ic_favorites"
         app:layout_constraintBottom_toBottomOf="@id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:tint="?attr/colorOnPrimary" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftBorder"
