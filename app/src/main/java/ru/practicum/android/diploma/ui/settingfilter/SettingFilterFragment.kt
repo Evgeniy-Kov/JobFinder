@@ -46,9 +46,15 @@ class SettingFilterFragment : Fragment() {
             findNavController().navigate(R.id.placeOfWorkFragment)
         }
 
+        binding.industryEnter.setOnClickListener {
+            findNavController().navigate(R.id.industryFragment)
+        }
+
         binding.toolbarFilter.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
+
+        viewModel.getIndustries()
         binding.resetButton.setOnClickListener {
             // viewModel.resetFilter()
         }
@@ -74,5 +80,4 @@ class SettingFilterFragment : Fragment() {
         binding.resetButton.visibility = visibility
         binding.acceptButton.visibility = visibility
     }
-
 }

@@ -99,6 +99,9 @@ class VacancySearchFragment : Fragment() {
         viewModel.preferenceUpdates.observe(viewLifecycleOwner) { filter ->
             updateFilterUI(filter)
         }
+        binding.parametersButton.setOnClickListener {
+            findNavController().navigate(R.id.settingFilterFragment)
+        }
 
         renderState(SearchScreenState.Default)
     }
@@ -183,17 +186,11 @@ class VacancySearchFragment : Fragment() {
 
     private fun handleNotLoadingState(dataSize: Int) {
         when {
-            dataSize == 0 && searchValue.isBlank() -> {
-                renderState(SearchScreenState.Default)
-            }
+            dataSize == 0 && searchValue.isBlank() -> renderState(SearchScreenState.Default)
 
-            dataSize == 0 && searchValue.isNotBlank() -> {
-                renderState(SearchScreenState.NothingFound)
-            }
+            dataSize == 0 && searchValue.isNotBlank() -> renderState(SearchScreenState.NothingFound)
 
-            else -> {
-                renderState(SearchScreenState.Content)
-            }
+            else -> renderState(SearchScreenState.Content)
         }
     }
 

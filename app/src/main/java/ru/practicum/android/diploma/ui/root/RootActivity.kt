@@ -8,7 +8,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 
@@ -40,7 +39,8 @@ class RootActivity : AppCompatActivity() {
                 R.id.placeOfWorkFragment,
                 R.id.countryFragment,
                 R.id.regionFragment,
-                R.id.vacancyFragment -> {
+                R.id.vacancyFragment,
+                R.id.industryFragment -> {
                     changeBottomNavigationViewVisibility(false)
                 }
 
@@ -49,17 +49,10 @@ class RootActivity : AppCompatActivity() {
                 }
             }
         }
-
-        // Пример использования access token для HeadHunter API
-        networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
     }
 
     private fun changeBottomNavigationViewVisibility(isVisible: Boolean) {
         binding.bottomNavigationView.isVisible = isVisible
         binding.bottomNavDivider.isVisible = isVisible
-    }
-
-    private fun networkRequestExample(accessToken: String) {
-        // ...
     }
 }
