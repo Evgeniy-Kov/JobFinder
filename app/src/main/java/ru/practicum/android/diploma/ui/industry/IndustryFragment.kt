@@ -33,7 +33,7 @@ class IndustryFragment : Fragment() {
 
     private val viewModel by koinNavGraphViewModel<VacancySearchViewModel>(R.id.vacancySearchFragment)
     private var searchAdapter = IndustryAdapter()
-    private val selectedIndustries = hashSetOf<Industry>() // добавить потом все эти ранее выбранные отрасли в фильтр
+    private var selectedIndustry: Industry? = null  // выбранная отрасль для фильтра
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -141,12 +141,7 @@ class IndustryFragment : Fragment() {
     }
 
     private fun onIndustryClick(industry: Industry) {
-        industry.isClicked = !industry.isClicked
-        if (industry.isClicked) {
-            selectedIndustries.add(industry)
-        } else {
-            selectedIndustries.remove(industry)
-        }
+            selectedIndustry = industry
     }
 
     private fun clearButtonVisibility(s: CharSequence?, v: ImageView) {
