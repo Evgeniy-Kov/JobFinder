@@ -23,7 +23,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.ui.search.VacancySearchViewModel
-import ru.practicum.android.diploma.util.debounce
 
 class IndustryFragment : Fragment() {
 
@@ -32,8 +31,11 @@ class IndustryFragment : Fragment() {
         get() = requireNotNull(_binding) { "Binding is null" }
 
     private val viewModel by koinNavGraphViewModel<VacancySearchViewModel>(R.id.vacancySearchFragment)
-    private var searchAdapter = IndustryAdapter()
-    private var selectedIndustry: Industry? = null  // выбранная отрасль для фильтра
+    private var searchAdapter = IndustryAdapter { selectedItem ->
+        selectedIndustry = selectedItem
+        binding.chooseButton.isVisible = true
+    }
+    private var selectedIndustry: Industry? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,18 +71,18 @@ class IndustryFragment : Fragment() {
             .onEach(::updateSearchQuery)
             .launchIn(lifecycleScope)
 
-        searchAdapter.onItemClickListener = IndustryViewHolder.OnItemClickListener { industry ->
-            onIndustryClick(industry)
-        }
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.industry.collect { items ->
-                searchAdapter.submitList(items)
+                searchAdapter.industryList = items
             }
         }
 
         viewModel.industryScreenState.observe(viewLifecycleOwner) { state ->
             renderState(state)
+        }
+
+        binding.chooseButton.setOnClickListener {
+
         }
     }
 
