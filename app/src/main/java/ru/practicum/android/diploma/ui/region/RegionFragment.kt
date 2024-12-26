@@ -137,7 +137,6 @@ class RegionFragment : Fragment() {
 
     private fun setCountryScreenMode() {
         binding.groupSearchField.isVisible = args.isRegionMode
-        viewModel.getAreas()
         viewModel.countries.observe(viewLifecycleOwner) { countries ->
             areaAdapter.submitList(countries)
         }

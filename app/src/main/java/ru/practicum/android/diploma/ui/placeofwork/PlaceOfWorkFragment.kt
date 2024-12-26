@@ -46,6 +46,8 @@ class PlaceOfWorkFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        viewModel.getAreas()
+
     }
 
     override fun onDestroyView() {
