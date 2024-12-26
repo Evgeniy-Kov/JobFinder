@@ -171,17 +171,11 @@ class VacancySearchFragment : Fragment() {
 
     private fun processResult(dataSize: Int, state: LoadState) {
         when (state) {
-            is LoadState.Loading -> {
-                renderState(SearchScreenState.Loading)
-            }
+            is LoadState.Loading -> renderState(SearchScreenState.Loading)
 
-            is LoadState.Error -> {
-                renderState(SearchScreenState.Error(state.error.message ?: ""))
-            }
+            is LoadState.Error -> renderState(SearchScreenState.Error(state.error.message ?: ""))
 
-            is LoadState.NotLoading -> {
-                handleNotLoadingState(dataSize)
-            }
+            is LoadState.NotLoading -> handleNotLoadingState(dataSize)
         }
     }
 
@@ -213,9 +207,7 @@ class VacancySearchFragment : Fragment() {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        if (savedInstanceState != null) {
-            searchValue = savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF)
-        }
+        if (savedInstanceState != null) searchValue = savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF)
     }
 
     private fun onVacancyClick(vacancy: Vacancy) {
@@ -242,9 +234,7 @@ class VacancySearchFragment : Fragment() {
     private fun Activity.hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val view = currentFocus
-        if (view != null) {
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
+        if (view != null) imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun renderState(state: SearchScreenState) {
@@ -254,16 +244,12 @@ class VacancySearchFragment : Fragment() {
         binding.placeholderTv.isVisible = state !is SearchScreenState.Content && state !is SearchScreenState.Loading
         binding.valueSearchResultTv.isVisible =
             state is SearchScreenState.Content || state is SearchScreenState.NothingFound
-        if (state !is SearchScreenState.Content && state !is SearchScreenState.Loading) {
-            setMessagesAndDrawable(state)
-        }
+        if (state !is SearchScreenState.Content && state !is SearchScreenState.Loading) setMessagesAndDrawable(state)
     }
 
     private fun setMessagesAndDrawable(state: SearchScreenState) {
-        val message = getPlaceholderMessage(state)
-        val drawableResId = getPlaceholderDrawableResId(state)
-        binding.placeholderIv.setImageResource(drawableResId)
-        binding.placeholderTv.text = message
+        binding.placeholderIv.setImageResource(getPlaceholderDrawableResId(state))
+        binding.placeholderTv.text = getPlaceholderMessage(state)
         if (state is SearchScreenState.NothingFound) {
             binding.valueSearchResultTv.text = requireContext().getString(R.string.no_such_jobs)
         }
