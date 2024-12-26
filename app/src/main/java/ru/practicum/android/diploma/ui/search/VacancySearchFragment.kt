@@ -81,6 +81,11 @@ class VacancySearchFragment : Fragment() {
         searchAdapter.onItemClickListener = VacancyViewHolder.OnItemClickListener { vacancy ->
             onVacancyClickDebounce(vacancy)
         }
+
+        binding.parametersButton.setOnClickListener {
+            findNavController().navigate(R.id.action_vacancySearchFragment_to_settingFilterFragment)
+        }
+
         binding.recyclerView.adapter = searchAdapter.withLoadStateFooter(LoaderStateAdapter())
 
         initializeViews()
@@ -88,8 +93,7 @@ class VacancySearchFragment : Fragment() {
         observeLoadingData(onScrollListener)
 
         viewModel.itemCountLivedata.observe(viewLifecycleOwner) { count ->
-            binding.valueSearchResultTv.text =
-                String.format(getString(R.string.vacancies_found), count)
+            binding.valueSearchResultTv.text = String.format(getString(R.string.vacancies_found), count)
         }
 
         viewModel.preferenceUpdates.observe(viewLifecycleOwner) { filter ->
@@ -110,19 +114,18 @@ class VacancySearchFragment : Fragment() {
     private fun observeLoadingData(listener: RecyclerView.OnScrollListener) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.vacancies
-                    .collectLatest {
-                        searchAdapter.submitData(it)
-                        searchAdapter.addLoadStateListener { state ->
-                            processResult(searchAdapter.snapshot().size, state.refresh)
-                            if (state.hasError) {
-                                isLoadHasError = true
-                                binding.recyclerView.addOnScrollListener(listener)
-                            } else {
-                                isLoadHasError = false
-                            }
+                viewModel.vacancies.collectLatest {
+                    searchAdapter.submitData(it)
+                    searchAdapter.addLoadStateListener { state ->
+                        processResult(searchAdapter.snapshot().size, state.refresh)
+                        if (state.hasError) {
+                            isLoadHasError = true
+                            binding.recyclerView.addOnScrollListener(listener)
+                        } else {
+                            isLoadHasError = false
                         }
                     }
+                }
             }
         }
     }
@@ -154,7 +157,6 @@ class VacancySearchFragment : Fragment() {
             } else {
                 viewModel.searchDebounce(searchValue)
             }
-
         }
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -211,8 +213,7 @@ class VacancySearchFragment : Fragment() {
     }
 
     private fun onVacancyClick(vacancy: Vacancy) {
-        val direction =
-            VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment(vacancy.id)
+        val direction = VacancySearchFragmentDirections.actionVacancySearchFragmentToVacancyFragment(vacancy.id)
         findNavController().navigate(direction)
     }
 
