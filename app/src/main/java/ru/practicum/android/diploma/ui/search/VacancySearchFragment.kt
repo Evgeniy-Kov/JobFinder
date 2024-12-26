@@ -150,6 +150,10 @@ class VacancySearchFragment : Fragment() {
             }
             false
         }
+
+        binding.parametersButton.setOnClickListener {
+            findNavController().navigate(R.id.settingFilterFragment)
+        }
     }
 
     private fun processResult(dataSize: Int, state: LoadState) {

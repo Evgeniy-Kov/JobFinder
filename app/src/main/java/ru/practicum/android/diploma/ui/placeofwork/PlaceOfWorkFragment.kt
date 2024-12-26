@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentPlaceOfWorkBinding
@@ -25,6 +26,28 @@ class PlaceOfWorkFragment : Fragment() {
     ): View {
         _binding = FragmentPlaceOfWorkBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.countryEnter.setOnClickListener {
+            val direction =
+                PlaceOfWorkFragmentDirections.actionPlaceOfWorkFragmentToRegionFragment(isRegionMode = false)
+            findNavController().navigate(direction)
+        }
+
+        binding.regionEnter.setOnClickListener {
+            val direction = PlaceOfWorkFragmentDirections.actionPlaceOfWorkFragmentToRegionFragment(isRegionMode = true)
+            findNavController().navigate(direction)
+        }
+
+        binding.toolbarPlaceOfWork.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        viewModel.getAreas()
+
     }
 
     override fun onDestroyView() {
