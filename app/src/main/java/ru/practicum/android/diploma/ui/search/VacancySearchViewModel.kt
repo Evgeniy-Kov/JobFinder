@@ -21,15 +21,14 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.api.IndustriesInteractor
-import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.AreasInteractor
+import ru.practicum.android.diploma.domain.api.IndustriesInteractor
 import ru.practicum.android.diploma.domain.api.PagingSourceInteractor
+import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.domain.models.Area
-import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.industry.IndustryScreenState
 import ru.practicum.android.diploma.ui.region.AreaScreenState
 import ru.practicum.android.diploma.util.debounce
 
@@ -42,8 +41,12 @@ class VacancySearchViewModel(
     private val _query = MutableLiveData<String>()
     val query: LiveData<String> = _query
 
-    private val _industriesList = MutableLiveData<Resource<List<Industry>>>()
-    val industriesList: LiveData<Resource<List<Industry>>> = _industriesList
+    private val _industriesList = MutableLiveData<List<Industry>>(emptyList())
+    val industriesList: LiveData<List<Industry>> = _industriesList
+
+    private val _industryScreenState = MutableLiveData<IndustryScreenState>(IndustryScreenState.Content)
+    val industryScreenState: LiveData<IndustryScreenState>
+        get() = _industryScreenState
 
     private val _areaScreenState = MutableLiveData<AreaScreenState>(AreaScreenState.Content)
     val areaScreenState: LiveData<AreaScreenState>
@@ -61,6 +64,11 @@ class VacancySearchViewModel(
     val regs = countryId.map(::filterAreaByParentId)
 
     val regions = regionNameFilter.map(::filterAreaByQuery)
+
+    private val _industryNameFilter = MutableStateFlow<String>("")
+    val industryNameFilter: StateFlow<String> = _industryNameFilter.asStateFlow()
+
+    val industry = industryNameFilter.map(::filterIndustryByQuery)
 
     private var latestSearchText: String = ""
 
@@ -185,9 +193,47 @@ class VacancySearchViewModel(
     }
 
     fun getIndustries() {
+        _industryScreenState.value = IndustryScreenState.Loading
         viewModelScope.launch {
-            _industriesList.postValue(industriesInteractor.getIndustries())
+            val industries = industriesInteractor.getIndustries()
+            processIndustryResult(industries)
         }
+    }
+
+    private fun processIndustryResult(result: Resource<List<Industry>>) {
+        if (industryScreenState.value != IndustryScreenState.Loading) {
+            return
+        }
+
+        when (result) {
+            is Resource.Success -> {
+                _industriesList.value = result.data
+                _industryScreenState.value = IndustryScreenState.Content
+            }
+
+            is Resource.Error -> {
+                _industryScreenState.value = IndustryScreenState.Error(result.message)
+            }
+        }
+    }
+
+    fun setIndustryNameFilter(industryNameFilter: String) {
+        _industryNameFilter.tryEmit(industryNameFilter)
+    }
+
+    private fun filterIndustryByQuery(query: String): List<Industry> {
+        val list = industriesList.value ?: emptyList()
+        if (query.isBlank()) {
+            return list
+        }
+        val filteredList = list.filter { it.name.lowercase().contains(query.lowercase()) }
+        if (filteredList.isEmpty()) {
+            _industryScreenState.value = IndustryScreenState.Empty
+        } else {
+            _industryScreenState.value = IndustryScreenState.Content
+        }
+        return filteredList
+
     }
 
     companion object {
