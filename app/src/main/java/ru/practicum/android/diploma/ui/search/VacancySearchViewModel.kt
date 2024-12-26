@@ -28,8 +28,8 @@ import ru.practicum.android.diploma.domain.api.IndustriesInteractor
 import ru.practicum.android.diploma.domain.api.PagingSourceInteractor
 import ru.practicum.android.diploma.domain.api.SharedPreferencesInteractor
 import ru.practicum.android.diploma.domain.models.Area
-import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Filter
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.industry.IndustryScreenState
