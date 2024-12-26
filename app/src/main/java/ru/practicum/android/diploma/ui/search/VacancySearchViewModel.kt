@@ -21,13 +21,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import ru.practicum.android.diploma.App.Companion.FILTER_PREFERENCES_KEY
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.App.Companion.FILTER_PREFERENCES_KEY
 import ru.practicum.android.diploma.domain.api.AreasInteractor
 import ru.practicum.android.diploma.domain.api.PagingSourceInteractor
 import ru.practicum.android.diploma.domain.api.SharedPreferencesInteractor
-import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.region.AreaScreenState
@@ -36,7 +36,6 @@ import ru.practicum.android.diploma.util.debounce
 class VacancySearchViewModel(
     private val pagingSourceInteractor: PagingSourceInteractor,
     private val sharedPrefInteractor: SharedPreferencesInteractor,
-    private val pagingSourceInteractor: PagingSourceInteractor,
     private val areasInteractor: AreasInteractor,
 ) : ViewModel() {
 
