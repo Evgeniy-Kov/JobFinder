@@ -34,18 +34,6 @@ class SettingFilterFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.placeOfWorkEnter.setOnClickListener {
-            findNavController().navigate(R.id.placeOfWorkFragment)
-        }
-
-        binding.toolbarFilter.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -53,6 +41,11 @@ class SettingFilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.placeOfWorkEnter.setOnClickListener {
+            findNavController().navigate(R.id.placeOfWorkFragment)
+        }
+
         binding.toolbarFilter.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
