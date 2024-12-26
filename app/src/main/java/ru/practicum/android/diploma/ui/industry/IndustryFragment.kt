@@ -89,8 +89,6 @@ class IndustryFragment : Fragment() {
         viewModel.industryScreenState.observe(viewLifecycleOwner) { state ->
             renderState(state)
         }
-
-        viewModel.getIndustries()
     }
 
     private fun renderState(state: IndustryScreenState) {

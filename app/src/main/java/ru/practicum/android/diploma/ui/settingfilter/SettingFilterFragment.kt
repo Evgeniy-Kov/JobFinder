@@ -35,9 +35,15 @@ class SettingFilterFragment : Fragment() {
             findNavController().navigate(R.id.placeOfWorkFragment)
         }
 
+        binding.industryEnter.setOnClickListener {
+            findNavController().navigate(R.id.industryFragment)
+        }
+
         binding.toolbarFilter.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
+
+        viewModel.getIndustries()
     }
 
     override fun onDestroyView() {

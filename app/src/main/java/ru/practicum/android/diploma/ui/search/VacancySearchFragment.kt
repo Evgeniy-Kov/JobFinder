@@ -91,7 +91,7 @@ class VacancySearchFragment : Fragment() {
                 String.format(getString(R.string.vacancies_found), count)
         }
         binding.parametersButton.setOnClickListener {
-            findNavController().navigate(R.id.action_vacancySearchFragment_to_industryFragment)
+            findNavController().navigate(R.id.settingFilterFragment)
         }
 
         renderState(SearchScreenState.Default)

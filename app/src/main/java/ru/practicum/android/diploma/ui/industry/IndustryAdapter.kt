@@ -8,6 +8,8 @@ import ru.practicum.android.diploma.domain.models.Industry
 
 class IndustryAdapter : ListAdapter<Industry, IndustryViewHolder>(IndustryItemDiffCallBack()) {
 
+    private var selectedPosition: Int = -1
+
     var onItemClickListener: IndustryViewHolder.OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
@@ -17,7 +19,14 @@ class IndustryAdapter : ListAdapter<Industry, IndustryViewHolder>(IndustryItemDi
     }
 
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
-        holder.bind(getItem(position), onItemClickListener)
+        holder.bind(getItem(position), onItemClickListener, position == selectedPosition)
     }
 
+    fun selectItem(position: Int) {
+        val previousPosition = selectedPosition
+        selectedPosition = position
+        notifyItemChanged(previousPosition)
+        notifyItemChanged(selectedPosition)
+
+    }
 }
