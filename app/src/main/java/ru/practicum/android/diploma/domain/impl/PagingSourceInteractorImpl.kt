@@ -7,7 +7,11 @@ import ru.practicum.android.diploma.domain.api.PagingSourceRepository
 class PagingSourceInteractorImpl(
     private val repository: PagingSourceRepository
 ) : PagingSourceInteractor {
-    override fun getVacanciesPagingSource(query: String, filter: Map<String, String>, foundItemsCallback: (Int) -> Unit): VacanciesPagingSource {
+    override fun getVacanciesPagingSource(
+        query: String,
+        filter: Map<String, String>,
+        foundItemsCallback: (Int) -> Unit
+    ): VacanciesPagingSource {
         return repository.getVacanciesPagingSource(query, filter, foundItemsCallback)
     }
 }

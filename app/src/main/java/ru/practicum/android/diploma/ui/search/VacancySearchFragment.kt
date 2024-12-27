@@ -182,7 +182,6 @@ class VacancySearchFragment : Fragment() {
 
             is LoadState.Error -> viewModel.setSearchScreenState(SearchScreenState.Error(state.error.message ?: ""))
 
-
             is LoadState.NotLoading -> handleNotLoadingState(dataSize)
         }
     }
