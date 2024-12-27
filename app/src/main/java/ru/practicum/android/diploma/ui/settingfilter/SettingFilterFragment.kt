@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSettingFilterBinding
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.ui.search.VacancySearchViewModel
 
 class SettingFilterFragment : Fragment() {
@@ -55,11 +56,16 @@ class SettingFilterFragment : Fragment() {
         }
 
         viewModel.getIndustries()
+
         binding.resetButton.setOnClickListener {
-            // viewModel.resetFilter()
+            viewModel.clearFilter()
         }
         binding.acceptButton.setOnClickListener {
-            // viewModel.applyFilter()
+            viewModel.saveFilter()
+        }
+
+        viewModel.preferenceUpdates.observe(viewLifecycleOwner) { filter ->
+            processFilterResult(filter)
         }
 
         binding.salaryEnter.doOnTextChanged { s, _, _, _ ->
@@ -71,7 +77,7 @@ class SettingFilterFragment : Fragment() {
                 binding.salaryFrame.endIconMode = END_ICON_NONE
                 binding.salaryFrame.endIconDrawable = null
                 // не забыть убрать
-                setButtonsVisibility(GONE)
+                //  setButtonsVisibility(GONE)
             }
         }
     }
@@ -80,4 +86,30 @@ class SettingFilterFragment : Fragment() {
         binding.resetButton.visibility = visibility
         binding.acceptButton.visibility = visibility
     }
+
+    private fun processFilterResult(filter: Filter) {
+        if (!filter.isDefault) {
+            binding.placeOfWorkEnter.setText(
+                getString(
+                    R.string.filter_place_of_work,
+                    filter.country?.name ?: "",
+                    filter.region?.name ?: ""
+                )
+            )
+            binding.industryEnter.setText(filter.industry?.name ?: "")
+            binding.withoutSalary.isChecked = filter.onlyWithSalary
+            binding.salaryEnter.setText(filter.salary?.toString() ?: "")
+            setButtonsVisibility(VISIBLE)
+        } else {
+            binding.placeOfWorkEnter.text = null
+            binding.industryEnter.text = null
+            binding.withoutSalary.isChecked = false
+            binding.salaryEnter.text = null
+            setButtonsVisibility(GONE)
+        }
+
+
+    }
 }
+
+
