@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.ui.search
 
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -49,6 +50,8 @@ class VacancySearchViewModel(
     private val _preferenceUpdates = MutableLiveData<Filter?>()
     val preferenceUpdates: LiveData<Filter?>
         get() = _preferenceUpdates
+
+    var latestSearchFilter = Filter()
 
     private val _industriesList = MutableLiveData<List<Industry>>(emptyList())
     val industriesList: LiveData<List<Industry>> = _industriesList
@@ -172,8 +175,9 @@ class VacancySearchViewModel(
     private val getItemCountCallback: (Int) -> Unit = { count -> _itemCountLivedata.value = count }
 
     private fun newPager(query: String): Pager<Int, Vacancy> {
+        val filterOptions = parseFilter()
         return Pager(PagingConfig(PAGE_SIZE, enablePlaceholders = false, prefetchDistance = PAGE_SIZE / 2)) {
-            pagingSourceInteractor.getVacanciesPagingSource(query, getItemCountCallback)
+            pagingSourceInteractor.getVacanciesPagingSource(query, filterOptions, getItemCountCallback)
                 .also { newPagingSource = it }
         }
     }
@@ -223,6 +227,7 @@ class VacancySearchViewModel(
             return
         }
         latestSearchText = changedText
+        latestSearchFilter = preferenceUpdates.value ?: Filter()
         jobSearchDebounce(changedText)
     }
 
