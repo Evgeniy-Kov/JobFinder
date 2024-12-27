@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.ui.search
 
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -61,6 +62,10 @@ class VacancySearchViewModel(
     val areaScreenState: LiveData<AreaScreenState>
         get() = _areaScreenState
 
+    private val _searchScreenState = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
+    val searchScreenState: LiveData<SearchScreenState>
+        get() = _searchScreenState
+
     private val _countries = MutableLiveData<List<Area>>(emptyList())
     val countries: LiveData<List<Area>> = _countries
 
@@ -99,6 +104,10 @@ class VacancySearchViewModel(
     private val _itemCountLivedata = MutableLiveData<Int>()
     val itemCountLivedata: LiveData<Int>
         get() = _itemCountLivedata
+
+    fun setSearchScreenState(state: SearchScreenState) {
+        _searchScreenState.value = state
+    }
 
     fun clearLatestSearchText() {
         latestSearchText = ""
