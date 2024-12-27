@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -128,6 +127,27 @@ class VacancySearchViewModel(
             val resource = areasInteractor.getAreas()
             processResult(resource)
         }
+    }
+
+    private fun parseFilter(): Map<String, String> {
+        val filter = preferenceUpdates.value ?: Filter()
+        val result = mutableMapOf<String, String>()
+        if (filter.country != null) {
+            result["area"] = filter.country.id
+        }
+        if (filter.region != null) {
+            result["area"] = filter.region.id
+        }
+        if (filter.industry != null) {
+            result["industry"] = filter.industry.id
+        }
+        if (filter.salary != null) {
+            result["salary"] = filter.salary.toString()
+        }
+        if (filter.onlyWithSalary) {
+            result["only_with_salary"] = "true"
+        }
+        return result
     }
 
     private fun setQuery(query: String) {
