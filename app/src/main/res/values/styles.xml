@@ -172,7 +172,7 @@
         <item name="android:textAppearance">@style/FontYSDisplayRegularSize16Weight400</item>
         <item name="android:focusable">true</item>
         <item name="android:contextClickable">true</item>
-        <item name="android:inputType">number</item>
+        <item name="android:inputType">numberSigned</item>
         <item name="android:maxLines">1</item>
     </style>
 
