@@ -53,10 +53,10 @@ class PlaceOfWorkFragment : Fragment() {
 
         viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
             if (!filter.country?.name.isNullOrBlank()) {
-                binding.countryEnter.setText(filter.country.name)
+                binding.countryEnter.setText(filter.country!!.name)
             }
             if (!filter.region?.name.isNullOrBlank()) {
-                binding.regionEnter.setText(filter.region.name)
+                binding.regionEnter.setText(filter.region!!.name)
             }
         }
 

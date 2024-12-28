@@ -15,7 +15,9 @@ import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSettingFilterBinding
+import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Filter
+import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.ui.search.VacancySearchViewModel
 
 class SettingFilterFragment : Fragment() {
@@ -25,6 +27,7 @@ class SettingFilterFragment : Fragment() {
         get() = requireNotNull(_binding) { "Binding is null" }
 
     private val viewModel by koinNavGraphViewModel<VacancySearchViewModel>(R.id.vacancySearchFragment)
+    private var oldSalary = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,16 +74,16 @@ class SettingFilterFragment : Fragment() {
         }
 
         binding.salaryEnter.doOnTextChanged { s, _, _, _ ->
-            if (s?.isNotBlank() == true || s.toString() != "0" || s?.isEmpty() == true) {
-                binding.salaryFrame.endIconMode = END_ICON_CLEAR_TEXT
+            if (s?.isBlank() == false) {
+                if (s.toString() != oldSalary)
+                    binding.salaryFrame.endIconMode = END_ICON_CLEAR_TEXT
                 binding.salaryFrame.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_clear)
                 setButtonsVisibility(VISIBLE)
+                oldSalary = s.toString()
+                viewModel.setSalary(Integer.parseInt(s?.toString() ?: "0"))
             } else {
                 binding.salaryFrame.endIconMode = END_ICON_NONE
                 binding.salaryFrame.endIconDrawable = null
-                viewModel.setSalary(Integer.parseInt(s.toString()))
-                // не забыть убрать
-                //  setButtonsVisibility(GONE)
             }
         }
 
@@ -96,18 +99,13 @@ class SettingFilterFragment : Fragment() {
 
     private fun processFilterResult(filter: Filter) {
         if (!filter.isDefault) {
-            if (filter.country?.name.isNullOrBlank() == false && filter.region?.name.isNullOrBlank() == false) {
-                binding.placeOfWorkEnter.setText(
-                    getString(
-                        R.string.filter_place_of_work,
-                        filter.country.name,
-                        filter.region.name
-                    )
-                )
-            }
+            processArea(filter.country, filter.region)
             binding.industryEnter.setText(filter.industry?.name ?: "")
             binding.withoutSalary.isChecked = filter.onlyWithSalary
-            binding.salaryEnter.setText(filter.salary?.toString() ?: "")
+            val newSalary = filter.salary?.toString() ?: ""
+            if (newSalary != oldSalary) {
+                binding.salaryEnter.setText(newSalary)
+            }
             setButtonsVisibility(VISIBLE)
         } else {
             binding.placeOfWorkEnter.text = null
@@ -117,6 +115,24 @@ class SettingFilterFragment : Fragment() {
             setButtonsVisibility(GONE)
         }
         setCheckedIcon(filter.onlyWithSalary)
+    }
+
+    private fun processArea(country: Country?, region: Region?) {
+        var countryName = ""
+        var regionName = ""
+        if (!country?.name.isNullOrBlank()) {
+            countryName = country!!.name
+        }
+        if (!region?.name.isNullOrBlank()) {
+            regionName = region!!.name
+        }
+        binding.placeOfWorkEnter.setText(
+            getString(
+                R.string.filter_place_of_work,
+                countryName,
+                regionName
+            )
+        )
     }
 
     fun setCheckedIcon(isChecked: Boolean) {
