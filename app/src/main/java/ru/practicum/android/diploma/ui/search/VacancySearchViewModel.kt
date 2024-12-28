@@ -132,6 +132,10 @@ class VacancySearchViewModel(
         _currentFilter.value = _currentFilter.value?.copy(salary = salary)
     }
 
+    fun setOnlyWithSalary(onlyWithSalary: Boolean) {
+        _currentFilter.value = _currentFilter.value?.copy(onlyWithSalary = onlyWithSalary)
+    }
+
     fun getAreas() {
         _areaScreenState.value = AreaScreenState.Loading
         viewModelScope.launch {

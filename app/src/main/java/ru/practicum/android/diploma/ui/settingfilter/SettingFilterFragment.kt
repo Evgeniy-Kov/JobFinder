@@ -63,13 +63,12 @@ class SettingFilterFragment : Fragment() {
         binding.acceptButton.setOnClickListener {
             viewModel.saveFilter()
         }
-
         viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
             processFilterResult(filter)
         }
 
         binding.salaryEnter.doOnTextChanged { s, _, _, _ ->
-            if (s?.isNotEmpty() == true) {
+            if (s?.isNotBlank() == true || s.toString() != "0" || s?.isEmpty() == true) {
                 binding.salaryFrame.endIconMode = END_ICON_CLEAR_TEXT
                 binding.salaryFrame.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_clear)
                 setButtonsVisibility(VISIBLE)
@@ -81,6 +80,10 @@ class SettingFilterFragment : Fragment() {
                 //  setButtonsVisibility(GONE)
             }
         }
+
+        binding.withoutSalary.setOnClickListener {
+            viewModel.setOnlyWithSalary(binding.withoutSalary.isChecked)
+        }
     }
 
     private fun setButtonsVisibility(visibility: Int) {
@@ -90,13 +93,15 @@ class SettingFilterFragment : Fragment() {
 
     private fun processFilterResult(filter: Filter) {
         if (!filter.isDefault) {
-            binding.placeOfWorkEnter.setText(
-                getString(
-                    R.string.filter_place_of_work,
-                    filter.country?.name ?: "",
-                    filter.region?.name ?: ""
+            if (filter.country?.name.isNullOrBlank() == false && filter.region?.name.isNullOrBlank() == false) {
+                binding.placeOfWorkEnter.setText(
+                    getString(
+                        R.string.filter_place_of_work,
+                        filter.country.name,
+                        filter.region.name
+                    )
                 )
-            )
+            }
             binding.industryEnter.setText(filter.industry?.name ?: "")
             binding.withoutSalary.isChecked = filter.onlyWithSalary
             binding.salaryEnter.setText(filter.salary?.toString() ?: "")
@@ -108,8 +113,15 @@ class SettingFilterFragment : Fragment() {
             binding.salaryEnter.text = null
             setButtonsVisibility(GONE)
         }
+        setCheckedIcon(filter.onlyWithSalary)
+    }
 
-
+    fun setCheckedIcon(isChecked: Boolean) {
+        if (isChecked) {
+            binding.withoutSalary.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check_box_on)
+        } else {
+            binding.withoutSalary.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check_box_off)
+        }
     }
 }
 
