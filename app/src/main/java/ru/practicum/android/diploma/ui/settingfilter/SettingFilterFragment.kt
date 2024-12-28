@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSettingFilterBinding
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.ui.search.VacancySearchViewModel
 
 class SettingFilterFragment : Fragment() {
@@ -43,11 +44,13 @@ class SettingFilterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.placeOfWorkEnter.setOnClickListener {
-            findNavController().navigate(R.id.placeOfWorkFragment)
+            val directions = SettingFilterFragmentDirections.actionSettingFilterFragmentToPlaceOfWorkFragment()
+            findNavController().navigate(directions)
         }
 
         binding.industryEnter.setOnClickListener {
-            findNavController().navigate(R.id.industryFragment)
+            val directions = SettingFilterFragmentDirections.actionSettingFilterFragmentToIndustryFragment()
+            findNavController().navigate(directions)
         }
 
         binding.toolbarFilter.setNavigationOnClickListener {
@@ -55,29 +58,72 @@ class SettingFilterFragment : Fragment() {
         }
 
         viewModel.getIndustries()
+
         binding.resetButton.setOnClickListener {
-            // viewModel.resetFilter()
+            viewModel.clearFilter()
         }
         binding.acceptButton.setOnClickListener {
-            // viewModel.applyFilter()
+            viewModel.saveFilter()
+            findNavController().navigateUp()
+        }
+        viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
+            processFilterResult(filter)
         }
 
         binding.salaryEnter.doOnTextChanged { s, _, _, _ ->
-            if (s?.isNotEmpty() == true) {
+            if (s?.isNotBlank() == true || s.toString() != "0" || s?.isEmpty() == true) {
                 binding.salaryFrame.endIconMode = END_ICON_CLEAR_TEXT
                 binding.salaryFrame.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_clear)
                 setButtonsVisibility(VISIBLE)
             } else {
                 binding.salaryFrame.endIconMode = END_ICON_NONE
                 binding.salaryFrame.endIconDrawable = null
+                viewModel.setSalary(Integer.parseInt(s.toString()))
                 // не забыть убрать
-                setButtonsVisibility(GONE)
+                //  setButtonsVisibility(GONE)
             }
+        }
+
+        binding.withoutSalary.setOnClickListener {
+            viewModel.setOnlyWithSalary(binding.withoutSalary.isChecked)
         }
     }
 
     private fun setButtonsVisibility(visibility: Int) {
         binding.resetButton.visibility = visibility
         binding.acceptButton.visibility = visibility
+    }
+
+    private fun processFilterResult(filter: Filter) {
+        if (!filter.isDefault) {
+            if (filter.country?.name.isNullOrBlank() == false && filter.region?.name.isNullOrBlank() == false) {
+                binding.placeOfWorkEnter.setText(
+                    getString(
+                        R.string.filter_place_of_work,
+                        filter.country.name,
+                        filter.region.name
+                    )
+                )
+            }
+            binding.industryEnter.setText(filter.industry?.name ?: "")
+            binding.withoutSalary.isChecked = filter.onlyWithSalary
+            binding.salaryEnter.setText(filter.salary?.toString() ?: "")
+            setButtonsVisibility(VISIBLE)
+        } else {
+            binding.placeOfWorkEnter.text = null
+            binding.industryEnter.text = null
+            binding.withoutSalary.isChecked = false
+            binding.salaryEnter.text = null
+            setButtonsVisibility(GONE)
+        }
+        setCheckedIcon(filter.onlyWithSalary)
+    }
+
+    fun setCheckedIcon(isChecked: Boolean) {
+        if (isChecked) {
+            binding.withoutSalary.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check_box_on)
+        } else {
+            binding.withoutSalary.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check_box_off)
+        }
     }
 }

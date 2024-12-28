@@ -28,8 +28,10 @@ import ru.practicum.android.diploma.domain.api.IndustriesInteractor
 import ru.practicum.android.diploma.domain.api.PagingSourceInteractor
 import ru.practicum.android.diploma.domain.api.SharedPreferencesInteractor
 import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.industry.IndustryScreenState
@@ -46,8 +48,8 @@ class VacancySearchViewModel(
     private val _query = MutableLiveData<String>()
     val query: LiveData<String> = _query
 
-    private val _preferenceUpdates = MutableLiveData<Filter?>()
-    val preferenceUpdates: LiveData<Filter?>
+    private val _preferenceUpdates = MutableLiveData<Filter>()
+    val preferenceUpdates: LiveData<Filter>
         get() = _preferenceUpdates
 
     var latestSearchFilter = Filter()
@@ -89,6 +91,9 @@ class VacancySearchViewModel(
 
     private var searchJob: Job? = null
 
+    private val _currentFilter = MutableLiveData<Filter>(Filter())
+    val currentFilter: LiveData<Filter> = _currentFilter
+
     private val jobSearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
             setQuery(changedText)
@@ -113,9 +118,30 @@ class VacancySearchViewModel(
         setQuery("")
     }
 
-    fun setCountryId(countryId: String) { _countryId.value = countryId }
+    fun setCountry(country: Area) {
+        _countryId.value = country.id
+        _currentFilter.value = _currentFilter.value?.copy(country = Country(country.id, country.name))
+    }
 
-    fun setRegionNameFilter(regionNameFilter: String) { _regionNameFilter.tryEmit(regionNameFilter) }
+    fun setRegion(region: Area) {
+        _currentFilter.value = _currentFilter.value?.copy(region = Region(region.id, region.name))
+    }
+
+    fun setIndustry(industry: Industry) {
+        _currentFilter.value = _currentFilter.value?.copy(industry = Industry(industry.id, industry.name))
+    }
+
+    fun setRegionNameFilter(regionNameFilter: String) {
+        _regionNameFilter.tryEmit(regionNameFilter)
+    }
+
+    fun setSalary(salary: Int) {
+        _currentFilter.value = _currentFilter.value?.copy(salary = salary)
+    }
+
+    fun setOnlyWithSalary(onlyWithSalary: Boolean) {
+        _currentFilter.value = _currentFilter.value?.copy(onlyWithSalary = onlyWithSalary)
+    }
 
     fun getAreas() {
         _areaScreenState.value = AreaScreenState.Loading
@@ -216,14 +242,18 @@ class VacancySearchViewModel(
     fun stopSearch() {
         searchJob?.cancel()
     }
-    fun saveFilter(filter: Filter) = sharedPrefInteractor.saveFilter(filter)
-    fun clearFilter() = sharedPrefInteractor.clearFilter()
+
+    fun saveFilter() = sharedPrefInteractor.saveFilter(_currentFilter.value ?: Filter())
+    fun clearFilter() {
+        sharedPrefInteractor.clearFilter()
+        _currentFilter.value = Filter()
+    }
 
     private val preferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
                 FILTER_PREFERENCES_KEY -> {
-                    val newValue = sharedPrefInteractor.loadFilter()
+                    val newValue = sharedPrefInteractor.loadFilter() ?: Filter()
                     _preferenceUpdates.postValue(newValue)
                 }
             }
@@ -281,6 +311,11 @@ class VacancySearchViewModel(
         }
         return filteredList
 
+    }
+
+    init {
+        sharedPrefInteractor.setPreferencesListener(preferenceChangeListener)
+        _preferenceUpdates.postValue(sharedPrefInteractor.loadFilter() ?: Filter())
     }
 
     companion object {

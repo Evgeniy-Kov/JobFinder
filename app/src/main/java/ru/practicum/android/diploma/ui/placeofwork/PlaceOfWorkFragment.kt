@@ -3,7 +3,10 @@ package ru.practicum.android.diploma.ui.placeofwork
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.navigation.koinNavGraphViewModel
@@ -22,7 +25,7 @@ class PlaceOfWorkFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentPlaceOfWorkBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,6 +51,41 @@ class PlaceOfWorkFragment : Fragment() {
 
         viewModel.getAreas()
 
+        viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
+            if (!filter.country?.name.isNullOrBlank()) {
+                binding.countryEnter.setText(filter.country.name)
+            }
+            if (!filter.region?.name.isNullOrBlank()) {
+                binding.regionEnter.setText(filter.region.name)
+            }
+        }
+
+        binding.regionEnter.doOnTextChanged { s, _, _, _ ->
+            acceptButtonVisibility(!s.isNullOrBlank())
+        }
+
+        binding.countryEnter.doOnTextChanged { s, _, _, _ ->
+            acceptButtonVisibility(!s.isNullOrBlank())
+        }
+
+        binding.acceptButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+    }
+
+    private fun acceptButtonVisibility(
+        visibility: Boolean,
+    ) {
+        when (visibility) {
+            true -> {
+                binding.acceptButton.visibility = VISIBLE
+            }
+
+            false -> {
+                binding.acceptButton.visibility = GONE
+            }
+        }
     }
 
     override fun onDestroyView() {

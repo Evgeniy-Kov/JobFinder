@@ -141,7 +141,7 @@ class RegionFragment : Fragment() {
             areaAdapter.submitList(countries)
         }
         areaAdapter.onItemClickListener = AreaViewHolder.OnItemClickListener { country ->
-            viewModel.setCountryId(country.id)
+            viewModel.setCountry(country)
             findNavController().navigateUp()
         }
     }
@@ -153,7 +153,9 @@ class RegionFragment : Fragment() {
                 areaAdapter.submitList(regions)
             }
         }
-        areaAdapter.onItemClickListener = AreaViewHolder.OnItemClickListener {
+        areaAdapter.onItemClickListener = AreaViewHolder.OnItemClickListener { region ->
+            viewModel.setRegion(region)
+            findNavController().navigateUp()
         }
     }
 

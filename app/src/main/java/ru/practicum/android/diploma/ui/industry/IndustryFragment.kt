@@ -82,6 +82,8 @@ class IndustryFragment : Fragment() {
         }
 
         binding.chooseButton.setOnClickListener {
+            viewModel.setIndustry(selectedIndustry!!)
+            findNavController().navigateUp()
         }
     }
 

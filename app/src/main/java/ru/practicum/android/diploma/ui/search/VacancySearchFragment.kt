@@ -97,7 +97,9 @@ class VacancySearchFragment : Fragment() {
         }
 
         viewModel.preferenceUpdates.observe(viewLifecycleOwner) { filter ->
-            updateFilterUI(filter)
+            if (filter != null) {
+                updateFilterUI(filter)
+            }
         }
         binding.parametersButton.setOnClickListener {
             findNavController().navigate(R.id.settingFilterFragment)
@@ -108,11 +110,11 @@ class VacancySearchFragment : Fragment() {
         }
     }
 
-    private fun updateFilterUI(filter: Filter?) {
-        if (filter != null) {
-            binding.parametersButton.setImageResource(R.drawable.ic_parameters_checked)
-        } else {
+    private fun updateFilterUI(filter: Filter) {
+        if (filter.isDefault) {
             binding.parametersButton.setImageResource(R.drawable.ic_parameters)
+        } else {
+            binding.parametersButton.setImageResource(R.drawable.ic_parameters_checked)
         }
     }
 
@@ -172,7 +174,8 @@ class VacancySearchFragment : Fragment() {
         }
 
         binding.parametersButton.setOnClickListener {
-            findNavController().navigate(R.id.settingFilterFragment)
+            val directions = VacancySearchFragmentDirections.actionVacancySearchFragmentToSettingFilterFragment()
+            findNavController().navigate(directions)
         }
     }
 
