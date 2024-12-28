@@ -62,6 +62,7 @@ class SettingFilterFragment : Fragment() {
         }
         binding.acceptButton.setOnClickListener {
             viewModel.saveFilter()
+            findNavController().navigateUp()
         }
         viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
             processFilterResult(filter)
