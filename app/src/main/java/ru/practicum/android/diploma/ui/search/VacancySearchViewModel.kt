@@ -50,6 +50,8 @@ class VacancySearchViewModel(
     val preferenceUpdates: LiveData<Filter?>
         get() = _preferenceUpdates
 
+    var latestSearchFilter = Filter()
+
     private val _industriesList = MutableLiveData<List<Industry>>(emptyList())
     val industriesList: LiveData<List<Industry>> = _industriesList
 
@@ -60,6 +62,10 @@ class VacancySearchViewModel(
     private val _areaScreenState = MutableLiveData<AreaScreenState>(AreaScreenState.Content)
     val areaScreenState: LiveData<AreaScreenState>
         get() = _areaScreenState
+
+    private val _searchScreenState = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
+    val searchScreenState: LiveData<SearchScreenState>
+        get() = _searchScreenState
 
     private val _countries = MutableLiveData<List<Area>>(emptyList())
     val countries: LiveData<List<Area>> = _countries
@@ -100,18 +106,16 @@ class VacancySearchViewModel(
     val itemCountLivedata: LiveData<Int>
         get() = _itemCountLivedata
 
+    fun setSearchScreenState(state: SearchScreenState) { _searchScreenState.value = state }
+
     fun clearLatestSearchText() {
         latestSearchText = ""
         setQuery("")
     }
 
-    fun setCountryId(countryId: String) {
-        _countryId.value = countryId
-    }
+    fun setCountryId(countryId: String) { _countryId.value = countryId }
 
-    fun setRegionNameFilter(regionNameFilter: String) {
-        _regionNameFilter.tryEmit(regionNameFilter)
-    }
+    fun setRegionNameFilter(regionNameFilter: String) { _regionNameFilter.tryEmit(regionNameFilter) }
 
     fun getAreas() {
         _areaScreenState.value = AreaScreenState.Loading
@@ -121,9 +125,23 @@ class VacancySearchViewModel(
         }
     }
 
-    private fun setQuery(query: String) {
-        if (query.isNotBlank()) _query.value = query
+    private fun parseFilter(): Map<String, String> {
+        val filter = preferenceUpdates.value ?: Filter()
+        val result = mutableMapOf<String, String>()
+        if (filter.country != null) result["area"] = filter.country.id
+
+        if (filter.region != null) result["area"] = filter.region.id
+
+        if (filter.industry != null) result["industry"] = filter.industry.id
+
+        if (filter.salary != null) result["salary"] = filter.salary.toString()
+
+        if (filter.onlyWithSalary) result["only_with_salary"] = "true"
+
+        return result
     }
+
+    private fun setQuery(query: String) { if (query.isNotBlank()) _query.value = query }
 
     private suspend fun filterAreaByQuery(query: String): List<Area> {
         val list = regs.first()
@@ -143,8 +161,9 @@ class VacancySearchViewModel(
     private val getItemCountCallback: (Int) -> Unit = { count -> _itemCountLivedata.value = count }
 
     private fun newPager(query: String): Pager<Int, Vacancy> {
+        val filterOptions = parseFilter()
         return Pager(PagingConfig(PAGE_SIZE, enablePlaceholders = false, prefetchDistance = PAGE_SIZE / 2)) {
-            pagingSourceInteractor.getVacanciesPagingSource(query, getItemCountCallback)
+            pagingSourceInteractor.getVacanciesPagingSource(query, filterOptions, getItemCountCallback)
                 .also { newPagingSource = it }
         }
     }
@@ -172,9 +191,7 @@ class VacancySearchViewModel(
     }
 
     private fun processResult(result: Resource<List<Area>>) {
-        if (areaScreenState.value != AreaScreenState.Loading) {
-            return
-        }
+        if (areaScreenState.value != AreaScreenState.Loading) return
 
         when (result) {
             is Resource.Success<List<Area>> -> {
@@ -182,9 +199,7 @@ class VacancySearchViewModel(
                 _areaScreenState.value = AreaScreenState.Content
             }
 
-            is Resource.Error -> {
-                _areaScreenState.value = AreaScreenState.Error(result.message)
-            }
+            is Resource.Error -> { _areaScreenState.value = AreaScreenState.Error(result.message) }
         }
     }
 
@@ -194,6 +209,7 @@ class VacancySearchViewModel(
             return
         }
         latestSearchText = changedText
+        latestSearchFilter = preferenceUpdates.value ?: Filter()
         jobSearchDebounce(changedText)
     }
 

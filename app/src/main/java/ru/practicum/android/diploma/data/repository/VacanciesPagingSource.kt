@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.data.repository
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import kotlinx.coroutines.delay
@@ -15,6 +16,7 @@ import ru.practicum.android.diploma.util.toVacancy
 class VacanciesPagingSource(
     private val networkClient: NetworkClient,
     private val query: String,
+    private val filter: Map<String, String>,
     private val getItemCountCallback: (Int) -> Unit
 ) : PagingSource<Int, Vacancy>() {
 
@@ -26,6 +28,7 @@ class VacanciesPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vacancy> {
+        Log.d("MY_TAG", filter.toString())
         if (currencies == null) {
             currencies = getCurrencyList()
         }
@@ -37,7 +40,7 @@ class VacanciesPagingSource(
         }
 
         val pageNumber = params.key ?: 0
-        val request = VacanciesSearchRequest(query, pageNumber, emptyMap())
+        val request = VacanciesSearchRequest(query, pageNumber, filter)
         val response = networkClient.doRequest(request)
 
         return when (response) {
