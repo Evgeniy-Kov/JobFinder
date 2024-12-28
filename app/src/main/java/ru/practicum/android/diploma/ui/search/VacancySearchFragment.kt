@@ -104,7 +104,9 @@ class VacancySearchFragment : Fragment() {
             findNavController().navigate(R.id.settingFilterFragment)
         }
 
-        renderState(SearchScreenState.Default)
+        viewModel.searchScreenState.observe(viewLifecycleOwner) { state ->
+            renderState(state)
+        }
     }
 
     private fun updateFilterUI(filter: Filter) {
@@ -157,7 +159,7 @@ class VacancySearchFragment : Fragment() {
             clearButtonVisibility(s, binding.clearButton)
             searchValue = s.toString().trim()
             if (binding.searchEditText.hasFocus() && s?.isEmpty() == true) {
-                renderState(SearchScreenState.Default)
+                viewModel.setSearchScreenState(SearchScreenState.Default)
             } else {
                 viewModel.searchDebounce(searchValue)
             }
@@ -177,9 +179,9 @@ class VacancySearchFragment : Fragment() {
 
     private fun processResult(dataSize: Int, state: LoadState) {
         when (state) {
-            is LoadState.Loading -> renderState(SearchScreenState.Loading)
+            is LoadState.Loading -> viewModel.setSearchScreenState(SearchScreenState.Loading)
 
-            is LoadState.Error -> renderState(SearchScreenState.Error(state.error.message ?: ""))
+            is LoadState.Error -> viewModel.setSearchScreenState(SearchScreenState.Error(state.error.message ?: ""))
 
             is LoadState.NotLoading -> handleNotLoadingState(dataSize)
         }
@@ -187,11 +189,12 @@ class VacancySearchFragment : Fragment() {
 
     private fun handleNotLoadingState(dataSize: Int) {
         when {
-            dataSize == 0 && searchValue.isBlank() -> renderState(SearchScreenState.Default)
+            dataSize == 0 && searchValue.isBlank() -> viewModel.setSearchScreenState(SearchScreenState.Default)
 
-            dataSize == 0 && searchValue.isNotBlank() -> renderState(SearchScreenState.NothingFound)
+            dataSize == 0 && searchValue.isNotBlank() -> viewModel.setSearchScreenState(SearchScreenState.NothingFound)
 
-            else -> renderState(SearchScreenState.Content)
+            else -> viewModel.setSearchScreenState(SearchScreenState.Content)
+
         }
     }
 
