@@ -93,5 +93,3 @@ class PlaceOfWorkFragment : Fragment() {
         _binding = null
     }
 }
-
-

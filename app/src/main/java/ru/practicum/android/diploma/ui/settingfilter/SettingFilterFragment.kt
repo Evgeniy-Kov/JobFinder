@@ -44,11 +44,13 @@ class SettingFilterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.placeOfWorkEnter.setOnClickListener {
-            findNavController().navigate(SettingFilterFragmentDirections.actionSettingFilterFragmentToPlaceOfWorkFragment())
+            val directions = SettingFilterFragmentDirections.actionSettingFilterFragmentToPlaceOfWorkFragment()
+            findNavController().navigate(directions)
         }
 
         binding.industryEnter.setOnClickListener {
-            findNavController().navigate(SettingFilterFragmentDirections.actionSettingFilterFragmentToIndustryFragment())
+            val directions = SettingFilterFragmentDirections.actionSettingFilterFragmentToIndustryFragment()
+            findNavController().navigate(directions)
         }
 
         binding.toolbarFilter.setNavigationOnClickListener {
@@ -125,5 +127,3 @@ class SettingFilterFragment : Fragment() {
         }
     }
 }
-
-

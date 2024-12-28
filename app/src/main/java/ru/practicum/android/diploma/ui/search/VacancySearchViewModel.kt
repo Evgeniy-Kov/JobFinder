@@ -94,7 +94,6 @@ class VacancySearchViewModel(
     private val _currentFilter = MutableLiveData<Filter>(Filter())
     val currentFilter: LiveData<Filter> = _currentFilter
 
-
     private val jobSearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
             setQuery(changedText)

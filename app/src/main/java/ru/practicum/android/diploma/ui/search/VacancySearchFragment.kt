@@ -97,8 +97,9 @@ class VacancySearchFragment : Fragment() {
         }
 
         viewModel.preferenceUpdates.observe(viewLifecycleOwner) { filter ->
-            if (filter != null)
+            if (filter != null) {
                 updateFilterUI(filter)
+            }
         }
         binding.parametersButton.setOnClickListener {
             findNavController().navigate(R.id.settingFilterFragment)
@@ -173,7 +174,8 @@ class VacancySearchFragment : Fragment() {
         }
 
         binding.parametersButton.setOnClickListener {
-            findNavController().navigate(VacancySearchFragmentDirections.actionVacancySearchFragmentToSettingFilterFragment())
+            val directions = VacancySearchFragmentDirections.actionVacancySearchFragmentToSettingFilterFragment()
+            findNavController().navigate(directions)
         }
     }
 
