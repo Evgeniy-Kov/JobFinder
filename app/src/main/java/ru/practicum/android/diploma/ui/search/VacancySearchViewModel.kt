@@ -120,8 +120,16 @@ class VacancySearchViewModel(
         _currentFilter.value = _currentFilter.value?.copy(region = Region(region.id, region.name))
     }
 
+    fun setIndustry(industry: Industry) {
+        _currentFilter.value = _currentFilter.value?.copy(industry = Industry(industry.id, industry.name))
+    }
+
     fun setRegionNameFilter(regionNameFilter: String) {
         _regionNameFilter.tryEmit(regionNameFilter)
+    }
+
+    fun setSalary(salary: Int) {
+        _currentFilter.value = _currentFilter.value?.copy(salary = salary)
     }
 
     fun getAreas() {
@@ -213,7 +221,10 @@ class VacancySearchViewModel(
     }
 
     fun saveFilter() = sharedPrefInteractor.saveFilter(_currentFilter.value ?: Filter())
-    fun clearFilter() = sharedPrefInteractor.clearFilter()
+    fun clearFilter() {
+        sharedPrefInteractor.clearFilter()
+        _currentFilter.value = Filter()
+    }
 
     private val preferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
@@ -277,7 +288,7 @@ class VacancySearchViewModel(
 
     init {
         sharedPrefInteractor.setPreferencesListener(preferenceChangeListener)
-        _preferenceUpdates.postValue(sharedPrefInteractor.loadFilter())
+        _preferenceUpdates.postValue(sharedPrefInteractor.loadFilter() ?: Filter())
     }
 
     companion object {

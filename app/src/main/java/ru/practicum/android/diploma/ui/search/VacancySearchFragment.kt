@@ -171,7 +171,7 @@ class VacancySearchFragment : Fragment() {
         }
 
         binding.parametersButton.setOnClickListener {
-            findNavController().navigate(R.id.settingFilterFragment)
+            findNavController().navigate(VacancySearchFragmentDirections.actionVacancySearchFragmentToSettingFilterFragment())
         }
     }
 

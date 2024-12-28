@@ -44,11 +44,11 @@ class SettingFilterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.placeOfWorkEnter.setOnClickListener {
-            findNavController().navigate(R.id.placeOfWorkFragment)
+            findNavController().navigate(SettingFilterFragmentDirections.actionSettingFilterFragmentToPlaceOfWorkFragment())
         }
 
         binding.industryEnter.setOnClickListener {
-            findNavController().navigate(R.id.industryFragment)
+            findNavController().navigate(SettingFilterFragmentDirections.actionSettingFilterFragmentToIndustryFragment())
         }
 
         binding.toolbarFilter.setNavigationOnClickListener {
@@ -64,7 +64,7 @@ class SettingFilterFragment : Fragment() {
             viewModel.saveFilter()
         }
 
-        viewModel.preferenceUpdates.observe(viewLifecycleOwner) { filter ->
+        viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
             processFilterResult(filter)
         }
 
@@ -76,6 +76,7 @@ class SettingFilterFragment : Fragment() {
             } else {
                 binding.salaryFrame.endIconMode = END_ICON_NONE
                 binding.salaryFrame.endIconDrawable = null
+                viewModel.setSalary(Integer.parseInt(s.toString()))
                 // не забыть убрать
                 //  setButtonsVisibility(GONE)
             }
