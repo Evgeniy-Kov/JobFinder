@@ -135,7 +135,7 @@ class VacancySearchViewModel(
         _regionNameFilter.tryEmit(regionNameFilter)
     }
 
-    fun setSalary(salary: Int) {
+    fun setSalary(salary: Int?) {
         _currentFilter.value = _currentFilter.value?.copy(salary = salary)
     }
 
@@ -315,7 +315,8 @@ class VacancySearchViewModel(
 
     init {
         sharedPrefInteractor.setPreferencesListener(preferenceChangeListener)
-        _preferenceUpdates.postValue(sharedPrefInteractor.loadFilter() ?: Filter())
+        _preferenceUpdates.value = sharedPrefInteractor.loadFilter() ?: Filter()
+        _currentFilter.value = preferenceUpdates.value ?: Filter()
     }
 
     companion object {

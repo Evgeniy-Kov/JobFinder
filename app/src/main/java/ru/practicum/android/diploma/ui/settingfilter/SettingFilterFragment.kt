@@ -26,7 +26,7 @@ class SettingFilterFragment : Fragment() {
         get() = requireNotNull(_binding) { "Binding is null" }
 
     private val viewModel by koinNavGraphViewModel<VacancySearchViewModel>(R.id.vacancySearchFragment)
-    private var oldSalary = ""
+    private var oldSalary: Int? = null
 
     private var currentFilterSettings = Filter()
 
@@ -79,11 +79,14 @@ class SettingFilterFragment : Fragment() {
 
         binding.salaryEnter.doOnTextChanged { s, _, _, _ ->
             setButtonsVisibility(currentFilterSettings)
+            val newSalary = s.toString().toIntOrNull()
+            if (oldSalary != newSalary) {
+                oldSalary = newSalary
+                viewModel.setSalary(newSalary)
+            }
             if (s?.isBlank() == false) {
                 binding.salaryFrame.endIconMode = END_ICON_CLEAR_TEXT
                 binding.salaryFrame.setEndIconDrawable(R.drawable.ic_clear)
-                oldSalary = s.toString()
-                viewModel.setSalary(Integer.parseInt(s?.toString() ?: "0"))
             } else {
                 binding.salaryFrame.endIconMode = END_ICON_NONE
                 binding.salaryFrame.endIconDrawable = null
@@ -107,9 +110,9 @@ class SettingFilterFragment : Fragment() {
             processArea(filter.country, filter.region)
             binding.industryEnter.setText(filter.industry?.name ?: "")
             binding.withoutSalary.isChecked = filter.onlyWithSalary
-            val newSalary = filter.salary?.toString() ?: ""
+            val newSalary = filter.salary
             if (newSalary != oldSalary) {
-                binding.salaryEnter.setText(newSalary)
+                binding.salaryEnter.setText(newSalary.toString())
             }
         } else {
             binding.placeOfWorkEnter.text = null
