@@ -48,6 +48,11 @@ class IndustryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        selectedIndustry = viewModel.currentFilter.value?.industry
+        searchAdapter.setSelectedIndustry(selectedIndustry)
+        binding.chooseButton.isVisible = selectedIndustry != null
+
         binding.toolbarIndustry.setNavigationOnClickListener {
             findNavController().navigateUp()
         }

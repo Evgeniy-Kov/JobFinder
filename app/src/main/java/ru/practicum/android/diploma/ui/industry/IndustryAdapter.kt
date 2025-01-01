@@ -62,4 +62,8 @@ class IndustryAdapter(private val onSelectedItemCallback: (Industry?) -> Unit) :
     override fun getItemCount(): Int {
         return industryList.size
     }
+
+    fun setSelectedIndustry(industry: Industry?) {
+        selectedIndustry = industry
+    }
 }
