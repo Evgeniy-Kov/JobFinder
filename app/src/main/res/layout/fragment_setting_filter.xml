@@ -68,7 +68,7 @@
         android:hint="@string/salary_expected"
         android:textColorHint="?attr/colorPrimaryVariant"
         android:theme="@style/ThemeOverlay.AppTheme.TextInputEditText.Outlined"
-        app:endIconTint="?attr/colorOnPrimary"
+        app:endIconTint="@color/black"
         app:expandedHintEnabled="false"
         app:hintTextColor="@color/blue"
         app:layout_constraintTop_toBottomOf="@id/industry">

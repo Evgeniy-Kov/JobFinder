@@ -46,6 +46,8 @@ class SettingFilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.salaryFrame.requestFocus()
+
         binding.placeOfWorkEnter.setOnClickListener {
             val directions = SettingFilterFragmentDirections.actionSettingFilterFragmentToPlaceOfWorkFragment()
             findNavController().navigate(directions)
@@ -75,9 +77,8 @@ class SettingFilterFragment : Fragment() {
 
         binding.salaryEnter.doOnTextChanged { s, _, _, _ ->
             if (s?.isBlank() == false) {
-                if (s.toString() != oldSalary)
-                    binding.salaryFrame.endIconMode = END_ICON_CLEAR_TEXT
-                binding.salaryFrame.endIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_clear)
+                binding.salaryFrame.endIconMode = END_ICON_CLEAR_TEXT
+                binding.salaryFrame.setEndIconDrawable(R.drawable.ic_clear)
                 setButtonsVisibility(VISIBLE)
                 oldSalary = s.toString()
                 viewModel.setSalary(Integer.parseInt(s?.toString() ?: "0"))
