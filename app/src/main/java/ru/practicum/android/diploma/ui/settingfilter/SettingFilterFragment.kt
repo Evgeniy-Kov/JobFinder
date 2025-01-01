@@ -3,10 +3,9 @@ package ru.practicum.android.diploma.ui.settingfilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -28,6 +27,8 @@ class SettingFilterFragment : Fragment() {
 
     private val viewModel by koinNavGraphViewModel<VacancySearchViewModel>(R.id.vacancySearchFragment)
     private var oldSalary = ""
+
+    private var currentFilterSettings = Filter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,14 +73,15 @@ class SettingFilterFragment : Fragment() {
             findNavController().navigateUp()
         }
         viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
+            currentFilterSettings = filter
             processFilterResult(filter)
         }
 
         binding.salaryEnter.doOnTextChanged { s, _, _, _ ->
+            setButtonsVisibility(currentFilterSettings)
             if (s?.isBlank() == false) {
                 binding.salaryFrame.endIconMode = END_ICON_CLEAR_TEXT
                 binding.salaryFrame.setEndIconDrawable(R.drawable.ic_clear)
-                setButtonsVisibility(VISIBLE)
                 oldSalary = s.toString()
                 viewModel.setSalary(Integer.parseInt(s?.toString() ?: "0"))
             } else {
@@ -93,12 +95,14 @@ class SettingFilterFragment : Fragment() {
         }
     }
 
-    private fun setButtonsVisibility(visibility: Int) {
-        binding.resetButton.visibility = visibility
-        binding.acceptButton.visibility = visibility
+    private fun setButtonsVisibility(filter: Filter) {
+        val savedFilter = viewModel.preferenceUpdates.value ?: Filter()
+        binding.resetButton.isVisible = !filter.isDefault
+        binding.acceptButton.isVisible = filter != savedFilter
     }
 
     private fun processFilterResult(filter: Filter) {
+        setButtonsVisibility(filter)
         if (!filter.isDefault) {
             processArea(filter.country, filter.region)
             binding.industryEnter.setText(filter.industry?.name ?: "")
@@ -107,13 +111,11 @@ class SettingFilterFragment : Fragment() {
             if (newSalary != oldSalary) {
                 binding.salaryEnter.setText(newSalary)
             }
-            setButtonsVisibility(VISIBLE)
         } else {
             binding.placeOfWorkEnter.text = null
             binding.industryEnter.text = null
             binding.withoutSalary.isChecked = false
             binding.salaryEnter.text = null
-            setButtonsVisibility(GONE)
         }
         setCheckedIcon(filter.onlyWithSalary)
     }
