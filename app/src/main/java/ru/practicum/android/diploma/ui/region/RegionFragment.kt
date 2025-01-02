@@ -22,7 +22,10 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentRegionBinding
+import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.ui.search.VacancySearchViewModel
+import ru.practicum.android.diploma.util.toCountry
+import ru.practicum.android.diploma.util.toRegion
 
 class RegionFragment : Fragment() {
 
@@ -141,7 +144,7 @@ class RegionFragment : Fragment() {
             areaAdapter.submitList(countries)
         }
         areaAdapter.onItemClickListener = AreaViewHolder.OnItemClickListener { country ->
-            viewModel.setCountry(country)
+            setChosenCountry(country)
             findNavController().navigateUp()
         }
     }
@@ -154,9 +157,17 @@ class RegionFragment : Fragment() {
             }
         }
         areaAdapter.onItemClickListener = AreaViewHolder.OnItemClickListener { region ->
-            viewModel.setRegion(region)
+            setChosenRegion(region)
             findNavController().navigateUp()
         }
+    }
+
+    private fun setChosenCountry(country: Area) {
+        viewModel.setChosenCountry(country.toCountry())
+    }
+
+    private fun setChosenRegion(region: Area) {
+        viewModel.setChosenRegion(region.toRegion())
     }
 
     private fun clearButtonVisibility(s: CharSequence?, v: ImageView) {

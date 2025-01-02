@@ -51,13 +51,12 @@ class PlaceOfWorkFragment : Fragment() {
 
         viewModel.getAreas()
 
-        viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
-            if (!filter.country?.name.isNullOrBlank()) {
-                binding.countryEnter.setText(filter.country!!.name)
-            }
-            if (!filter.region?.name.isNullOrBlank()) {
-                binding.regionEnter.setText(filter.region!!.name)
-            }
+        viewModel.chosenCountry.observe(viewLifecycleOwner) { country ->
+            binding.countryEnter.setText(country?.name)
+        }
+
+        viewModel.chosenRegion.observe(viewLifecycleOwner) { region ->
+            binding.regionEnter.setText(region?.name)
         }
 
         binding.regionEnter.doOnTextChanged { s, _, _, _ ->
@@ -69,9 +68,9 @@ class PlaceOfWorkFragment : Fragment() {
         }
 
         binding.acceptButton.setOnClickListener {
+            viewModel.setPlaceOfWork()
             findNavController().navigateUp()
         }
-
     }
 
     private fun acceptButtonVisibility(

@@ -82,6 +82,14 @@ class VacancySearchViewModel(
 
     val regions = regionNameFilter.map(::filterAreaByQuery)
 
+    private val _chosenCountry = MutableLiveData<Country?>()
+    val chosenCountry: LiveData<Country?>
+        get() = _chosenCountry
+
+    private val _chosenRegion = MutableLiveData<Region?>()
+    val chosenRegion: LiveData<Region?>
+        get() = _chosenRegion
+
     private val _industryNameFilter = MutableStateFlow<String>("")
     val industryNameFilter: StateFlow<String> = _industryNameFilter.asStateFlow()
 
@@ -113,6 +121,10 @@ class VacancySearchViewModel(
 
     fun setSearchScreenState(state: SearchScreenState) { _searchScreenState.value = state }
 
+    fun setChosenCountry(country: Country?) { _chosenCountry.value = country }
+
+    fun setChosenRegion(region: Region?) { _chosenRegion.value = region }
+
     fun clearLatestSearchText() {
         latestSearchText = ""
         setQuery("")
@@ -122,13 +134,8 @@ class VacancySearchViewModel(
         _currentFilter.value = _currentFilter.value?.copy(country = null, region = null)
     }
 
-    fun setCountry(country: Area) {
-        _countryId.value = country.id
-        _currentFilter.value = _currentFilter.value?.copy(country = Country(country.id, country.name))
-    }
-
-    fun setRegion(region: Area) {
-        _currentFilter.value = _currentFilter.value?.copy(region = Region(region.id, region.name))
+    fun setPlaceOfWork() {
+        _currentFilter.value = _currentFilter.value?.copy(country = chosenCountry.value, region = chosenRegion.value)
     }
 
     fun setIndustry(industry: Industry?) {

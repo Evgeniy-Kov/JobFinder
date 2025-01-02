@@ -76,6 +76,8 @@ class SettingFilterFragment : Fragment() {
         viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
             currentFilterSettings = filter
             processFilterResult(filter)
+            viewModel.setChosenCountry(filter.country)
+            viewModel.setChosenRegion(filter.region)
             setupClearButton(filter.country, binding.placeOfWork) { viewModel.clearPlaceOfWork() }
             setupClearButton(filter.industry, binding.industry) { viewModel.setIndustry(null) }
         }
