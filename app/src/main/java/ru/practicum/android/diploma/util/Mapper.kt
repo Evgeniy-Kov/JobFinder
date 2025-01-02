@@ -6,7 +6,9 @@ import ru.practicum.android.diploma.data.dto.IndustryItemDto
 import ru.practicum.android.diploma.data.dto.VacancyDetailsDto
 import ru.practicum.android.diploma.data.dto.VacancyDto
 import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
@@ -67,5 +69,19 @@ fun IndustryItemDto.toIndustry(): Industry {
     return Industry(
         id = id,
         name = name,
+    )
+}
+
+fun Area.toCountry(): Country {
+    return Country(
+        id = this.id,
+        name = this.name
+    )
+}
+
+fun Area.toRegion(): Region {
+    return Region(
+        id = this.id,
+        name = this.name
     )
 }
