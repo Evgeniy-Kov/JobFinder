@@ -121,7 +121,10 @@ class VacancySearchViewModel(
 
     fun setSearchScreenState(state: SearchScreenState) { _searchScreenState.value = state }
 
-    fun setChosenCountry(country: Country?) { _chosenCountry.value = country }
+    fun setChosenCountry(country: Country?) {
+        _countryId.value = country?.id ?: ""
+        _chosenCountry.value = country
+    }
 
     fun setChosenRegion(region: Region?) { _chosenRegion.value = region }
 
@@ -136,6 +139,14 @@ class VacancySearchViewModel(
 
     fun setPlaceOfWork() {
         _currentFilter.value = _currentFilter.value?.copy(country = chosenCountry.value, region = chosenRegion.value)
+    }
+    fun clearChosenCountry() {
+        _chosenCountry.value = null
+        _countryId.value = ""
+    }
+
+    fun clearChosenRegion() {
+        _chosenRegion.value = null
     }
 
     fun setIndustry(industry: Industry?) {
