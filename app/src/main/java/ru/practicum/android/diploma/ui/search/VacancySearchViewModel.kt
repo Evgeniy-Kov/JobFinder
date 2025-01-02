@@ -118,6 +118,10 @@ class VacancySearchViewModel(
         setQuery("")
     }
 
+    fun clearPlaceOfWork() {
+        _currentFilter.value = _currentFilter.value?.copy(country = null, region = null)
+    }
+
     fun setCountry(country: Area) {
         _countryId.value = country.id
         _currentFilter.value = _currentFilter.value?.copy(country = Country(country.id, country.name))
@@ -127,8 +131,8 @@ class VacancySearchViewModel(
         _currentFilter.value = _currentFilter.value?.copy(region = Region(region.id, region.name))
     }
 
-    fun setIndustry(industry: Industry) {
-        _currentFilter.value = _currentFilter.value?.copy(industry = Industry(industry.id, industry.name))
+    fun setIndustry(industry: Industry?) {
+        _currentFilter.value = _currentFilter.value?.copy(industry = industry)
     }
 
     fun setRegionNameFilter(regionNameFilter: String) {

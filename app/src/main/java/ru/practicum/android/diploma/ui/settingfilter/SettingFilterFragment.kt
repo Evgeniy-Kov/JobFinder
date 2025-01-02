@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textfield.TextInputLayout.END_ICON_CLEAR_TEXT
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import org.koin.androidx.navigation.koinNavGraphViewModel
@@ -75,6 +76,8 @@ class SettingFilterFragment : Fragment() {
         viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
             currentFilterSettings = filter
             processFilterResult(filter)
+            setupClearButton(filter.country, binding.placeOfWork) { viewModel.clearPlaceOfWork() }
+            setupClearButton(filter.industry, binding.industry) { viewModel.setIndustry(null) }
         }
 
         binding.salaryEnter.doOnTextChanged { s, _, _, _ ->
@@ -95,6 +98,20 @@ class SettingFilterFragment : Fragment() {
 
         binding.withoutSalary.setOnClickListener {
             viewModel.setOnlyWithSalary(binding.withoutSalary.isChecked)
+        }
+    }
+
+    private fun <T> setupClearButton(item: T?, til: TextInputLayout, action: () -> Unit) {
+        if (item != null) {
+            til.setEndIconDrawable(R.drawable.ic_clear)
+            til.setEndIconOnClickListener {
+                action.invoke()
+                til.setEndIconOnClickListener(null)
+            }
+        } else {
+            til.setEndIconDrawable(R.drawable.ic_arrow_forward)
+            til.isEndIconVisible = false
+            til.isEndIconVisible = true
         }
     }
 
