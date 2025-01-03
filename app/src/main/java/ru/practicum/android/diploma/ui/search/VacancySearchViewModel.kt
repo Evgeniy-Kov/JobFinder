@@ -37,6 +37,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.industry.IndustryScreenState
 import ru.practicum.android.diploma.ui.region.AreaScreenState
 import ru.practicum.android.diploma.util.debounce
+import ru.practicum.android.diploma.util.toCountry
 
 class VacancySearchViewModel(
     private val pagingSourceInteractor: PagingSourceInteractor,
@@ -173,6 +174,21 @@ class VacancySearchViewModel(
         }
     }
 
+    fun chooseCountryByChosenRegion() {
+        val countryList = countries.value ?: emptyList()
+        val areas = mutableListOf<Area>()
+        countryList.forEach { areas.addAll(getAllAreas(it, true)) }
+        var currentId = chosenRegion.value?.id ?: ""
+        var area: Area?
+        while (true) {
+            area = areas.find { it.id == currentId }
+            if (area == null) break
+            if (area.parentId != null) currentId = area.parentId ?: "" else break
+        }
+        setChosenCountry(area?.toCountry())
+        _countryId.tryEmit(currentId)
+    }
+
     private fun parseFilter(): Map<String, String> {
         val filter = preferenceUpdates.value ?: Filter()
         val result = mutableMapOf<String, String>()
@@ -222,18 +238,18 @@ class VacancySearchViewModel(
         val result = mutableListOf<Area>()
 
         if (id == "") {
-            countryList.forEach { result.addAll(getAllAreas(it)) }
+            countryList.forEach { result.addAll(getAllAreas(it, false)) }
         } else {
-            countryList.forEach { if (it.id == id) result.addAll(getAllAreas(it)) }
+            countryList.forEach { if (it.id == id) result.addAll(getAllAreas(it, false)) }
         }
         return result
     }
 
-    private fun getAllAreas(area: Area): List<Area> {
+    private fun getAllAreas(area: Area, withCountries: Boolean): List<Area> {
         val allAreas = mutableListOf<Area>()
-        if (area.parentId != null) allAreas.add(area)
+        if (area.parentId != null || withCountries) allAreas.add(area)
         for (subArea in area.areas) {
-            allAreas.addAll(getAllAreas(subArea))
+            allAreas.addAll(getAllAreas(subArea, false))
         }
         return allAreas.sortedBy { it.name }
     }

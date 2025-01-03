@@ -168,6 +168,7 @@ class RegionFragment : Fragment() {
 
     private fun setChosenRegion(region: Area) {
         viewModel.setChosenRegion(region.toRegion())
+        if (viewModel.chosenCountry.value == null) viewModel.chooseCountryByChosenRegion()
     }
 
     private fun clearButtonVisibility(s: CharSequence?, v: ImageView) {
