@@ -142,10 +142,12 @@ class VacancySearchViewModel(
 
     fun clearPlaceOfWork() {
         _currentFilter.value = _currentFilter.value?.copy(country = null, region = null)
+        saveFilter()
     }
 
     fun setPlaceOfWork() {
         _currentFilter.value = _currentFilter.value?.copy(country = chosenCountry.value, region = chosenRegion.value)
+        saveFilter()
     }
     fun clearChosenCountry() {
         _chosenCountry.value = null
@@ -158,6 +160,7 @@ class VacancySearchViewModel(
 
     fun setIndustry(industry: Industry?) {
         _currentFilter.value = _currentFilter.value?.copy(industry = industry)
+        saveFilter()
     }
 
     fun setRegionNameFilter(regionNameFilter: String) {
@@ -166,10 +169,12 @@ class VacancySearchViewModel(
 
     fun setSalary(salary: Int?) {
         _currentFilter.value = _currentFilter.value?.copy(salary = salary)
+        saveFilter()
     }
 
     fun setOnlyWithSalary(onlyWithSalary: Boolean) {
         _currentFilter.value = _currentFilter.value?.copy(onlyWithSalary = onlyWithSalary)
+        saveFilter()
     }
 
     fun getAreas() {
