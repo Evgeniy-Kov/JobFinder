@@ -119,9 +119,8 @@ class SettingFilterFragment : Fragment() {
     }
 
     private fun setButtonsVisibility(filter: Filter) {
-        val savedFilter = viewModel.preferenceUpdates.value ?: Filter()
         binding.resetButton.isVisible = !filter.isDefault
-        binding.acceptButton.isVisible = filter != savedFilter
+        binding.acceptButton.isVisible = filter != viewModel.latestSearchFilter
     }
 
     private fun processFilterResult(filter: Filter) {

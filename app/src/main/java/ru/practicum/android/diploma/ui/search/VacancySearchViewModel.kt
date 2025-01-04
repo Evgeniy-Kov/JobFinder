@@ -54,6 +54,7 @@ class VacancySearchViewModel(
         get() = _preferenceUpdates
 
     var latestSearchFilter = Filter()
+        private set
 
     private val _industriesList = MutableLiveData<List<Industry>>(emptyList())
     val industriesList: LiveData<List<Industry>> = _industriesList
@@ -123,6 +124,7 @@ class VacancySearchViewModel(
     fun setSearchScreenState(state: SearchScreenState) { _searchScreenState.value = state }
 
     fun retrySearchQueryWithFilterOptions() {
+        latestSearchFilter = preferenceUpdates.value ?: Filter()
         if (latestSearchText.isNotBlank()) {
             setQuery(latestSearchText)
         }
@@ -237,6 +239,7 @@ class VacancySearchViewModel(
 
     private fun newPager(query: String): Pager<Int, Vacancy> {
         val filterOptions = parseFilter()
+        latestSearchFilter = preferenceUpdates.value ?: Filter()
         return Pager(PagingConfig(PAGE_SIZE, enablePlaceholders = false, prefetchDistance = PAGE_SIZE / 2)) {
             pagingSourceInteractor.getVacanciesPagingSource(query, filterOptions, getItemCountCallback)
                 .also { newPagingSource = it }
@@ -366,6 +369,7 @@ class VacancySearchViewModel(
         sharedPrefInteractor.setPreferencesListener(preferenceChangeListener)
         _preferenceUpdates.value = sharedPrefInteractor.loadFilter() ?: Filter()
         _currentFilter.value = preferenceUpdates.value ?: Filter()
+        latestSearchFilter = preferenceUpdates.value ?: Filter()
     }
 
     companion object {
