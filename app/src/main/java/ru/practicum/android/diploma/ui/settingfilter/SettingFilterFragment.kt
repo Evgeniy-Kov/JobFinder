@@ -71,6 +71,7 @@ class SettingFilterFragment : Fragment() {
         }
         binding.acceptButton.setOnClickListener {
             viewModel.saveFilter()
+            viewModel.retrySearchQueryWithFilterOptions()
             findNavController().navigateUp()
         }
         viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->

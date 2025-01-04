@@ -122,6 +122,12 @@ class VacancySearchViewModel(
 
     fun setSearchScreenState(state: SearchScreenState) { _searchScreenState.value = state }
 
+    fun retrySearchQueryWithFilterOptions() {
+        if (latestSearchText.isNotBlank()) {
+            setQuery(latestSearchText)
+        }
+    }
+
     fun setChosenCountry(country: Country?) {
         _countryId.value = country?.id ?: ""
         _chosenCountry.value = country
@@ -292,7 +298,7 @@ class VacancySearchViewModel(
             when (key) {
                 FILTER_PREFERENCES_KEY -> {
                     val newValue = sharedPrefInteractor.loadFilter() ?: Filter()
-                    _preferenceUpdates.postValue(newValue)
+                    _preferenceUpdates.value = newValue
                 }
             }
         }
