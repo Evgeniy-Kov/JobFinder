@@ -144,21 +144,14 @@ class SettingFilterFragment : Fragment() {
     }
 
     private fun processArea(country: Country?, region: Region?) {
-        var countryName = ""
-        var regionName = ""
-        if (!country?.name.isNullOrBlank()) {
-            countryName = country!!.name
+        var result = ""
+        if (country != null) {
+            result += country.name
         }
-        if (!region?.name.isNullOrBlank()) {
-            regionName = region!!.name
+        if (region != null) {
+            result += ", ${region.name}"
         }
-        binding.placeOfWorkEnter.setText(
-            getString(
-                R.string.filter_place_of_work,
-                countryName,
-                regionName
-            )
-        )
+        binding.placeOfWorkEnter.setText(result)
     }
 
     fun setCheckedIcon(isChecked: Boolean) {
