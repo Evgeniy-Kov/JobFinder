@@ -65,10 +65,6 @@ class PlaceOfWorkFragment : Fragment() {
             setupClearButton(region, binding.region) { viewModel.clearChosenRegion() }
         }
 
-        binding.regionEnter.doOnTextChanged { s, _, _, _ ->
-            acceptButtonVisibility(!s.isNullOrBlank())
-        }
-
         binding.countryEnter.doOnTextChanged { s, _, _, _ ->
             acceptButtonVisibility(!s.isNullOrBlank())
         }
