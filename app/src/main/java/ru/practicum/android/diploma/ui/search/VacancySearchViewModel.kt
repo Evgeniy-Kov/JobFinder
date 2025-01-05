@@ -37,6 +37,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.industry.IndustryScreenState
 import ru.practicum.android.diploma.ui.region.AreaScreenState
 import ru.practicum.android.diploma.util.debounce
+import ru.practicum.android.diploma.util.parseFilter
 import ru.practicum.android.diploma.util.toCountry
 
 class VacancySearchViewModel(
@@ -105,9 +106,7 @@ class VacancySearchViewModel(
     val currentFilter: LiveData<Filter> = _currentFilter
 
     private val jobSearchDebounce =
-        debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
-            setQuery(changedText)
-        }
+        debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText -> setQuery(changedText) }
 
     private var newPagingSource: PagingSource<*, *>? = null
 
@@ -125,9 +124,7 @@ class VacancySearchViewModel(
 
     fun retrySearchQueryWithFilterOptions() {
         latestSearchFilter = preferenceUpdates.value ?: Filter()
-        if (latestSearchText.isNotBlank()) {
-            setQuery(latestSearchText)
-        }
+        if (latestSearchText.isNotBlank()) setQuery(latestSearchText)
     }
 
     fun setChosenCountry(country: Country?) {
@@ -156,18 +153,14 @@ class VacancySearchViewModel(
         _countryId.value = ""
     }
 
-    fun clearChosenRegion() {
-        _chosenRegion.value = null
-    }
+    fun clearChosenRegion() { _chosenRegion.value = null }
 
     fun setIndustry(industry: Industry?) {
         _currentFilter.value = _currentFilter.value?.copy(industry = industry)
         saveFilter()
     }
 
-    fun setRegionNameFilter(regionNameFilter: String) {
-        _regionNameFilter.tryEmit(regionNameFilter)
-    }
+    fun setRegionNameFilter(regionNameFilter: String) { _regionNameFilter.tryEmit(regionNameFilter) }
 
     fun setSalary(salary: Int?) {
         _currentFilter.value = _currentFilter.value?.copy(salary = salary)
@@ -181,56 +174,25 @@ class VacancySearchViewModel(
 
     fun getAreas() {
         _areaScreenState.value = AreaScreenState.Loading
-        viewModelScope.launch {
-            val resource = areasInteractor.getAreas()
-            processResult(resource)
-        }
+        viewModelScope.launch { processResult(areasInteractor.getAreas()) }
     }
 
     fun chooseCountryByChosenRegion() {
-        val countryList = countries.value ?: emptyList()
-        val areas = mutableListOf<Area>()
-        countryList.forEach { areas.addAll(getAllAreas(it, true)) }
-        var currentId = chosenRegion.value?.id ?: ""
-        var area: Area?
-        while (true) {
-            area = areas.find { it.id == currentId }
-            if (area == null) break
-            if (area.parentId != null) currentId = area.parentId ?: "" else break
-        }
-        setChosenCountry(area?.toCountry())
-        _countryId.tryEmit(currentId)
-    }
+        val areas = countries.value!!.flatMap { getAllAreas(it, true) }
 
-    private fun parseFilter(): Map<String, String> {
-        val filter = preferenceUpdates.value ?: Filter()
-        val result = mutableMapOf<String, String>()
-        if (filter.country != null) result["area"] = filter.country.id
-
-        if (filter.region != null) result["area"] = filter.region.id
-
-        if (filter.industry != null) result["industry"] = filter.industry.id
-
-        if (filter.salary != null) result["salary"] = filter.salary.toString()
-
-        if (filter.onlyWithSalary) result["only_with_salary"] = "true"
-
-        return result
+        val currentId = chosenRegion.value?.id ?: ""
+        val countryId = generateSequence(currentId) { id ->
+            areas.find { it.id == id }?.parentId
+        }.last()
+        setChosenCountry(areas.find { it.id == countryId }?.toCountry())
+        _countryId.tryEmit(countryId)
     }
 
     private fun setQuery(query: String) { if (query.isNotBlank()) _query.value = query }
 
     private suspend fun filterAreaByQuery(query: String): List<Area> {
-        val list = regs.first()
-        if (query.isBlank()) {
-            return list
-        }
-        val filteredList = list.filter { it.name.lowercase().contains(query.lowercase()) }
-        if (filteredList.isEmpty()) {
-            _areaScreenState.value = AreaScreenState.Empty
-        } else {
-            _areaScreenState.value = AreaScreenState.Content
-        }
+        val filteredList = regs.first().filter { it.name.lowercase().contains(query.lowercase()) || query.isBlank() }
+        _areaScreenState.value = if (filteredList.isEmpty()) AreaScreenState.Empty else AreaScreenState.Content
         return filteredList
 
     }
@@ -238,7 +200,7 @@ class VacancySearchViewModel(
     private val getItemCountCallback: (Int) -> Unit = { count -> _itemCountLivedata.value = count }
 
     private fun newPager(query: String): Pager<Int, Vacancy> {
-        val filterOptions = parseFilter()
+        val filterOptions = parseFilter(preferenceUpdates.value ?: Filter())
         latestSearchFilter = preferenceUpdates.value ?: Filter()
         return Pager(PagingConfig(PAGE_SIZE, enablePlaceholders = false, prefetchDistance = PAGE_SIZE / 2)) {
             pagingSourceInteractor.getVacanciesPagingSource(query, filterOptions, getItemCountCallback)
@@ -247,24 +209,15 @@ class VacancySearchViewModel(
     }
 
     private fun filterAreaByParentId(id: String): List<Area> {
-        val countryList = countries.value ?: emptyList()
-
         val result = mutableListOf<Area>()
-
-        if (id == "") {
-            countryList.forEach { result.addAll(getAllAreas(it, false)) }
-        } else {
-            countryList.forEach { if (it.id == id) result.addAll(getAllAreas(it, false)) }
-        }
+        countries.value!!.forEach { if (it.id == id || id == "") result.addAll(getAllAreas(it, false)) }
         return result
     }
 
     private fun getAllAreas(area: Area, withCountries: Boolean): List<Area> {
         val allAreas = mutableListOf<Area>()
         if (area.parentId != null || withCountries) allAreas.add(area)
-        for (subArea in area.areas) {
-            allAreas.addAll(getAllAreas(subArea, false))
-        }
+        for (subArea in area.areas) { allAreas.addAll(getAllAreas(subArea, false)) }
         return allAreas.sortedBy { it.name }
     }
 
@@ -283,17 +236,13 @@ class VacancySearchViewModel(
 
     fun searchDebounce(changedText: String) {
         stopSearch()
-        if (latestSearchText == changedText || changedText.isEmpty()) {
-            return
-        }
+        if (latestSearchText == changedText || changedText.isEmpty()) return
         latestSearchText = changedText
         latestSearchFilter = preferenceUpdates.value ?: Filter()
         jobSearchDebounce(changedText)
     }
 
-    fun stopSearch() {
-        searchJob?.cancel()
-    }
+    fun stopSearch() { searchJob?.cancel() }
 
     fun saveFilter() = sharedPrefInteractor.saveFilter(_currentFilter.value ?: Filter())
     fun clearFilter() {
@@ -304,17 +253,9 @@ class VacancySearchViewModel(
     private val preferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             when (key) {
-                FILTER_PREFERENCES_KEY -> {
-                    val newValue = sharedPrefInteractor.loadFilter() ?: Filter()
-                    _preferenceUpdates.value = newValue
-                }
+                FILTER_PREFERENCES_KEY -> { _preferenceUpdates.value = sharedPrefInteractor.loadFilter() ?: Filter() }
             }
         }
-
-    init {
-        sharedPrefInteractor.setPreferencesListener(preferenceChangeListener)
-        _preferenceUpdates.postValue(sharedPrefInteractor.loadFilter())
-    }
 
     override fun onCleared() {
         super.onCleared()
@@ -330,9 +271,7 @@ class VacancySearchViewModel(
     }
 
     private fun processIndustryResult(result: Resource<List<Industry>>) {
-        if (industryScreenState.value != IndustryScreenState.Loading) {
-            return
-        }
+        if (industryScreenState.value != IndustryScreenState.Loading) return
 
         when (result) {
             is Resource.Success -> {
@@ -340,28 +279,17 @@ class VacancySearchViewModel(
                 _industryScreenState.value = IndustryScreenState.Content
             }
 
-            is Resource.Error -> {
-                _industryScreenState.value = IndustryScreenState.Error(result.message)
-            }
+            is Resource.Error -> { _industryScreenState.value = IndustryScreenState.Error(result.message) }
         }
     }
 
-    fun setIndustryNameFilter(industryNameFilter: String) {
-        _industryNameFilter.tryEmit(industryNameFilter)
-    }
+    fun setIndustryNameFilter(industryNameFilter: String) { _industryNameFilter.tryEmit(industryNameFilter) }
 
     private fun filterIndustryByQuery(query: String): List<Industry> {
-        val list = industriesList.value ?: emptyList()
-        if (query.isBlank()) {
-            return list
-        }
-        val filteredList = list.filter { it.name.lowercase().contains(query.lowercase()) }
-        if (filteredList.isEmpty()) {
-            _industryScreenState.value = IndustryScreenState.Empty
-        } else {
-            _industryScreenState.value = IndustryScreenState.Content
-        }
-        return filteredList
+        val list = industriesList.value!!.filter { it.name.lowercase().contains(query.lowercase()) || query.isBlank() }
+        _industryScreenState.value =
+            if (list.isEmpty()) IndustryScreenState.Empty else IndustryScreenState.Content
+        return list
 
     }
 
