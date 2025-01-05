@@ -48,6 +48,21 @@ class SettingFilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initializeViews()
+
+        viewModel.getIndustries()
+
+        viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
+            currentFilterSettings = filter
+            processFilterResult(filter)
+            viewModel.setChosenCountry(filter.country)
+            viewModel.setChosenRegion(filter.region)
+            setupClearButton(filter.country, binding.placeOfWork) { viewModel.clearPlaceOfWork() }
+            setupClearButton(filter.industry, binding.industry) { viewModel.setIndustry(null) }
+        }
+    }
+
+    private fun initializeViews() {
         binding.salaryFrame.requestFocus()
 
         binding.placeOfWorkEnter.setOnClickListener {
@@ -64,23 +79,14 @@ class SettingFilterFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        viewModel.getIndustries()
-
         binding.resetButton.setOnClickListener {
             viewModel.clearFilter()
         }
+
         binding.acceptButton.setOnClickListener {
             viewModel.saveFilter()
             viewModel.retrySearchQueryWithFilterOptions()
             findNavController().navigateUp()
-        }
-        viewModel.currentFilter.observe(viewLifecycleOwner) { filter ->
-            currentFilterSettings = filter
-            processFilterResult(filter)
-            viewModel.setChosenCountry(filter.country)
-            viewModel.setChosenRegion(filter.region)
-            setupClearButton(filter.country, binding.placeOfWork) { viewModel.clearPlaceOfWork() }
-            setupClearButton(filter.industry, binding.industry) { viewModel.setIndustry(null) }
         }
 
         binding.salaryEnter.doOnTextChanged { s, _, _, _ ->
@@ -99,9 +105,7 @@ class SettingFilterFragment : Fragment() {
             }
         }
 
-        binding.withoutSalary.setOnClickListener {
-            viewModel.setOnlyWithSalary(binding.withoutSalary.isChecked)
-        }
+        binding.withoutSalary.setOnClickListener { viewModel.setOnlyWithSalary(binding.withoutSalary.isChecked) }
     }
 
     private fun <T> setupClearButton(item: T?, til: TextInputLayout, action: () -> Unit) {
