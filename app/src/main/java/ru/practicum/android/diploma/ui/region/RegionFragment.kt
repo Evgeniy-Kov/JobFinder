@@ -140,6 +140,7 @@ class RegionFragment : Fragment() {
 
     private fun setCountryScreenMode() {
         binding.groupSearchField.isVisible = args.isRegionMode
+        binding.toolbarRegion.title = requireContext().getString(R.string.choosing_country)
         viewModel.countries.observe(viewLifecycleOwner) { countries ->
             areaAdapter.submitList(countries)
         }
@@ -151,6 +152,7 @@ class RegionFragment : Fragment() {
 
     private fun setRegionScreenMode() {
         binding.groupSearchField.isVisible = args.isRegionMode
+        binding.toolbarRegion.title = requireContext().getString(R.string.choosing_region)
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.regions.collect { regions ->
                 areaAdapter.submitList(regions)
