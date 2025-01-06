@@ -173,6 +173,7 @@
         <item name="android:focusable">true</item>
         <item name="android:contextClickable">true</item>
         <item name="android:inputType">numberSigned</item>
+        <item name="android:maxLength">9</item>
         <item name="android:maxLines">1</item>
     </style>
 
