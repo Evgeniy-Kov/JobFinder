@@ -192,7 +192,8 @@ class VacancySearchViewModel(
 
     private suspend fun filterAreaByQuery(query: String): List<Area> {
         val filteredList = regs.first().filter { it.name.lowercase().contains(query.lowercase()) || query.isBlank() }
-        _areaScreenState.value = if (filteredList.isEmpty()) AreaScreenState.Empty else AreaScreenState.Content
+        if (areaScreenState.value !is AreaScreenState.Error) { _areaScreenState.value =
+            if (filteredList.isEmpty()) AreaScreenState.Empty else AreaScreenState.Content }
         return filteredList
 
     }
@@ -264,10 +265,7 @@ class VacancySearchViewModel(
 
     fun getIndustries() {
         _industryScreenState.value = IndustryScreenState.Loading
-        viewModelScope.launch {
-            val industries = industriesInteractor.getIndustries()
-            processIndustryResult(industries)
-        }
+        viewModelScope.launch { processIndustryResult(industriesInteractor.getIndustries()) }
     }
 
     private fun processIndustryResult(result: Resource<List<Industry>>) {
@@ -287,8 +285,8 @@ class VacancySearchViewModel(
 
     private fun filterIndustryByQuery(query: String): List<Industry> {
         val list = industriesList.value!!.filter { it.name.lowercase().contains(query.lowercase()) || query.isBlank() }
-        _industryScreenState.value =
-            if (list.isEmpty()) IndustryScreenState.Empty else IndustryScreenState.Content
+        if (industryScreenState.value !is IndustryScreenState.Error) { _industryScreenState.value =
+            if (list.isEmpty()) IndustryScreenState.Empty else IndustryScreenState.Content }
         return list
 
     }
