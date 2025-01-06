@@ -61,9 +61,7 @@ class RegionFragment : Fragment() {
 
         binding.regionEditText.doOnTextChanged { text, _, _, _ ->
             clearButtonVisibility(text, binding.clearButton)
-            if (!text.isNullOrBlank()) {
-                viewModel.setRegionNameFilter(text.toString())
-            }
+            viewModel.setRegionNameFilter(text.toString())
         }
 
         binding.clearButton.setOnClickListener {
