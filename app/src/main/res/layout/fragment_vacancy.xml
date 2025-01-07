@@ -24,7 +24,7 @@
         android:layout_width="@dimen/dp_48"
         android:layout_height="@dimen/dp_48"
         android:layout_marginHorizontal="@dimen/dp_4"
-        android:backgroundTint="#00000000"
+        android:backgroundTint="@color/transparent"
         android:contentDescription="@string/share"
         android:src="@drawable/ic_share"
         app:layout_constraintBottom_toBottomOf="@id/toolbar"
@@ -37,13 +37,12 @@
         android:layout_width="@dimen/dp_48"
         android:layout_height="@dimen/dp_48"
         android:layout_marginEnd="@dimen/dp_8"
-        android:backgroundTint="#00000000"
+        android:backgroundTint="@color/transparent"
         android:contentDescription="@string/to_favorites"
         android:src="@drawable/ic_favorites"
         app:layout_constraintBottom_toBottomOf="@id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:tint="?attr/colorOnPrimary" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftBorder"
@@ -59,50 +58,84 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/dp_16" />
 
-
-    <TextView
-        android:id="@+id/title_tv"
-        style="@style/FragmentSubTitleStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_16"
-        app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        tools:text="Android-разработчик" />
-
-    <TextView
-        android:id="@+id/salary_tv"
-        style="@style/FragmentMediumTitleStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_4"
-        android:textColor="?attr/colorOnPrimary"
-        app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/title_tv"
-        tools:text="от 100 000 ₽" />
-
-    <Space
-        android:id="@+id/placeholder"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_24"
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="visible"
+        app:indicatorColor="@color/blue"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/salary_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <ImageView
+        android:id="@+id/no_internet_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:contentDescription="@string/not_found_vacancy"
+        android:src="@drawable/not_found_vacancy"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/no_internet_tv"
+        style="@style/PlaceholderTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/not_found_vacancy"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_internet_iv" />
+
 
     <ScrollView
+        android:id="@+id/vacancy_scroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/placeholder">
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title_tv"
+                style="@style/FragmentSubTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                tools:text="Android-разработчик" />
+
+            <TextView
+                android:id="@+id/salary_tv"
+                style="@style/FragmentMediumTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                android:textColor="?attr/colorOnPrimary"
+                tools:text="от 100 000 ₽" />
+
+            <Space
+                android:id="@+id/placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/salary_tv" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/employer_card"

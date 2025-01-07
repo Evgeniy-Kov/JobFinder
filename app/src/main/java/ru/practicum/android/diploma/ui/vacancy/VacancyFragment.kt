@@ -6,20 +6,20 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.android.material.color.MaterialColors
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.getFormattedSalary
+import ru.practicum.android.diploma.util.isInternetAvailable
 
 class VacancyFragment : Fragment() {
 
@@ -47,9 +47,11 @@ class VacancyFragment : Fragment() {
         viewModel.observeVacancyDetails().observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Error -> {
-                    Toast.makeText(requireContext(), result.message, Toast.LENGTH_LONG)
-                        .show()
-                    findNavController().navigateUp()
+                    if (!isInternetAvailable(requireContext())) {
+                        showErrorPlaceholder(R.string.not_found_vacancy, R.drawable.not_found_vacancy)
+                    } else {
+                        showErrorPlaceholder(R.string.server_error, R.drawable.server_error_vacancy)
+                    }
                 }
 
                 is Resource.Success -> {
@@ -98,20 +100,18 @@ class VacancyFragment : Fragment() {
     private fun renderFavoriteState(isFavourite: Boolean) {
         if (isFavourite) {
             binding.btnFavourite.setImageResource(R.drawable.ic_favorites_checked)
-            binding.btnFavourite.setColorFilter(
-                ContextCompat.getColor(requireContext(), R.color.red)
-            )
         } else {
             binding.btnFavourite.setImageResource(R.drawable.ic_favorites)
-            binding.btnFavourite.setColorFilter(
-                MaterialColors.getColor(binding.btnFavourite, com.google.android.material.R.attr.colorOnPrimary)
-            )
         }
         vacancyDetails = vacancyDetails?.copy(isFavourite = isFavourite)
     }
 
     private fun renderUI() {
         if (vacancyDetails != null) {
+            binding.vacancyScroll.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.GONE
+            binding.noInternetTv.visibility = View.GONE
+            binding.noInternetIv.visibility = View.GONE
             val details = vacancyDetails!!
             binding.titleTv.text = details.name
             binding.salaryTv.text =
@@ -139,5 +139,17 @@ class VacancyFragment : Fragment() {
             }
             renderFavoriteState(details.isFavourite)
         }
+    }
+
+    private fun showErrorPlaceholder(
+        @StringRes stringResId: Int,
+        @DrawableRes imageResId: Int,
+    ) {
+        binding.vacancyScroll.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+        binding.noInternetIv.visibility = View.VISIBLE
+        binding.noInternetTv.visibility = View.VISIBLE
+        binding.noInternetIv.setImageResource(imageResId)
+        binding.noInternetTv.text = getString(stringResId)
     }
 }

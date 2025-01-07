@@ -34,5 +34,22 @@
     <string name="keyskills_header">Ключевые навыки</string>
     <string name="vacancies_found">Найдено %d вакансий</string>
     <string name="keyskills_separator">"\n• "</string>
-
+    <string name="enter_region">"Введите регион"</string>
+    <string name="the_region_does_not_exist">"Такого региона нет"</string>
+    <string name="not_get_list">"Не удалось получить\nсписок"</string>
+    <string name="not_found_vacancy">Вакансия не найдена или удалена</string>
+    <string name="enter_industry">"Введите отрасль"</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="Choose">Выбрать</string>
+    <string name="place_of_work">Место работы</string>
+    <string name="Industry">Отрасль</string>
+    <string name="salary_expected"> Ожидаемая зарплата</string>
+    <string name="enter_salary"> Введите сумму</string>
+    <string name="without_salary">Не показывать без зарплаты</string>
+    <string name="accept">Применить</string>
+    <string name="reset">Сбросить</string>
+    <string name="check_your_connection">Проверьте подключение к интернету</string>
+    <string name="no_such_region">Такого региона нет</string>
+    <string name="no_such_industry">Такой отрасли нет</string>
 </resources>

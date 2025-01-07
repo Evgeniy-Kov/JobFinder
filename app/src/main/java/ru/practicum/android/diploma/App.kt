@@ -20,4 +20,9 @@ class App : Application() {
 
     }
 
+    companion object {
+        const val PREFERENCES = "_preferences"
+        const val FILTER_PREFERENCES_KEY = "filter_preferences"
+    }
+
 }

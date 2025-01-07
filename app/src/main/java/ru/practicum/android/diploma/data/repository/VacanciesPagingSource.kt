@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.data.repository
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import kotlinx.coroutines.delay
 import ru.practicum.android.diploma.data.NetworkClient
 import ru.practicum.android.diploma.data.dto.CurrencyDto
 import ru.practicum.android.diploma.data.network.DictionariesRequest
@@ -17,6 +18,7 @@ class VacanciesPagingSource(
     private val getItemCountCallback: (Int) -> Unit
 ) : PagingSource<Int, Vacancy>() {
 
+    private var isError = false
     private var currencies: List<CurrencyDto>? = null
 
     override fun getRefreshKey(state: PagingState<Int, Vacancy>): Int? {
@@ -27,6 +29,8 @@ class VacanciesPagingSource(
         if (currencies == null) {
             currencies = getCurrencyList()
         }
+        if (isError) delay(IS_ERROR_DELAY_MILLIS)
+        isError = false
 
         if (query.isBlank()) {
             return LoadResult.Page(emptyList(), null, null)
@@ -50,7 +54,8 @@ class VacanciesPagingSource(
             }
 
             else -> {
-                LoadResult.Error(RuntimeException("403"))
+                isError = true
+                LoadResult.Error(RuntimeException(response.resultCode.toString()))
             }
         }
     }
@@ -62,5 +67,9 @@ class VacanciesPagingSource(
             currencyList.addAll((response as DictionariesResponse).dictionary.currency)
         }
         return currencyList
+    }
+
+    private companion object {
+        const val IS_ERROR_DELAY_MILLIS = 2000L
     }
 }
