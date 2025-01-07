@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:orientation="vertical"
-    tools:context=".presentation.TeamFragment">
+    tools:context=".ui.team.TeamFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        style="@style/TeamFragmentTitleStyle"
+        style="@style/FragmentToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_64"
         app:contentInsetStartWithNavigation="0dp"
@@ -26,7 +26,7 @@
         android:paddingHorizontal="@dimen/dp_16">
 
         <TextView
-            style="@style/TeamFragmentSubTitleStyle"
+            style="@style/FragmentSubTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"

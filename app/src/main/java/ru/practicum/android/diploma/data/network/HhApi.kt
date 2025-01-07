@@ -8,6 +8,7 @@ import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.AreaDto
 import ru.practicum.android.diploma.data.dto.CountriesDto
+import ru.practicum.android.diploma.data.dto.DictionaryDto
 import ru.practicum.android.diploma.data.dto.IndustriesDto
 import ru.practicum.android.diploma.data.dto.VacancyDetailsDto
 
@@ -38,6 +39,9 @@ interface HhApi {
 
     @GET("/areas/{areaId}")
     suspend fun getAreaById(@Path("areaId") areaId: String): AreaDto
+
+    @GET("/dictionaries")
+    suspend fun getDictionaries(): DictionaryDto
 
     private companion object {
         const val APPLICATION_NAME = "JobFinder"

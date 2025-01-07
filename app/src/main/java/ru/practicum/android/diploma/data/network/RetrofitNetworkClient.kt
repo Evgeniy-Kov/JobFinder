@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.NetworkClient
 import ru.practicum.android.diploma.util.isInternetAvailable
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class RetrofitNetworkClient(
@@ -18,34 +19,45 @@ class RetrofitNetworkClient(
 
         return withContext(Dispatchers.IO) {
             try {
-                when (dto) {
-                    is VacanciesSearchRequest -> {
-                        getVacancies(dto)
-                    }
-
-                    is VacancyDetailsRequest -> {
-                        getVacancyDetails(dto)
-                    }
-
-                    is IndustriesRequest -> {
-                        getIndustries()
-                    }
-
-                    is CountriesRequest -> {
-                        getCountries()
-                    }
-
-                    is AreaRequest -> {
-                        getAreaById(dto)
-                    }
-
-                    else -> {
-                        Response(NetworkClient.BAD_REQUEST)
-                    }
-                }
+                getResponse(dto)
             } catch (e: UnknownHostException) {
                 e.printStackTrace()
                 Response(NetworkClient.SERVER_ERROR)
+            } catch (e: SocketTimeoutException) {
+                e.printStackTrace()
+                Response(NetworkClient.SERVER_ERROR)
+            }
+        }
+    }
+
+    private suspend fun getResponse(dto: Any): Response {
+        return when (dto) {
+            is VacanciesSearchRequest -> {
+                getVacancies(dto)
+            }
+
+            is VacancyDetailsRequest -> {
+                getVacancyDetails(dto)
+            }
+
+            is IndustriesRequest -> {
+                getIndustries()
+            }
+
+            is CountriesRequest -> {
+                getCountries()
+            }
+
+            is AreaRequest -> {
+                getAreaById(dto)
+            }
+
+            is DictionariesRequest -> {
+                getDictionaries()
+            }
+
+            else -> {
+                Response(NetworkClient.BAD_REQUEST)
             }
         }
     }
@@ -71,5 +83,9 @@ class RetrofitNetworkClient(
     private suspend fun getAreaById(request: AreaRequest): AreaResponse {
         return AreaResponse(hhApiService.getAreaById(request.areaId))
             .apply { resultCode = NetworkClient.SUCCESS }
+    }
+
+    private suspend fun getDictionaries(): DictionariesResponse {
+        return DictionariesResponse(hhApiService.getDictionaries()).apply { resultCode = NetworkClient.SUCCESS }
     }
 }
