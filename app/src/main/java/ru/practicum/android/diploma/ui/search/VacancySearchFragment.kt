@@ -102,6 +102,7 @@ class VacancySearchFragment : Fragment() {
             }
         }
         binding.parametersButton.setOnClickListener {
+            viewModel.updateLatestSearchFilter()
             findNavController().navigate(R.id.settingFilterFragment)
         }
 
