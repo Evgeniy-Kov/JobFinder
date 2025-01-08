@@ -122,8 +122,10 @@ class VacancySearchViewModel(
 
     fun setSearchScreenState(state: SearchScreenState) { _searchScreenState.value = state }
 
+    fun updateLatestSearchFilter() { latestSearchFilter = preferenceUpdates.value ?: Filter() }
+
     fun retrySearchQueryWithFilterOptions() {
-        latestSearchFilter = preferenceUpdates.value ?: Filter()
+        updateLatestSearchFilter()
         if (latestSearchText.isNotBlank()) setQuery(latestSearchText)
     }
 
@@ -202,7 +204,7 @@ class VacancySearchViewModel(
 
     private fun newPager(query: String): Pager<Int, Vacancy> {
         val filterOptions = parseFilter(preferenceUpdates.value ?: Filter())
-        latestSearchFilter = preferenceUpdates.value ?: Filter()
+        updateLatestSearchFilter()
         return Pager(PagingConfig(PAGE_SIZE, enablePlaceholders = false, prefetchDistance = PAGE_SIZE / 2)) {
             pagingSourceInteractor.getVacanciesPagingSource(query, filterOptions, getItemCountCallback)
                 .also { newPagingSource = it }
@@ -239,7 +241,7 @@ class VacancySearchViewModel(
         stopSearch()
         if (latestSearchText == changedText || changedText.isEmpty()) return
         latestSearchText = changedText
-        latestSearchFilter = preferenceUpdates.value ?: Filter()
+        updateLatestSearchFilter()
         jobSearchDebounce(changedText)
     }
 
@@ -295,7 +297,7 @@ class VacancySearchViewModel(
         sharedPrefInteractor.setPreferencesListener(preferenceChangeListener)
         _preferenceUpdates.value = sharedPrefInteractor.loadFilter() ?: Filter()
         _currentFilter.value = preferenceUpdates.value ?: Filter()
-        latestSearchFilter = preferenceUpdates.value ?: Filter()
+        updateLatestSearchFilter()
     }
 
     companion object {
