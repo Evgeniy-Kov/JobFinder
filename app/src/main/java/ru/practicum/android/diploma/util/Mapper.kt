@@ -28,7 +28,7 @@ fun VacancyDetailsDto.toVacancyDetails(): VacancyDetails {
     return VacancyDetails(
         id = id,
         name = name,
-        city = area.name,
+        city = getVacancyAreaForDetails(area, address),
         employerName = employer?.name,
         employerLogoUrl = employer?.logoUrls?.original,
         salaryFrom = salary?.from,
