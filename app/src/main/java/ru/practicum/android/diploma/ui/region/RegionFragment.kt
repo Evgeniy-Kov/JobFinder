@@ -22,7 +22,10 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentRegionBinding
+import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.ui.search.VacancySearchViewModel
+import ru.practicum.android.diploma.util.toCountry
+import ru.practicum.android.diploma.util.toRegion
 
 class RegionFragment : Fragment() {
 
@@ -58,9 +61,7 @@ class RegionFragment : Fragment() {
 
         binding.regionEditText.doOnTextChanged { text, _, _, _ ->
             clearButtonVisibility(text, binding.clearButton)
-            if (!text.isNullOrBlank()) {
-                viewModel.setRegionNameFilter(text.toString())
-            }
+            viewModel.setRegionNameFilter(text.toString())
         }
 
         binding.clearButton.setOnClickListener {
@@ -137,26 +138,37 @@ class RegionFragment : Fragment() {
 
     private fun setCountryScreenMode() {
         binding.groupSearchField.isVisible = args.isRegionMode
+        binding.toolbarRegion.title = requireContext().getString(R.string.choosing_country)
         viewModel.countries.observe(viewLifecycleOwner) { countries ->
             areaAdapter.submitList(countries)
         }
         areaAdapter.onItemClickListener = AreaViewHolder.OnItemClickListener { country ->
-            viewModel.setCountry(country)
+            setChosenCountry(country)
             findNavController().navigateUp()
         }
     }
 
     private fun setRegionScreenMode() {
         binding.groupSearchField.isVisible = args.isRegionMode
+        binding.toolbarRegion.title = requireContext().getString(R.string.choosing_region)
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.regions.collect { regions ->
                 areaAdapter.submitList(regions)
             }
         }
         areaAdapter.onItemClickListener = AreaViewHolder.OnItemClickListener { region ->
-            viewModel.setRegion(region)
+            setChosenRegion(region)
             findNavController().navigateUp()
         }
+    }
+
+    private fun setChosenCountry(country: Area) {
+        viewModel.setChosenCountry(country.toCountry())
+    }
+
+    private fun setChosenRegion(region: Area) {
+        viewModel.setChosenRegion(region.toRegion())
+        if (viewModel.chosenCountry.value == null) viewModel.chooseCountryByChosenRegion()
     }
 
     private fun clearButtonVisibility(s: CharSequence?, v: ImageView) {

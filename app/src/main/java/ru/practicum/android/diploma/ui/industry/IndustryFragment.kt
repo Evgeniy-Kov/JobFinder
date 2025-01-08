@@ -48,6 +48,11 @@ class IndustryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        selectedIndustry = viewModel.currentFilter.value?.industry
+        searchAdapter.setSelectedIndustry(selectedIndustry)
+        binding.chooseButton.isVisible = selectedIndustry != null
+
         binding.toolbarIndustry.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
@@ -55,9 +60,7 @@ class IndustryFragment : Fragment() {
 
         binding.industryEditText.doOnTextChanged { text, _, _, _ ->
             clearButtonVisibility(text, binding.clearButton)
-            if (!text.isNullOrBlank()) {
-                viewModel.setIndustryNameFilter(text.toString())
-            }
+            viewModel.setIndustryNameFilter(text.toString())
         }
 
         binding.clearButton.setOnClickListener {
@@ -92,9 +95,6 @@ class IndustryFragment : Fragment() {
         binding.industryList.isVisible = state is IndustryScreenState.Content
         binding.imgError.isVisible = state !is IndustryScreenState.Content && state !is IndustryScreenState.Loading
         binding.txtError.isVisible = state !is IndustryScreenState.Content && state !is IndustryScreenState.Loading
-        if (state !is IndustryScreenState.Content && state !is IndustryScreenState.Loading) {
-            setMessagesAndDrawable(state)
-        }
         if (state !is IndustryScreenState.Content && state !is IndustryScreenState.Loading) {
             setMessagesAndDrawable(state)
         }
