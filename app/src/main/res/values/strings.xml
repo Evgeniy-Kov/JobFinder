@@ -52,4 +52,5 @@
     <string name="check_your_connection">Проверьте подключение к интернету</string>
     <string name="no_such_region">Такого региона нет</string>
     <string name="no_such_industry">Такой отрасли нет</string>
+    <string name="filter_place_of_work">%s, %s</string>
 </resources>

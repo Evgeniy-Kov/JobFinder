@@ -15,10 +15,11 @@
             app:destination="@id/settingFilterFragment" />
         <action
             android:id="@+id/action_vacancySearchFragment_to_vacancyFragment"
-            app:destination="@id/vacancyFragment" />
-        <action
-            android:id="@+id/action_vacancySearchFragment_to_industryFragment"
-            app:destination="@id/industryFragment" />
+            app:destination="@id/vacancyFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
     <fragment
         android:id="@+id/settingFilterFragment"
@@ -27,10 +28,18 @@
         tools:layout="@layout/fragment_setting_filter">
         <action
             android:id="@+id/action_settingFilterFragment_to_placeOfWorkFragment"
-            app:destination="@id/placeOfWorkFragment" />
+            app:destination="@id/placeOfWorkFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
         <action
             android:id="@+id/action_settingFilterFragment_to_industryFragment"
-            app:destination="@id/industryFragment" />
+            app:destination="@id/industryFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
     <fragment
         android:id="@+id/industryFragment"
@@ -44,10 +53,18 @@
         tools:layout="@layout/fragment_place_of_work">
         <action
             android:id="@+id/action_placeOfWorkFragment_to_countryFragment"
-            app:destination="@id/countryFragment" />
+            app:destination="@id/countryFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
         <action
             android:id="@+id/action_placeOfWorkFragment_to_regionFragment"
-            app:destination="@id/regionFragment" />
+            app:destination="@id/regionFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
     <fragment
         android:id="@+id/countryFragment"
@@ -80,7 +97,11 @@
         tools:layout="@layout/fragment_favourites">
         <action
             android:id="@+id/action_favouritesFragment_to_vacancyFragment"
-            app:destination="@id/vacancyFragment" />
+            app:destination="@id/vacancyFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
     <fragment
         android:id="@+id/teamFragment"

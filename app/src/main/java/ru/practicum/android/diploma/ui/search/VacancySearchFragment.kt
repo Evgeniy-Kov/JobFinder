@@ -97,20 +97,25 @@ class VacancySearchFragment : Fragment() {
         }
 
         viewModel.preferenceUpdates.observe(viewLifecycleOwner) { filter ->
-            updateFilterUI(filter)
+            if (filter != null) {
+                updateFilterUI(filter)
+            }
         }
         binding.parametersButton.setOnClickListener {
+            viewModel.updateLatestSearchFilter()
             findNavController().navigate(R.id.settingFilterFragment)
         }
 
-        renderState(SearchScreenState.Default)
+        viewModel.searchScreenState.observe(viewLifecycleOwner) { state ->
+            renderState(state)
+        }
     }
 
-    private fun updateFilterUI(filter: Filter?) {
-        if (filter != null) {
-            binding.parametersButton.setImageResource(R.drawable.ic_parameters_checked)
-        } else {
+    private fun updateFilterUI(filter: Filter) {
+        if (filter.isDefault) {
             binding.parametersButton.setImageResource(R.drawable.ic_parameters)
+        } else {
+            binding.parametersButton.setImageResource(R.drawable.ic_parameters_checked)
         }
     }
 
@@ -156,7 +161,7 @@ class VacancySearchFragment : Fragment() {
             clearButtonVisibility(s, binding.clearButton)
             searchValue = s.toString().trim()
             if (binding.searchEditText.hasFocus() && s?.isEmpty() == true) {
-                renderState(SearchScreenState.Default)
+                viewModel.setSearchScreenState(SearchScreenState.Default)
             } else {
                 viewModel.searchDebounce(searchValue)
             }
@@ -170,15 +175,16 @@ class VacancySearchFragment : Fragment() {
         }
 
         binding.parametersButton.setOnClickListener {
-            findNavController().navigate(R.id.settingFilterFragment)
+            val directions = VacancySearchFragmentDirections.actionVacancySearchFragmentToSettingFilterFragment()
+            findNavController().navigate(directions)
         }
     }
 
     private fun processResult(dataSize: Int, state: LoadState) {
         when (state) {
-            is LoadState.Loading -> renderState(SearchScreenState.Loading)
+            is LoadState.Loading -> viewModel.setSearchScreenState(SearchScreenState.Loading)
 
-            is LoadState.Error -> renderState(SearchScreenState.Error(state.error.message ?: ""))
+            is LoadState.Error -> viewModel.setSearchScreenState(SearchScreenState.Error(state.error.message ?: ""))
 
             is LoadState.NotLoading -> handleNotLoadingState(dataSize)
         }
@@ -186,11 +192,12 @@ class VacancySearchFragment : Fragment() {
 
     private fun handleNotLoadingState(dataSize: Int) {
         when {
-            dataSize == 0 && searchValue.isBlank() -> renderState(SearchScreenState.Default)
+            dataSize == 0 && searchValue.isBlank() -> viewModel.setSearchScreenState(SearchScreenState.Default)
 
-            dataSize == 0 && searchValue.isNotBlank() -> renderState(SearchScreenState.NothingFound)
+            dataSize == 0 && searchValue.isNotBlank() -> viewModel.setSearchScreenState(SearchScreenState.NothingFound)
 
-            else -> renderState(SearchScreenState.Content)
+            else -> viewModel.setSearchScreenState(SearchScreenState.Content)
+
         }
     }
 

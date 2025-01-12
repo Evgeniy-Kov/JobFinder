@@ -17,5 +17,5 @@ data class Filter(
     val onlyWithSalary: Boolean = false
 ) {
     val isDefault: Boolean
-        get() = country == null && region == null && industry == null && !onlyWithSalary
+        get() = country == null && region == null && industry == null && !onlyWithSalary && salary == null
 }
